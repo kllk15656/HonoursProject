@@ -66,13 +66,22 @@
   
    <!-- Cart Sidebar -->
   <div id="side-cart">
+    
+    <div class="cart-panel"> 
+
     <button id="close-cart">X</button>
     <!-- Cart contents go here -->
     <p>Your cart is empty</p>
+    <div class="cart-total">
+      <strong> Total Price</strong>
+      <Strong> £ 0</Strong>
+    </div>
+    <button class="continue-btn">Continue</button>
   </div>
+</div>
 
 <!-- JAVASCRIPT -->
-  <script src="script.js"></script>
+  
   <script>
     const hamburgerMenu = document.getElementById('hamburger-menu');
     const sidebar = document.querySelector('.sidebar');
@@ -91,23 +100,27 @@
     const cartIcon = document.getElementById('cart-icon');
     const sideCart = document.getElementById('side-cart');
     const closeCart = document.getElementById('close-cart');
+    const cartPanel = document.querySelector('.cart-panel');
 
     // Open cart
-    cartIcon.addEventListener('click', () => {
-      sideCart.classList.toggle('open');
+    cartIcon.addEventListener('click', (e) => {
+      e.stopPropagation(); //Prevents document click
+      sideCart.classList.add('open');
     });
 
     // Close cart
-    closeCart.addEventListener('click', () => {
+    closeCart.addEventListener('click', (e) => {
+      e.stopPropagation();
       sideCart.classList.remove('open');
     });
 
-    // Close the cart if clicked outside
-    document.addEventListener('click', (e) => {
-      if (!sideCart.contains(e.target) && e.target !== cartIcon) {
-        sideCart.classList.remove('open');
-      }
+    sideCart.addEventListener('click',() =>{
+      sideCart.classList.remove('open');
     });
+
+    cartPanel.addEventListener('click',(e)=> {
+      e.stopPropagation();
+    })
   </script>
 </body>
 </html>
