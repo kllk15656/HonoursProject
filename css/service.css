@@ -1,0 +1,263 @@
+/* General Reset and Body Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: linear-gradient(
+    180deg,
+    rgba(189,189,189,0.73),
+    rgba(157,156,154,0.73)
+  );
+    }
+  /* end of basic set up */
+
+  /* serivce header box  */
+  .service-header {
+        background: #795548;   /* brown color */
+        color: #fff;
+        padding: 15px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        width: 100%;           /* goes across */
+        box-sizing: border-box;
+        border-radius: 6px;
+    }
+    /* end of serivce header box  */
+
+/* serivce container box  */
+    .service-container {
+         background: #f5f5f5;
+         width: 100%;
+         padding: 25px;
+         border-radius: 6px;
+         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+         text-align: center;
+    }
+
+/* Title */
+    .service-container h1 {
+          margin-bottom: 15px;
+    }
+
+/* Text */
+    .service-container p {
+        color: #555;
+    }
+/* end of serivce container box  */
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 250px;
+      background-color: #DE8D45;
+      color: white;
+      padding: 20px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: block;
+      transition: transform 0.3s ease-in-out;
+    }
+    /* end of Sidebar Styles */
+
+    /* Hamburger Menu Icon */
+    .hamburger-menu {
+      display: none;
+      font-size: 30px;
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      left: 10px;
+      color: #746853;
+    }
+
+    /* Sidebar Menu Items */
+    .category-item {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .category-item a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 10px;
+      background-color: #C6B071;
+    }
+
+    .subcategories {
+      display: none;
+      position: absolute;
+      left: 100%;
+      top: 0;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 200px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .subcategories a {
+      display: block;
+      padding: 8px;
+      text-decoration: none;
+      color: black;
+    }
+
+    .subcategories a:hover {
+      background-color: #746853 ;
+    }
+
+    .category-item:hover .subcategories {
+      display: block;
+    }
+
+     /* end of Sidebar Menu Items */
+
+    /* Main Content Area */
+    .main-content {
+      margin-left: 250px;
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+
+    /* Progress Bar Container */
+    .progress-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .step {
+      padding: 10px 20px;
+      background-color: #209AE6;
+      border: 1px solid black;
+      margin: 0 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .step.active {
+      background-color: #C9E620;
+      color: black;
+      font-weight: bold;
+    }
+
+    .arrow {
+      margin: 0 5px;
+      color: #333;
+    }
+
+    /* end of Progress Bar Container */
+
+    /* Cart Icon Styles */
+    #cart-icon {
+      font-size: 24px;
+      cursor: pointer;
+      padding: 1rem;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-top: 20px;
+      z-index: 999;
+    }
+
+    /* Side Cart Styles */
+    #side-cart {
+      position: fixed;
+      top: 0;
+      right: -300px; /* Initially hidden off-screen */
+      width: 300px;
+      height: 100%;
+      background: #110d0d;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+      transition: right 0.3s ease;
+      padding: 1rem;
+      z-index: 1000;
+    }
+
+    #side-cart.open {
+      right: 0; /* Cart fully visible */
+    }
+
+    /* Close Button inside Cart */
+    #close-cart {
+      font-size: 24px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      float: right;
+     
+    }
+    form input[type="text"] {
+    width: 200px; /* Adjust the width of the input box */
+    padding: 10px; /* Add padding to make the input box larger */
+    font-size: 16px; /* Adjust font size for better readability */
+    border-radius: 6px; /* Optional: Add rounded corners */
+    border: 1px solid #ccc; /* Optional: Border styling */
+}
+/*  end of Cart Icon Styles */
+
+    /* Hide the sidebar and display the hamburger menu on smaller screens */
+    @media screen and (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+
+      .hamburger-menu {
+        display: block;
+      }
+
+      .sidebar.open {
+        display: block;
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      /* Mobile-specific adjustments for progress bar */
+      .progress-container {
+        font-size: 14px; /* Adjust the font size for the progress bar on mobile */
+      }
+
+      .step {
+        padding: 5px 10px; /* Smaller padding for the progress steps */
+        font-size: 12px; /* Reduce font size of the steps */
+      }
+
+      .arrow {
+        font-size: 18px; /* Reduce the size of the arrows */
+      }
+
+      #cart-icon {
+        margin-left: 15px; /* Move the cart icon to the right */
+      }
+
+      /* Cart specific mobile styles */
+      #side-cart {
+        width: 80%; /* Make the cart wider on mobile */
+        right: -80%; /* Start with cart off-screen */
+        transition: right 0.3s ease;
+      }
+
+      #side-cart.open {
+        right: 0; /* Cart fully visible */
+      }
+    }

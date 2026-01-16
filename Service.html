@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./css/service.css" />
+  <title>Categories</title>
+  <style>
+    
+  </style>
+</head>
+<body>
+
+  <!-- Cart and Hamburger Menu -->
+  <header>
+    <div id="cart-icon">🛒</div>
+    <button class="hamburger-menu" id="hamburger-menu">
+      &#9776;
+    </button>
+  </header>
+
+  <!-- List of Categories-->
+  <div class="sidebar">
+    <h2>Categories</h2><br>
+    <form action="#" method="GET">
+      <input type="text" name="search" placeholder="Search Services..." />
+    </form>
+    <br>
+    <div class="categories">
+
+    </div>
+  </div>
+ <div class="main-content">
+    <div class="progress-container">
+      <div class="step active">Services</div>
+      <div class="arrow">→</div>
+      <div class="step">Calendar</div>
+      <div class="arrow">→</div>
+      <div class="step">Checkout</div>
+    </div>
+    <!-- go back to welcome page-->
+     <div style="text-align:center; margin-bottom: 20px;">
+      <a href="Welcome.html">
+        <button style="background-color: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+          ← Back to Welcome
+        </button>
+      </a>
+    </div>
+
+   <div class="service-header">
+    Services
+  </div>
+
+  <!-- Services Container Box -->
+  <div class="service-container">
+    <h1>Our Services</h1>
+    <p>Content goes here...</p>
+  </div>
+
+
+
+  
+   <!-- Cart Sidebar -->
+  <div id="side-cart">
+    <button id="close-cart">X</button>
+    <!-- Cart contents go here -->
+    <p>Your cart is empty</p>
+  </div>
+
+<!-- JAVASCRIPT -->
+  <script src="script.js"></script>
+  <script>
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    const sidebar = document.querySelector('.sidebar');
+
+    hamburgerMenu.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!sidebar.contains(e.target) && e.target !== hamburgerMenu) {
+        sidebar.classList.remove('open');
+      }
+    });
+
+    // Cart toggle functionality
+    const cartIcon = document.getElementById('cart-icon');
+    const sideCart = document.getElementById('side-cart');
+    const closeCart = document.getElementById('close-cart');
+
+    // Open cart
+    cartIcon.addEventListener('click', () => {
+      sideCart.classList.toggle('open');
+    });
+
+    // Close cart
+    closeCart.addEventListener('click', () => {
+      sideCart.classList.remove('open');
+    });
+
+    // Close the cart if clicked outside
+    document.addEventListener('click', (e) => {
+      if (!sideCart.contains(e.target) && e.target !== cartIcon) {
+        sideCart.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

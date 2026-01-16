@@ -1,0 +1,92 @@
+/* Basic style */
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Bear icon */
+.bear-icon {
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  width: 200px;      /* adjust to match image */
+  height: auto;
+}
+
+/* Background Setting */
+.screen {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    180deg,
+    rgba(189,189,189,0.73),
+    rgba(157,156,154,0.73)
+  );
+}
+
+/* Centered content */
+.content {
+  text-align: center;
+}
+
+/* Text styles */
+.welcome {
+   margin: 6px 1 2px; 
+  font-size: 50px;
+}
+
+.title {
+   margin: 8px 0 4px;
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0 1 24px;
+  font-size: 50px;
+}
+
+/* Button design */
+.btn {
+  width: 274px;        /* exact size from image */
+  height: 75px;
+  border-radius: 999px;
+  border: none;
+  font-size: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  display: block;
+  margin: 12px auto;
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6)
+}
+
+/* Button colors */
+.primary {
+  
+  background-color: #f4b400;
+}
+
+.secondary {
+  background-color: #f4b400;
+}
+
+/* Optional hover */
+.btn:hover {
+  background-color: #e6a700;
+}
+
+@media (min-width: 400px) and (max-width: 800px ){
+  
+ 
+}
+
+@media (min-width: 801px) {
+  
+}
