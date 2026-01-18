@@ -136,9 +136,6 @@
 
      /* end of Sidebar Menu Items */
 
-   
-
-
     /* Progress Bar Container */
     .progress-container {
       display: flex;
@@ -153,24 +150,24 @@
       color: black;
       font-weight: bold;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      font-size: medium;
-      border: 1px solid black;
+      font-size: 15px;
+      border: 2px solid #209AE6;
     }
     .step.active {
       background-color: #C9E620;
       color: black;
       font-weight: bold;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      font-size: medium;
-      border: 1px solid black;
+      font-size: 15px;
+      border: 2px solid #C9E620;
     }
     .step.complete {
       background-color: #6AE04D;
       color: black;
       font-weight: bold;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      font-size: medium;
-      border: 1px solid black;
+      font-size: 15px;
+      border: 2px solid #6AE04D;
     }
     
     .arrow {
@@ -189,8 +186,10 @@
       position: absolute;
       top: 0;
       right: 0;
-      margin-top: 20px;
       z-index: 999;
+      margin-top: 20px;
+       color: black
+      
     }
 
     /* Side Cart Styles */
@@ -241,43 +240,76 @@
     border: 1px solid #ccc; /* Optional: Border styling */
 }
 
+/* work on mobile setting */
+@media screen and (max-width: 500px) {
+  
+  .service-header {
+    font-size: 20px;
+   }
+  .service-container h1 {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  .service-container p {
+    color: #555;
+    font-size: 15px;
+  }
+  .categories h2{
+    font-size: 15px;
+  }
 
-    /* Hide the sidebar and display the hamburger menu on smaller screens */
-    @media screen and (max-width: 768px) {
-      .sidebar {
-        display: none;
+  /* M - Sidebar and hamburger  */
+   .sidebar {
+     display: none;
       }
 
-      .hamburger-menu {
-        display: block;
-      }
+  .hamburger-menu {
+    display: block;
+   }
 
-      .sidebar.open {
-        display: block;
-        transform: translateX(0);
-      }
+  .sidebar.open {
+    display: block;
+    transform: translateX(0);
+  }
 
-      .main-content {
-        margin-left: 0;
-      }
+  .main-content {
+    margin-left: 0;
+  }
+  
+  /* M - Progress bar  */
+  .progress-container {
+    font-size: 14px; 
+  }
 
-      /* Mobile-specific adjustments for progress bar */
-      .progress-container {
-        font-size: 14px; /* Adjust the font size for the progress bar on mobile */
-      }
+  .step.uncomplete {
+    font-size: 14px;
+      
+  }
+ .step.active {
+    font-size: 14px;
+      
+    }
+  .step.complete {
+    font-size: 14px;
+  
+  }
+    /* M - cart icon  */
+  #cart-icon {
+    font-size: 24px;
+    cursor: pointer;
+    padding: 1rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 40px;
+    margin-right: 20px;
+    z-index: 999;
+    }
+}
 
-      .step {
-        padding: 5px 10px; /* Smaller padding for the progress steps */
-        font-size: 12px; /* Reduce font size of the steps */
-      }
-
-      .arrow {
-        font-size: 18px; /* Reduce the size of the arrows */
-      }
-
-      #cart-icon {
-        margin-left: 15px; /* Move the cart icon to the right */
-      }
+    /* tablet device */
+    @media  (min-width: 501px )and (max-width: 768px) {
+      
 
      
     }
