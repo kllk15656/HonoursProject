@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Services – Wireframe</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #ddd;
+}
+
+/* HEADER */
+header {
+  height: 60px;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 20px;
+}
+
+#cart-icon {
+  font-size: 26px;
+  cursor: pointer;
+}
+
+/* LAYOUT */
+.wrapper {
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  background: #de8d45;
+  min-height: 100vh;
+  padding: 20px;
+  color: #fff;
+}
+
+.sidebar input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 20px;
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  padding: 20px;
+}
+
+/* PROGRESS BAR */
+.progress {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.step {
+  padding: 8px 14px;
+  background: #209ae6;
+  border-radius: 6px;
+  margin: 0 5px;
+}
+
+.step.active {
+  background: #c9e620;
+}
+
+/* SERVICE HEADER */
+.service-header {
+  background: #795548;
+  color: #fff;
+  text-align: center;
+  padding: 14px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+/* SERVICES BOX */
+.services-box {
+  max-width: 450px;
+  margin: auto;
+  background: #f4f0ed;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+/* REMINDER */
+.reminder {
+  background: #ff4d4d;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* CATEGORY HEADER */
+.category-header {
+  background: #d8cec9;
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* CATEGORY CONTENT */
+.category-content {
+  background: #eee;
+  padding: 10px;
+  border-radius: 6px;
+  display: none;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th, td {
+  padding: 6px;
+  text-align: center;
+}
+
+th {
+  background: #ccc;
+}
+
+.add-btn {
+  background: #e06a5f;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* CART PANEL (CENTER MOCK) */
+.cart-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.cart-panel h3 {
+  text-align: center;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.continue-btn {
+  width: 100%;
+  padding: 10px;
+  background: #795548;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div id="cart-icon">🛒</div>
+</header>
+
+<div class="wrapper">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <input type="text" placeholder="Search Services">
+    <h3>Categories</h3>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- PROGRESS -->
+    <div class="progress">
+      <div class="step active">Services</div>
+      <div class="step">Calendar</div>
+      <div class="step">Details</div>
+      <div class="step">Payment</div>
+    </div>
+
+    <!-- HEADER -->
+    <div class="service-header">Services</div>
+
+    <!-- SERVICES -->
+    <div class="services-box">
+
+      <div class="reminder">
+        • Reminder: Deposits are non-refundable
+      </div>
+
+      <!-- CATEGORY -->
+      <div class="category-header">
+        <span>Gel Nails</span>
+        <span>+</span>
+      </div>
+      <div class="category-content">
+        <table>
+          <tr>
+            <th>Service</th>
+            <th>Time</th>
+            <th>Full</th>
+            <th>Deposit</th>
+            <th></th>
+          </tr>
+          <tr>
+            <td>Gel Fingers</td>
+            <td>1 hr</td>
+            <td>£28</td>
+            <td>£14</td>
+            <td><button class="add-btn">Add</button></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="category-header">
+        <span>Builder Gel</span>
+        <span>+</span>
+      </div>
+      <div class="category-content">
+        <p>Builder gel services</p>
+      </div>
+
+      <div class="category-header">
+        <span>Acrylics</span>
+        <span>+</span>
+      </div>
+      <div class="category-content">
+        <p>Acrylic services</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CART MOCK (STATIC FOR WIREFRAME) -->
+<div class="cart-panel">
+  <h3>Your Cart</h3>
+  <p style="text-align:center;">Your cart is empty</p>
+  <div class="cart-total">
+    <strong>Total</strong>
+    <strong>£0</strong>
+  </div>
+  <button class="continue-btn">Continue</button>
+</div>
+
+</body>
+</html>

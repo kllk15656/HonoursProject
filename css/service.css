@@ -42,26 +42,77 @@
    }
     /* end of serivce header box  */
 
-/* serivce container box  */
-    .service-container {
-         background: #f5f5f5;
-         width: 100%;
-         padding: 25px;
-         border-bottom-left-radius: 6px;
-         border-bottom-right-radius: 6px;
-         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-         text-align: center;
-    }
 
-/* Title */
-    .service-container h1 {
+/* Title to service box and service box as a hole */
+    .services-box h2 {
           margin-bottom: 15px;
+          font-size: 20px;
+          text-align: center;
+    }
+    .services-box {
+      width: 100%;
+      margin: auto;
+      background: #f5f5f5;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      padding: 25px;
     }
 
-/* Text */
-    .service-container p {
-        color: #555;
-    }
+/* REMINDER */
+    .reminder {
+     background: #ff4d4d;
+     color: white;
+     padding: 10px;
+     border-radius: 6px;
+     font-size: 14px;
+     margin-bottom: 10px;
+}
+
+/* CATEGORY HEADER */
+  .category-header {
+    background: #d8cec9;
+    padding: 14px;
+    margin-top: 10px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+   font-weight: bold;
+}
+
+/* CATEGORY CONTENT */
+ .category-content {
+   background: #eee;
+   padding: 10px;
+   border-radius: 6px;
+   display: none;
+ }
+
+/* TABLE */
+  table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+ }
+
+ th, td {
+   padding: 6px;
+   text-align: center;
+}
+
+  th {
+   background: #ccc;
+ }
+
+.add-btn {
+  background: #e06a5f;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
 /* end of serivce container box  */
 
     /* Sidebar Styles */
@@ -94,45 +145,47 @@
     }
 
     /* Sidebar Menu Items */
-    .category-item {
-      position: relative;
-      margin-bottom: 15px;
-    }
+    .categories h2 {
+  margin-bottom: 15px;
+}
 
-    .category-item a {
-      color: white;
-      text-decoration: none;
-      display: block;
-      padding: 10px;
-      background-color: #C6B071;
-    }
+/* Removes all default listing styling */
+.category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-    .subcategories {
-      display: none;
-      position: absolute;
-      left: 100%;
-      top: 0;
-      background-color: #f9f9f9;
-      border: 1px solid #ccc;
-      padding: 10px;
-      width: 200px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+/* List of categorys*/
+.category-list li {
+  padding: 10px 12px 10px 20px;
+  cursor: pointer;
+  color: #fff;
+  position: relative;
+  margin-bottom: 6px;
+}
 
-    .subcategories a {
-      display: block;
-      padding: 8px;
-      text-decoration: none;
-      color: black;
-    }
+/* Hover effect */
+.category-list li:hover {
+  background: rgba(255,255,255,0.15);
+}
+/* Active effect*/
+.category-list li.active {
+  font-weight: bold;
+}
 
-    .subcategories a:hover {
-      background-color: #746853 ;
-    }
+/* Adds a line for the active category*/
+.category-list li.active::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 15%;
+  height: 70%;
+  width: 4px;
+  background: #fff;
+  border-radius: 2px;
+}
 
-    .category-item:hover .subcategories {
-      display: block;
-    }
 
      /* end of Sidebar Menu Items */
 
@@ -228,6 +281,21 @@
       color: white;
      
     }
+
+
+    .continue-btn {
+      width: 90px;        /* exact size from image */
+      height: 20px;
+      border-radius:20px;
+      background-color: #f4b400;
+      border: none;
+      font-size: 15px;
+      cursor: pointer;
+      display: block;
+      margin: 12px auto;
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+      
+}
 /*  end of Cart Icon Styles */
 
 /*  Search bar*/
@@ -239,6 +307,9 @@
     border-radius: 6px; /* Optional: Add rounded corners */
     border: 1px solid #ccc; /* Optional: Border styling */
 }
+
+
+
 
 /* work on mobile setting */
 @media screen and (max-width: 500px) {

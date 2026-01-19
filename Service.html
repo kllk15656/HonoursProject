@@ -43,6 +43,18 @@ shopping_cart
     
     <div class="categories">
       <h2>Categories</h2><br>
+
+    <ul class="category-list">
+      <li class ="active">All Services</li>
+      <li> Nails </li>
+      <li> Lashes </li>
+      <li> Brows</li>
+      <li> Make-up</li>
+      <li> Facials</li>
+    </ul>
+
+    
+    
     </div>
   </div>
  <div class="main-content">
@@ -59,7 +71,7 @@ shopping_cart
      <div style="text-align:center; margin-bottom: 20px;">
       <a href="Welcome.html">
         <button style="background-color: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
-          ← Back to Welcome
+          ← Back to Welcome page
         </button>
       </a>
     </div>
@@ -69,9 +81,55 @@ shopping_cart
   </div>
 
   <!-- Services Container Box -->
-  <div class="service-container">
-    <h1>Our Services</h1>
-    <p>Content goes here...</p>
+  <div class="services-box">
+    <h2> Our services</h2>
+
+      <div class="reminder">
+        • Reminder: Deposits are non-refundable
+      </div>
+
+      <!-- CATEGORY -->
+      <div class="category-header">
+        <span>Gel Nails</span>
+        <span>+</span>
+      </div>
+      <div class="category-content">
+        <table>
+          <tr>
+            <th>Service</th>
+            <th>Time</th>
+            <th>Full</th>
+            <th>Deposit</th>
+            <th></th>
+          </tr>
+          <tr>
+            <td>Gel Fingers</td>
+            <td>1 hr</td>
+            <td>£28</td>
+            <td>£14</td>
+            <td><button class="add-btn">Add</button></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="category-header">
+        <span>Builder Gel</span>
+        <span>+</span>
+      </div>
+      <div class="category-content">
+        <p>Builder gel services</p>
+      </div>
+
+      <div class="category-header">
+        <span>Acrylics</span>
+        <span>+</span>
+      </div>
+      <div class="category-content">
+        <p>Acrylic services</p>
+      </div>
+
+    </div>
+
   </div>
 
 
@@ -83,13 +141,14 @@ shopping_cart
     <div class="cart-panel"> 
 
     <button id="close-cart">X</button>
+    <h3> Cart</h3>
     <!-- Cart contents go here -->
     <p>Your cart is empty</p>
     <div class="cart-total">
       <strong> Total Price</strong>
       <Strong> £ 0</Strong>
     </div>
-    <button class="continue-btn">Continue</button>
+    <a href="Calendar.html" class="continue-btn">Continue</a>
   </div>
 </div>
 
@@ -134,6 +193,33 @@ shopping_cart
     cartPanel.addEventListener('click',(e)=> {
       e.stopPropagation();
     })
+    // category content in service
+    const headers = document.querySelectorAll('.category-header');
+    headers.forEach(header => {
+       header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        const icon = header.querySelector('.toggle');
+
+        // Close all others
+        document.querySelectorAll('.category-content').forEach(c => c.style.display = 'none');
+        document.querySelectorAll('.toggle').forEach(t => t.textContent = '+');
+
+        // Open clicked one
+        content.style.display = 'block';
+        icon.textContent = '−';
+  });
+  // Select all category list item and loop through each one
+  const categories = document.querySelectorAll('.category-list li');
+  categories.forEach(item => {
+    item.addEventListener('click', () => {
+      categories.forEach(li => li.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+
+
+  
+});
   </script>
 </body>
 </html>
