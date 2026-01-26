@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=shopping_cart" />
-  <link rel="stylesheet" href="./css/service.css" />
-  <link rel="stylesheet" href="./css/calender.css" />
+
+  <link rel="stylesheet" href="./css/calender.css"/>
 
   <title>Calender</title>
   <style>
@@ -29,10 +29,6 @@ shopping_cart
 </span>
  
 </div>
-
-    <button class="hamburger-menu" id="hamburger-menu">
-      &#9776;
-    </button>
   </header>
 
  <div class="main-content">
@@ -52,30 +48,31 @@ shopping_cart
           ← Back to Service page
         </button>
       </a>
-         <div class="service-header">
+
+  <div class="calendar-wrapper">
+  <div class="service-header">
     Calender
   </div>
-      <div class="calendar-layout">
-
-    <!-- Calendar -->
-    <div class="calendar">
-      <div class="calendar-header">
-        <button>&lt;</button>
-        <h2>January 2026</h2>
-        <button>&gt;</button>
+  <div class="calendar-layout">
+ <!-- Calendar -->
+  <div class="calendar">
+    <div class="calendar-header">
+      <button>&lt;</button>
+      <h2>January 2026</h2>
+      <button>&gt;</button>
+      </div>
+      <div class="calendar-grid" id="calendar"></div>
       </div>
 
-      <div class="calendar-grid" id="calendar"></div>
-    </div>
-
     <!-- Time Slots -->
-    <div class="time-panel">
-      <h3>Available Times</h3>
-      <p id="selected-date">Select a date</p>
-      <div class="times" id="times"></div>
-    </div>
+      <div class="time-panel">
+        <h3>Available Times</h3>
+        <p id="selected-date">Select a date</p><br>
+        <div class="times" id="times"></div>
+      </div>
 
   </div>
+</div>
 </div>
 <!-- Cart Sidebar -->
   <div id="side-cart">
