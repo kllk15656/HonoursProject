@@ -19,10 +19,11 @@
 
      /* Main Content Area */
     .main-content {
-      margin-left: 250px;
-      flex-grow: 1;
-      padding: 20px;
-    }
+  margin-left: 250px;
+  margin-right: 150px;
+  flex-grow: 1;
+  padding: 20px;
+}
   /* end of basic set up */
 
   /* serivce header box  */
@@ -294,6 +295,8 @@
       display: block;
       margin: 12px auto;
       box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+      text-decoration: none;
+      color: inherit;
       
 }
 /*  end of Cart Icon Styles */
@@ -336,6 +339,7 @@
 
   .hamburger-menu {
     display: block;
+    margin-top: 35px;
    }
 
   .sidebar.open {

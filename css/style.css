@@ -62,14 +62,19 @@ html, body {
   font-size: 22px;
   font-weight: 600;
   cursor: pointer;
-  display: block;
+   display: flex;              /* 👈 change from block */
+  justify-content: center;    /* horizontal center */
+  align-items: center; 
   margin: 12px auto;
-box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6)
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+  text-decoration: none;
+  color: inherit;
+  
 }
 
 /* Button colors */
 .primary {
-  
+ 
   background-color: #f4b400;
 }
 
@@ -81,6 +86,7 @@ box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6)
 .btn:hover {
   background-color: #e6a700;
 }
+
 
 @media (min-width: 400px) and (max-width: 800px ){
   

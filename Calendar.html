@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=shopping_cart" />
+  <link rel="stylesheet" href="./css/service.css" />
+  <link rel="stylesheet" href="./css/calender.css" />
+
+  <title>Calender</title>
+  <style>
+  .material-symbols-outlined {
+     font-variation-settings:
+     'FILL' 0,
+     'wght' 400,
+     'GRAD' 0,
+     'opsz' 24
+}
+</style>
+  </style>
+</head>
+<body>
+
+  <!-- Cart and Hamburger Menu -->
+  <header>
+   <div id="cart-icon">
+    <span class="material-symbols-outlined">
+shopping_cart
+</span>
+ 
+</div>
+
+    <button class="hamburger-menu" id="hamburger-menu">
+      &#9776;
+    </button>
+  </header>
+
+ <div class="main-content">
+    <div class="progress-container">
+      <div class="step complete">Services</div>
+      <div class="arrow">→</div>
+      <div class="step active">Calendar</div>
+      <div class="arrow">→</div>
+      <div class="step uncomplete">Details</div>
+      <div class="arrow">→</div>
+      <div class="step uncomplete">Payment</div>
+    </div>
+    <!-- go back to welcome page-->
+     <div style="text-align:center; margin-bottom: 20px;">
+      <a href="Service.html">
+        <button style="background-color: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+          ← Back to Service page
+        </button>
+      </a>
+         <div class="service-header">
+    Calender
+  </div>
+      <div class="calendar-layout">
+
+    <!-- Calendar -->
+    <div class="calendar">
+      <div class="calendar-header">
+        <button>&lt;</button>
+        <h2>January 2026</h2>
+        <button>&gt;</button>
+      </div>
+
+      <div class="calendar-grid" id="calendar"></div>
+    </div>
+
+    <!-- Time Slots -->
+    <div class="time-panel">
+      <h3>Available Times</h3>
+      <p id="selected-date">Select a date</p>
+      <div class="times" id="times"></div>
+    </div>
+
+  </div>
+</div>
+<!-- Cart Sidebar -->
+  <div id="side-cart">
+    
+    <div class="cart-panel"> 
+
+    <button id="close-cart">X</button>
+    <h3> Booking Cart</h3>
+    <!-- Cart contents go here -->
+    <p>Your cart is empty</p>
+    <div class="cart-total">
+      <strong> Total Price</strong>
+      <Strong> £ 0</Strong>
+    </div>
+    <a href="Details.html" class="continue-btn">Continue</a>
+  </div>
+</div>
+
+<script>
+
+// Cart toggle functionality
+    const cartIcon = document.getElementById('cart-icon');
+    const sideCart = document.getElementById('side-cart');
+    const closeCart = document.getElementById('close-cart');
+    const cartPanel = document.querySelector('.cart-panel');
+
+    // Open cart
+    cartIcon.addEventListener('click', (e) => {
+      e.stopPropagation(); //Prevents document click
+      sideCart.classList.add('open');
+    });
+
+    // Close cart
+    closeCart.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sideCart.classList.remove('open');
+    });
+
+    sideCart.addEventListener('click',() =>{
+      sideCart.classList.remove('open');
+    });
+
+    cartPanel.addEventListener('click',(e)=> {
+      e.stopPropagation();
+    })
+
+
+const availability = {
+  "2026-01-05": ["10:00", "12:00", "15:00"],
+  "2026-01-12": ["09:00", "11:00"],
+  "2026-01-18": ["13:00", "16:00"],
+  "2026-01-27": ["10:30", "14:00"]
+};
+
+const calendar = document.getElementById("calendar");
+const times = document.getElementById("times");
+const selectedDate = document.getElementById("selected-date");
+
+// Generate days
+for (let d = 1; d <= 31; d++) {
+  const date = `2026-01-${String(d).padStart(2, "0")}`;
+  const div = document.createElement("div");
+  div.classList.add("day");
+
+  if (availability[date]) {
+    div.classList.add("available");
+    div.onclick = () => showTimes(date);
+  } else {
+    div.classList.add("unavailable");
+  }
+
+  div.innerText = d;
+  calendar.appendChild(div);
+}
+
+function showTimes(date) {
+  selectedDate.innerText = date;
+  times.innerHTML = "";
+
+  availability[date].forEach(t => {
+    const btn = document.createElement("button");
+    btn.innerText = t;
+    times.appendChild(btn);
+  });
+}
+</script>
+    </div>
+
+</body>
+</html>
