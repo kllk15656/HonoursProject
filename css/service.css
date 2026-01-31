@@ -3,6 +3,7 @@
    margin: 0;
    padding: 0;
    box-sizing: border-box;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 body {
@@ -95,15 +96,16 @@ body {
   background: #eee;
   border-radius: 6px;
   display: none;
+  
  }
 
 /* TABLE */
  table {
   width: 100%;
   max-width: 100%;
-  table-layout: fixed;   /* 👈 KEY LINE */
+  table-layout: fixed;   
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 
@@ -121,6 +123,7 @@ body {
   border: none;
   padding: 4px 8px;
   border-radius: 4px;
+  font-size: 12px;
 }
 /* end of serivce container box  */
 
@@ -249,7 +252,6 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 999;
   margin-top: 10px;
   color: black
       
@@ -321,17 +323,23 @@ form input[type="text"] {
 }
 
 
-/* still need to work on 480 max*/
+/* 480 works fine just at 450  add button is pushing out */
 @media screen and (max-width: 480px) {
   
+.main-content {
+  margin-left: 300px;
+  margin-right: 150px;}
+  
+
   .service-header {
     font-size: 20px;
-    margin-left: 50px;
-    margin-right: -50px;
-    width: 100%;
+    margin-left: 30px;
+    margin-right: -40px;
+    width: 130%;
    }
    .services-box{
-    margin-left: 50px;
+    margin-left: 0px;
+    width: 130%;
    }
   .service-container h1 {
     margin-bottom: 10px;
@@ -340,6 +348,12 @@ form input[type="text"] {
   .service-container p {
     color: #555;
     font-size: 15px;
+  }
+  table{
+    font-size: 10px;
+  }
+  .add-btn{
+    font-size: 10px;
   }
   .categories h2{
     font-size: 15px;
@@ -366,26 +380,24 @@ form input[type="text"] {
   
   /* M - Progress bar  */
   .progress-container {
-    font-size: 14px; 
+    font-size: 1px; 
     margin-left: 60px;
   }
 
   .step.uncomplete {
-    font-size: 14px;
+    font-size: 10px;
       
   }
  .step.active {
-    font-size: 14px;
+    font-size: 10px;
       
     }
   .step.complete {
-    font-size: 14px;
+    font-size: 12px;
   
   }
-  
-  
-    /* M - cart icon  */
-  #cart-icon {
+    /* M - cart icon issue with not moving */
+  #cart-icon  {
     font-size: 24px;
     cursor: pointer;
     padding: 1rem;
@@ -393,8 +405,7 @@ form input[type="text"] {
     top: 0;
     right: 0;
     margin-top: 40px;
-    margin-right: 20px;
-    z-index: 999;
+    margin-right: 10px;
     }
 }
 
@@ -481,90 +492,6 @@ form input[type="text"] {
 }
 }
 
-
-/* work on mobile setting */
-@media screen and (max-width: 600px) {
-  
-/* M - Service header and  */
-.service-header {
-  font-size: 20px;
-  margin-left: 50px;
-  margin-right: -50px;
-}
-.services-box{
-  margin-left: 50px;
-}
-.service-container h1 {
-  margin-bottom: 10px;
-  font-size: 20px;
-}
-.service-container p {
-  color: #555;
-  font-size: 15px;
-}
-.categories h2{
-  font-size: 15px;
-}
-
-/* M - Sidebar and hamburger  */
-.sidebar {
-  display: none;
-}
-
-.hamburger-menu {
-  display: block;
-  margin-top: -10px;
-}
-
-.sidebar.open {
-  display: block;
-  transform: translateX(0);
-}
-
-.main-content {
-  margin-left: 0;
-}
-  
-  /* M - Progress bar  */
-.progress-container {
-  font-size: 14px; 
-  margin-left: 120px;
-}
-
-.step.uncomplete {
-  font-size: 12px;
-      
-}
-.step.active {
-  font-size: 12px;
-      
-}
-.step.complete {
-  font-size: 12px;
-  
-}
-    /* M - cart icon  */
-#cart-icon {
-  font-size: 20px;
-  cursor: pointer;
-  padding: 1rem;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-top: 0px;
-  margin-right: 40px;
-  z-index: 999;
-}
-.cart-panel{
-  position: relative; 
-  width: 400px;
-  height: 500px;
-  background: #DE8D45;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-}
-}
 /* work on tablet setting */
 @media screen and (max-width: 700px) {
   

@@ -1,0 +1,87 @@
+/* General Reset and Body Styles */
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(
+    180deg,
+    rgba(189,189,189,0.73),
+    rgba(157,156,154,0.73)
+  );
+}
+
+     /* Main Content Area */
+.main-content {
+  margin-left: 250px;
+  margin-right: 150px;
+  flex-grow: 1;
+  padding: 20px;
+}
+  /* end of basic set up */
+
+  /* serivce header box  */
+.service-header {
+   height: 50px;
+   width: 100%;
+   background: #795548; 
+   padding: 25px; 
+   margin-top: 20px;  
+   margin-left: 50px;   
+   display: flex;
+   justify-content: center;    
+   align-items: center;        
+   font-size: 25px;
+   color: #FAF7F2;
+   font-weight: bold;
+   border-top-left-radius:6px ;
+   border-top-right-radius: 6px;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  
+}
+
+/* Progress Bar Container */
+.progress-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 70px;
+  margin-bottom: 20px;      
+}
+
+.step.uncomplete {
+  background-color: #209AE6;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 15px;
+  border: 2px solid #209AE6;
+}
+.step.active {
+  background-color: #C9E620;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 15px;
+  border: 2px solid #C9E620;
+}
+.step.complete {
+  background-color: #6AE04D;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 15px;
+  border: 2px solid #6AE04D;
+}
+    
+.arrow {
+  margin: 0 5px;
+  color: black;
+      
+}
