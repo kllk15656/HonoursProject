@@ -1,23 +1,44 @@
 <!DOCTYPE html>
-<head>
-    <link rel ="stylesheet" href="./css/style.css">
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Welcome | Cozy Bear Booking</title>
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
-    <img src="bear.png" alt="Bear logo" class="bear-icon">
+  <!-- Logo -->
+  <img src="./bear.png" alt="Bear logo" class="bear-icon">
 
-  <div class="screen">
-    <div class="content">
-      <p class="welcome">Welcome to</p>
-      <h1 class="title">Business name</h1><!-- need to link real business name-->
-      <p class="subtitle">Booking system</p>
-<br><br><br>
-     <a href="Service.html" class="btn primary">New Client</a>
-      <br>
-      <a href="Service.html" class="btn secondary">Existing Client</a>
+  <div class="container">
+    <div class="form-section">
+      <h2>Welcome</h2>
+      <p>Please choose an option below to continue</p>
+      <!-- Buttons -->
+      <div class="welcome-buttons">
+        <!-- Existing client -->
+        <a href="Service.html" class="service-btn">
+          Existing Client
+        </a>
+        <!-- New client -->
+        <a href="Service.html" class="service-btn">
+          New Client
+        </a>
+      </div>
+    </div>
+
+
+    <!-- RIGHT: info section -->
+    <div class="info-section">
+      <h3>Business name</h3>
+      <p>
+        Online booking system <br>
+        list of services
+      </p>
     </div>
   </div>
 </body>
-
 </html>
+

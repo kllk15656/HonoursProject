@@ -1,0 +1,191 @@
+/* ===== Calendar Layout ===== */
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+  }
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(
+    180deg,
+    rgba(189,189,189,0.73),
+    rgba(157,156,154,0.73)
+  );
+}
+/* Progress Bar Container */
+.progress-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 30px;
+  margin-bottom: 20px;      
+}
+.step.uncomplete {
+  background-color: #209AE6;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 15px;
+  border: 2px solid #209AE6;
+}
+.step.active {
+  background-color: #C9E620;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 15px;
+  border: 2px solid #C9E620;
+}
+.step.complete {
+  background-color: #6AE04D;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 15px;
+  border: 2px solid #6AE04D;
+}  
+.arrow {
+  margin: 0 5px;
+  color: black;     
+}
+
+/* Header  */
+.header {
+   width: 100%;
+   background: #795548; 
+   padding: 15px; 
+   margin-top: 10px;  
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.header h2{
+  font-size: 25px;
+  text-align: center;
+  align-items: center;
+  color: #FAF7F2;
+  font-weight: bold;
+}
+
+.payment-card {
+  background: white;
+  width: 400px;
+  margin: auto;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+hr {
+  margin: 15px 0;
+}
+
+.apple-btn,
+.method-btn,
+.pay-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  margin-top: 8px;
+  cursor: not-allowed;
+}
+
+.apple-btn {
+  background-color: #f4b400;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+  color: black;
+  font-weight: bold;
+}
+
+.method-btn,
+.pay-btn {
+   background-color: #f4b400;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+  color: black;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.or {
+  margin: 10px 0;
+  color: #777;
+}
+
+.warning-bg {
+  background: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 13px;
+}
+
+
+/* ===== OVERLAY BOX (Front) ===== */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Front box */
+.payment-box {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  z-index: 10;
+}
+
+.warning {
+  background: #fff3cd;
+  color: #856404;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.pay {
+   background-color: #f4b400;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+  color: black;
+  font-weight: bold;
+}

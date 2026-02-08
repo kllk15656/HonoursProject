@@ -29,56 +29,71 @@ shopping_cart
 </span>
  
 </div>
-  </header>
+</header>
+<div class="progress-container">
+  <div class="step complete">Services</div>
+  <div class="arrow">→</div>
+  <div class="step active">Calendar</div>
+  <div class="arrow">→</div>
+  <div class="step uncomplete">Details</div>
+  <div class="arrow">→</div>
+  <div class="step uncomplete">Payment</div>
+</div>
+<!-- go back to welcome page-->
 
- <div class="main-content">
-    <div class="progress-container">
-      <div class="step complete">Services</div>
-      <div class="arrow">→</div>
-      <div class="step active">Calendar</div>
-      <div class="arrow">→</div>
-      <div class="step uncomplete">Details</div>
-      <div class="arrow">→</div>
-      <div class="step uncomplete">Payment</div>
-    </div>
-    <!-- go back to welcome page-->
-     <div style="text-align:center; margin-bottom: 20px;">
-      <a href="Service.html">
-        <button style="background-color: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
-          ← Back to Service page
-        </button>
-      </a>
-        
-      <div class="calendar-layout">
-         <div class="service-header">
-    Calender
+<div class="header">
+  <h2>Details</h2>
+</div>
+
+
+
+
+<div class="calendar-layout">
+
+  <div class="info">
+  <div style="display: flex; align-items: center; gap: 8px; font-family: Arial, sans-serif; margin-bottom: 15px;">
+    <span style="font-weight: bold;">Unavailable</span>
+    <span style="font-size: 20px;">&#8594;</span>
+    <div style="width: 20px; height: 20px; background-color: #d33131; border-radius: 4px; border: 1px solid #ccc;"></div>
   </div>
-
-    <!-- Calendar - buttons need updating -->
-    <div class="calendar">
-      <div class="calendar-header">
-        <button>&lt;</button>
-        <h2>January 2026</h2>
-        <button>&gt;</button>
-      </div>
-
-      <div class="calendar-grid" id="calendar"></div>
-    </div>
-
-    <!-- Time Slots -->
-    <div class="time-panel">
-      <h3>Available Times</h3>
-      <p id="selected-date">Select a date</p><br>
-      <div class="times" id="times"></div>
-    </div>
-
+  <div style="display: flex; align-items: center; gap: 10px; font-family: Arial, sans-serif; margin-bottom: 15px;">
+    <span style="font-weight: bold;">Available</span>
+    <span style="font-size: 20px;">&#8594;</span>
+    <div style="width: 20px; height: 20px; background-color: #32c232; border-radius: 4px; border: 1px solid #ccc;"></div>
   </div>
 </div>
-<!-- Cart Sidebar -->
-  <div id="side-cart">
-    
-    <div class="cart-panel"> 
+<!-- Calendar - buttons need updating -->
+<div class="calendar">
+  <div class="calendar-header">
+    <button>&lt;</button>
+    <h2>January 2026</h2>
+    <button>&gt;</button>
+  </div>
+<div class="weekdays">
+  <span>Mon</span>
+  <span>Tue</span>
+  <span>Wed</span>
+  <span>Thu</span>
+  <span>Fri</span>
+  <span>Sat</span>
+  <span>Sun</span>
+</div>
 
+  <div class="calendar-grid" id="calendar"></div>
+</div>
+
+    <!-- Time Slots -->
+<div class="time-panel">
+  <h3>Available Times</h3>
+  <p id="selected-date">Select a date</p><br>
+  <div class="times" id="times"></div>
+</div>
+
+</div>
+</div>
+<!-- Cart Sidebar -->
+<div id="side-cart">
+  <div class="cart-panel"> 
     <button id="close-cart">X</button>
     <h3> Booking Cart</h3>
     <!-- Cart contents go here -->
@@ -89,7 +104,7 @@ shopping_cart
     </div>
     <a href="Details.html" class="continue-btn">Continue</a>
   </div>
-</div>
+
 
 <script>
 
