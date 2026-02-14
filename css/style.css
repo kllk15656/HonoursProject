@@ -72,21 +72,21 @@ body {
   border-color:  #FFC107;
 }
 
-/* login */
+/* login - need to update button */
 .login-btn {
   width: 100%;
   padding: 12px;
   background:  #FFC107;
   color: #ffffff;
   border: none;
-  border-radius: 6px;
+  border-radius: 15px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
 }
 
 .login-btn:hover {
-    background-color: #816a2b;
+  background-color: #816a2b;
   color: white;
 }
 

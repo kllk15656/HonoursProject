@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel ="stylesheet" href="./css/client.css">
+
+</head>
+
+<body>
+    <!-- top nav-->
+    <div class=" top-nav">
+        <h1> Admin Dashboard</h1>
+        <ul>
+            <li> <a href="Dashboard.html">Dashboard</a></li>
+            <li><a href="Setting.html">Settings</a></li>
+            <li><a href="Logout.html">Logout</a></li>
+        </ul>
+    </div>
+    <!-- side nav-->
+    <div class="side-nav">
+        <a href="Admin-Calendar.html">Calendar</a>
+        <a href="Categories.html">Categories</a>
+        <a href="Services.html">Services</a>
+        <a href="Clients.html">Clients</a>
+    </div>
+    <!-- Main content-->
+     <div class="main-content">
+        <div class="card">
+            <div class="preview">
+            <h1>Services Management</h1>
+            <p> Add, edit  or delete and manage your business services. </p>
+            <a href="#add-popup" class="add-btn">Add Client</a>
+            </div>
+            <!-- add pop up-->
+            <div id="add-popup" class="popup">
+            <div class=" popup-content">
+            <form>
+                <a href="Clients.html" class="close-btn">&times;</a>
+                <label> Client's  First Name</label>
+                <input type="text" placeholder="Enter client first name" required>
+                <label>Client's Last Name</label>
+                <input type="text" placeholder="Enter client's last name" required>
+                <label> Client's Email</label>
+                <input type="text" placeholder=" Enter clients's email " required>
+                <lablel> Client's Phone No</label>
+                <input type="number" placeholder="Enter client's phone no"required>
+              
+                <button type="submit" class="popup-btn"required>
+                Save
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="client-table">
+            <h2> Client's</h2>
+            
+            <table>
+                <tr>
+                    <th> First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone No</th>
+                    <th>Consent</th>
+                    <th>Edit/Delete</th>
+                </tr>
+                <tr>
+                    <td>Jane</td>
+                    <td>Doe</td>
+                    <td>Janedoe@test.com</td>
+                    <td>07543265677</td>
+                    <td><a href="#consent-popup" class="consent-btn">Consent</a></td>
+                    <td> <a href="#edit-popup" class="edit-btn">Edit</a>
+                        <a href="#delete-popup" class="delete-btn">Delete</a></td>
+                </tr>
+                <tr>
+                    <td>Alice</td>
+                    <td>Brown</td>
+                    <td>Alicebrown@test.com</td>
+                     <td>075782922445</td>
+                    <td><a href="#consent-popup" class="consent-btn">Consent</a></td>
+                    <td> <a href="#edit-popup" class="edit-btn">Edit</a>
+                        <a href="#delete-popup" class="delete-btn">Delete</a></td>
+
+                </tr>
+                <tr>
+                    <td>Michelle</td>
+                    <td>Hynd</td>
+                    <td>Michellehynd@test.com</td>
+                     <td>077153365566</td>
+                    <td><a href="#consent-popup" class="consent-btn">Consent</a></td>
+                    <td> <a href="#edit-popup" class="edit-btn">Edit</a>
+                        <a href="#delete-popup" class="delete-btn">Delete</a></td>
+                </tr>
+            </table>
+       <!-- Edit Popup-->
+                 <div id="edit-popup" class="popup">
+                    <div class="popup-content">
+                        <a href="Clients.html" class="close-btn">&times;</a>
+                        <h2>Edit Client</h2>
+                        <form>
+                            <label>First Name</label>
+                            <input type="text" value="Jane">
+                            <label>Last Name</label>
+                            <input type="text" value="Doe">
+                            <label>Email</label>
+                            <input type="text" value="Janedoe@test.com">
+                            <label>Phone No</label>
+                            <input type="number" value="07543265677">
+                        <button type="submit" class="popup-btn">Update</button>
+                        </form>
+                    </div>
+                 </div>
+                 <!-- Delete popup-->
+                  <div id="delete-popup" class="popup">
+                    <div class="popup-content">
+                        <a href="Clients.html" class="close-btn">&times;</a>
+                        <h2>Delete Service</h2>
+                        <p> Are you sure you want to delete this client?</p>
+                        <button class="popup-btn">Yes, Delete</button>
+                    </div>
+                  </div>
+                  <div id="consent-popup" class="popup">
+                    <div class="popup-content">
+                        <a href="Clients.html" class="close-btn">&times;</a>
+                        <h2> Consent form</h2>
+                        <form>
+                         <p>
+                             <strong>Jane Doe</strong> consents to us securely storing their personal 
+                             information (including name, email, and phone number) for a period of 
+                            <strong>6 years</strong> from their last recorded appointment.
+                        </p>
+
+                         <p>
+                             After 6 years with no new appointments, this data will be 
+                             automatically deleted for privacy compliance.
+                         </p>
+                        </form>
+                    </div>
+                  </div>
+            </div>
+        </div>
+     </div>
+</body>
+</html>
+
+
+            

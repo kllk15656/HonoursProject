@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel ="stylesheet" href="./css/admin-calendar.css">
+
+</head>
+
+<body>
+    <!-- top nav-->
+    <div class=" top-nav">
+        <h1> Admin Dashboard</h1>
+        <ul>
+            <li> <a href="Dashboard.html">Dashboard</a></li>
+            <li><a href="Setting.html">Settings</a></li>
+            <li><a href="Logout.html">Logout</a></li>
+        </ul>
+    </div>
+    <!-- side nav-->
+    <div class="side-nav">
+        <a href="Admin-Calendar.html">Calendar</a>
+        <a href="Categories.html">Categories</a>
+        <a href="Services.html">Services</a>
+        <a href="Clients.html">Clients</a>
+    </div>
+
+    <div class="main-content">
+        <div class="card">
+            <div class=" preview">
+                <h2> Calendar</h2>
+                <p> Manage your schedule by selecting availability and times </p>
+            </div>
+            <div class="calendar-layout">
+                 <div class="info">
+                    <div style="display: flex; align-items: center; gap: 8px; font-family: Arial, sans-serif; margin-bottom: 15px;">
+                        <span style="font-weight: bold;">Unavailable</span>
+                        <span style="font-size: 20px;">&#8594;</span>
+                    <div style="width: 20px; height: 20px; background-color: #d33131; border-radius: 4px; border: 1px solid #ccc;"></div>
+                </div>
+                    <div style="display: flex; align-items: center; gap: 10px; font-family: Arial, sans-serif; margin-bottom: 15px;">
+                        <span style="font-weight: bold;">Available</span>
+                        <span style="font-size: 20px;">&#8594;</span>
+                        <div style="width: 20px; height: 20px; background-color: #32c232; border-radius: 4px; border: 1px solid #ccc;"></div>
+                    </div>
+                </div>
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button>&lt;</button>
+                        <h2>January 2026</h2>
+                        <button>&gt;</button>
+                    </div>
+                    <div class="weekdays">
+                        <span>Mon</span>
+                        <span>Tue</span>
+                        <span>Wed</span>
+                        <span>Thu</span>
+                        <span>Fri</span>
+                        <span>Sat</span>
+                        <span>Sun</span>
+                    </div>
+                    <div class="calendar-grid" id="calendar"></div>
+                </div>
+                <!-- Time Slots -->
+                <div class="time-panel">
+                    <h3>Available Times</h3>
+                    <p id="selected-date">Select a date</p><br>
+                    <div class="times" id="times"></div>
+                </div>
+
+                </div>
+
+            </div>
+
+            
+        </div>
+        <script>
+        const availability = {
+            "2026-01-05": ["10:00", "12:00", "15:00"],
+            "2026-01-12": ["09:00", "11:00"],
+            "2026-01-18": ["13:00", "16:00"],
+            "2026-01-27": ["10:30", "14:00"]
+        };
+
+        const calendar = document.getElementById("calendar");
+        const times = document.getElementById("times");
+        const selectedDate = document.getElementById("selected-date");
+
+// Generate days
+        for (let d = 1; d <= 31; d++) {
+        const date = `2026-01-${String(d).padStart(2, "0")}`;
+        const div = document.createElement("div");
+        div.classList.add("day");
+
+            if (availability[date]) {
+            div.classList.add("available");
+                div.onclick = () => showTimes(date);
+        } else {
+            div.classList.add("unavailable");
+        }
+
+        div.innerText = d;
+        calendar.appendChild(div);
+        }
+
+    function showTimes(date) {
+        selectedDate.innerText = date;
+        times.innerHTML = "";
+
+        availability[date].forEach(t => {
+         const btn = document.createElement("button");
+        btn.innerText = t;
+        times.appendChild(btn);
+        });
+}
+    </script>
+    
+</div>
+</body>
+</html>

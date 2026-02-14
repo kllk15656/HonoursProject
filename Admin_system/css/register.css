@@ -7,13 +7,26 @@
 
 body {
     min-height: 100vh;
-    background: #ffffff;
+     background: linear-gradient(
+    180deg,
+    rgba(189,189,189,0.73),
+    rgba(157,156,154,0.73)
+  );
     display: flex;
     justify-content: center;
     align-items: center;
 }
+.bear-icon {
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  width: 200px;      /* adjust to match image */
+  height: auto;
+  
+}
 
 .container {
+    margin-top: 20px;
     width: 90%;
     max-width: 900px;
     display: flex;
@@ -21,6 +34,7 @@ body {
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
     overflow: hidden;
+    box-shadow: 0px 5px 10px #4E342E;
 }
 
 /* Info form */
@@ -32,6 +46,7 @@ body {
     flex-direction: column;
     justify-content: center;
     color: black;
+    box-shadow: 0px 5px 10px #4E342E;
 }
 
 .info-section h3 {
@@ -47,11 +62,13 @@ body {
 .form-section h2 {
     color: black;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .form-section p {
     color: black;
     margin-bottom: 25px;
+    text-align: center;
 }
 
 .form-group {
@@ -83,7 +100,7 @@ body {
     background: #FFC107;
     color: #ffffff;
     border: none;
-    border-radius: 6px;
+    border-radius: 15px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
