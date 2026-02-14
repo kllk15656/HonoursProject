@@ -132,7 +132,20 @@ box-shadow: 0px 5px 10px #4E342E;
   background-color: #816a2b;
   color: white;
 }
-
+.remind-btn{
+  display: inline-block;
+  padding: 5px 10px;
+  background: #f4b400;
+  color: black;
+  text-decoration: none;
+  border-radius: 15px;
+  box-shadow: 0px 5px 10px #4E342E;
+}
+.remind-btn:hover {
+  opacity: 0.9;
+  background-color: #816a2b;
+  color: white;
+}
 
 /*  recent table*/
 
