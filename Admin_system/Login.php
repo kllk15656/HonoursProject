@@ -1,3 +1,44 @@
+<?php
+
+//Start session
+session_start();
+require "./db.php";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+//Collects data from form
+$email =$_POST["email"];
+$password = $_POST["password"];
+
+//Looking up admin by email
+$sql = "SELECT admin_id, password_hash FROM admins WHERE email =:email";
+$stmt =$pdo->prepare( $sql);
+$stmt->execute([":email"=>$email]);
+
+$admin =$stmt->fetch();
+
+// If admin emails exists
+
+ if ($admin){
+
+ // Verify admin password
+  if (password_verify($password, $admin["password_hash"])) {
+
+    // Store admin in session
+    $_SESSION["admin_id"] =$admin["admin_id"];
+
+    // Redirect to dashboard
+    header("Location: ./Dashboard.php");
+    exit;
+ } else{
+  die("Incorrect password");
+ }
+ } else {
+  die ("Email not found");
+ }
+ 
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +58,7 @@
       <p> Please login in to access your dashboard</p>
 
       <!-- Login form-->
-      <form action="Login.html" method="POST">
+      <form action="Login.php" method="POST">
 
         <!--Email input-->
         <div class="form-group">

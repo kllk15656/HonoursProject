@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$dbname = "your_database_name";
-$user = "your_db_user";
-$pass = "your_db_password";
+$dbname = "bookingsystem";
+$user = "root";
+$pass = "";
 
 try {
     $pdo = new PDO(

@@ -180,6 +180,14 @@ th {
   background: #f2f2f2;
 }
 
+/*  new bookings*/
+.new-booking {
+    background-color: #d3bb31; /* yellow */
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
 /*  updcoming table*/
 .upcoming-table{
   margin-top: 20px;

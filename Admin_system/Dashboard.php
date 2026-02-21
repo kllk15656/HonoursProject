@@ -1,3 +1,17 @@
+<?php
+session_start();
+// if admin is not logged in , redirect to login page
+if (!isset($_SESSION["admin_id"])){
+    header("Location: Login.php");
+}
+
+//Connects to database
+require "./db.php";
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang ="en">
 <head>
@@ -12,17 +26,17 @@
     <div class=" top-nav">
         <h1> Admin Dashboard</h1>
         <ul>
-            <li> <a href="Dashboard.html">Dashboard</a></li>
-            <li><a href="Setting.html">Settings</a></li>
-            <li><a href="Logout.html">Logout</a></li>
+            <li> <a href="Dashboard.php">Dashboard</a></li>
+            <li><a href="Setting.php">Settings</a></li>
+            <li><a href="Logout.php">Logout</a></li>
         </ul>
     </div>
     <!-- side nav-->
     <div class="side-nav">
-        <a href="Admin-Calendar.html">Calendar</a>
-        <a href="Categories.html">Categories</a>
-        <a href="Services.html">Services</a>
-        <a href="Clients.html">Clients</a>
+        <a href="Admin-Calendar.php">Calendar</a>
+        <a href="Categories.php">Categories</a>
+        <a href="Services.php">Services</a>
+        <a href="Clients.php">Clients</a>
     </div>
     <!-- Main content-->
      <div class="main-content">
@@ -45,34 +59,59 @@
                 </div>
             </div>
             <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Services</th>
-                    
-                </tr>
+                <?php
+                // This aql query will get recent appointments by the clients
+                // full name, appointment date, time list of services.
+                
+                $sql="
+                SELECT 
+                    a.appointment_id
+                    CONCAT(c.first_name, '',c.last_name) AS name,
+                    a.appointment_date,
+                    DATE_FORMAT(a.appointment_time, '%h:%i %p) AS time,
+                    GROUP_CONCAT(s.service_name SEPARATER',') AS services,
+                    as.is_seen
 
-                <tr>
-                    <td>Sarah Johnson</td>
-                    <td>2026-02-10</td>
-                    <td>10:00 AM</td>
-                    <td>Facial</td>
-                </tr>
+                    FROM appointment a
+                    JOIN client c ON a.client_id = client_id
+                    JOIN appointment_service aps ON aps.appointment_id = a.appointment_id
+                    JOIN services s ON s.service_id = aps.service_id
+                    WHERE a.admin_id = :admin_id
+                    GROUP BY a.appointment_id
+                    ORDER BY a.created_at DES
+                    LIMIT 5;
+                ";
+                //prepare and execute the query
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([":admin_id" => $_SESSION["admin-id"]]);
 
-                <tr>
-                    <td>Emma Brown</td>
-                    <td>2026-02-15</td>
-                    <td>1:30 PM</td>
-                    <td>Lashes</td>
-                </tr>
+                //Fetching results
+                $recentBookings = $stmt->fetchAll();
+                
+                ?>
+                <tbody>
+                    <?php 
+                        //displaying  recent bookings
+                    if ($recentBookings){
+                        foreach ($recentBookings as $row){
+                             
+                            //highlight new bookings
+                            $rowClass = ($row['is_seen'] == 0) ? 'new-booking' : '';
 
-                <tr>
-                    <td> Michael Lee</td>
-                    <td> 2026-02-11</td>
-                    <td>3:00 PM </td>
-                    <td> Consultation</td>
-                </tr>
+                            echo "<tr class ='{$rowClass}' data-id ='{$row['appointment_id']}'>";
+                            echo "<td>" . htmlspecialchars($row['name']) . "</td>"; 
+                            echo "<td>" . htmlspecialchars($row['appointment_date']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['time']) . "</td>";
+                             echo "<td>" . htmlspecialchars($row['services']) . "</td>";
+
+
+                            echo ",/tr>";
+                        }
+                        } else{
+                            echo "<tr><td colspan='4'>No recent bookings found.</td></tr>";
+                        } 
+                    ?>
+                </tbody>
             </table>
             </div>
 
