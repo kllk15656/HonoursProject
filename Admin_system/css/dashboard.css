@@ -186,6 +186,17 @@ th {
     font-weight: bold;
     cursor: pointer;
 }
+.today {
+    background-color: #3185d3;
+    color: white;
+    font-weight: bold;
+}
+.week {
+    background-color: #a031d3;
+    color: white;
+    font-weight: bold;
+}
+
 
 
 /*  updcoming table*/

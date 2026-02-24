@@ -3,8 +3,6 @@
 session_start();
 session_unset();
 session_destroy();
-
-header("Location: ./Login.php")
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +23,7 @@ header("Location: ./Login.php")
             Your session has ended successfully
         </p>
 
-        <a href="Login.html">
+        <a href="Login.php">
             <button class="login-btn " style="width: 20%;">
           Back to Login
         </button>

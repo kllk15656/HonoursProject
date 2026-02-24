@@ -12,17 +12,17 @@
     <div class=" top-nav">
         <h1> Admin Dashboard</h1>
         <ul>
-            <li> <a href="Dashboard.html">Dashboard</a></li>
-            <li><a href="Setting.html">Settings</a></li>
+            <li> <a href="Dashboard.php">Dashboard</a></li>
+            <li><a href="Setting.php">Settings</a></li>
             <li><a href="Logout.html">Logout</a></li>
         </ul>
     </div>
     <!-- side nav-->
     <div class="side-nav">
-        <a href="Admin-Calendar.html">Calendar</a>
-        <a href="Categories.html">Categories</a>
-        <a href="Services.html">Services</a>
-        <a href="Clients.html">Clients</a>
+        <a href="Admin-Calendar.php">Calendar</a>
+        <a href="Categories.php">Categories</a>
+        <a href="Services.php">Services</a>
+        <a href="Clients.php">Clients</a>
     </div>
     <!-- Main content-->
      <div class="main-content">

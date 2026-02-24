@@ -78,11 +78,11 @@ $admin =$stmt->fetch();
 
         <div class="links">
           <p><a href="#forgot-popup" >Forgot Password</a></p>
-          <p><a href="Register.html"> Create an account</a></p>
+          <p><a href="Register.php"> Create an account</a></p>
         </div>
         <div id="forgot-popup" class="popup">
           <div class=" popup-content">
-            <a href="Login.html" class="close-btn">&times;</a>
+            <a href="Login.php" class="close-btn">&times;</a>
             <h3> Reset Password</h3>
             <p> Please enter your email adress</p>
             <form action="forgot-password.html" method="POST">

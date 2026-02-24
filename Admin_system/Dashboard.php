@@ -65,25 +65,25 @@ require "./db.php";
                 
                 $sql="
                 SELECT 
-                    a.appointment_id
-                    CONCAT(c.first_name, '',c.last_name) AS name,
+                    a.appointment_id,
+                    CONCAT(c.first_name, ' ',c.last_name) AS name,
                     a.appointment_date,
-                    DATE_FORMAT(a.appointment_time, '%h:%i %p) AS time,
-                    GROUP_CONCAT(s.service_name SEPARATER',') AS services,
-                    as.is_seen
+                    DATE_FORMAT(a.appointment_time, '%h:%i %p') AS time,
+                    GROUP_CONCAT(s.service_name SEPARATOR', ') AS services,
+                    a.is_seen
 
-                    FROM appointment a
-                    JOIN client c ON a.client_id = client_id
-                    JOIN appointment_service aps ON aps.appointment_id = a.appointment_id
+                    FROM appointments a
+                    JOIN clients c ON a.client_id = c.client_id
+                    JOIN appointment_services aps ON aps.appointment_id = a.appointment_id
                     JOIN services s ON s.service_id = aps.service_id
                     WHERE a.admin_id = :admin_id
                     GROUP BY a.appointment_id
-                    ORDER BY a.created_at DES
+                    ORDER BY a.created_at DESC
                     LIMIT 5;
                 ";
                 //prepare and execute the query
                 $stmt = $pdo->prepare($sql);
-                $stmt->execute([":admin_id" => $_SESSION["admin-id"]]);
+                $stmt->execute([":admin_id" => $_SESSION["admin_id"]]);
 
                 //Fetching results
                 $recentBookings = $stmt->fetchAll();
@@ -127,32 +127,45 @@ require "./db.php";
                     <div style="width: 20px; height: 20px; background-color: #a031d3; border-radius: 4px; border: 1px solid #ccc;"></div>
                 </div>
                 
-                
-                <table>
-                    <tr>
-                        <th> Name</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Reminder</th>
-                    </tr>
-                    <tr>
-                        <td>Anna White</td>
-                        <td>2026-02-17</td>
-                        <td>11:00 AM</td>
-                        <td><button class="remind-btn">Reminder</button></td>
-                    </tr>
-                    <tr>
-                        <td> James Green</td>
-                        <td>2026-02-15</td>
-                        <td>2:00 PM</td>
-                        <td><button class="remind-btn">Reminder</button></td>
-                    </tr>
-                    <tr>
-                        <td>Lucy Adams</td>
-                        <td>2026-02-16</td>
-                        <td>4:30 PM</td>
-                        <td><button class="remind-btn">Reminder</button></td>
-                    </tr>
+                <?php 
+                $sqlUpcoming ="
+                    SELECT 
+                        CONCAT(c.first_name, ' ', c.last_name) AS name,
+                        a.appointment_date,
+                        DATE_FORMAT(a.appointment_time, '%h:%i %p') AS time
+
+                        From appointments a
+                        JOIN clients c ON a.client_id = c.client_id
+                        WHERE a.admin_id = :admin_id
+                        AND a.appointment_date >= CURDATE()
+                        ORDER BY a.appointment_date, a.appointment_time;
+                ";
+
+                $stmt = $pdo->prepare($sqlUpcoming);
+                $stmt->execute([":admin_id" => $_SESSION["admin_id"]]);
+                $upcoming = $stmt->fetchAll();
+                ?>
+                <tbody>
+                    <?php 
+                    if ($upcoming){
+                        foreach($upcoming as $row){
+                            $rowClass = ($row['appointment_date'] === date('d-m-Y')) ? 'today': '';
+                            $rowClass = ($row['appointment_date'] === date('d-m-Y')) ? 'week': '';
+
+                            echo "<tr class='{$rowClass}'>";
+                            echo "<td>" . htmlspecialchars($row['name']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['appointment']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['time']) . "</td>";
+                            echo "<td><button class='remind-btn'>Reminder</button></td>";
+                            echo "</tr>";
+
+
+                        }
+                    } else{
+                        echo "<tr><td colspan='4'>No upcoming appointments.</td></tr>";
+                    }
+                    ?>
+                </tbody>
                 </table>
             </div>
         </div>
