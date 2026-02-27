@@ -170,13 +170,23 @@ box-shadow: 0px 5px 10px #4E342E;
   color: white;
 }
 
-/*  recent table*/
+/*  Service table*/
+
+.category-header td {
+  background: #746853;
+  color: white;
+  font-weight: bold;
+  text-align: left;
+  padding: 12px;
+  font-size: 16px;
+}
 
 .service-table{
   margin-top: 20px;
   padding: 20px;
   box-shadow: 0px 5px 10px black;
   border-radius: 15px;
+  
 }
 .service-table h2{
 font-size: 20px;
