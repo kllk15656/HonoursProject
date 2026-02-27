@@ -169,7 +169,7 @@ $categories = $stmt2->fetchAll(PDO::FETCH_ASSOC);
     <div id="addPopup" class="popup">
         <div class="popup-content">
 
-                        <!--  return the user to service -- error deposit not auto adding -->
+                        <!--  return the user to service --  -->
             <a href="Services.php" class="close-btn">&times;</a>
             <h3>Add Service</h3>
                             
@@ -182,13 +182,14 @@ $categories = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                 <input type="number" name="duration_minutes" required>
 
                 <label>Price (£)</label>
-                <input type="number" step="0.01" name="price" required>
-                <!--  Calucate the percentage  when the users enters and Java script auto caluate the price-->
+                <input type="number" step="0.01" name="price" id="addPrice"
+                oninput="calculateDepositPrice('addPrice', 'addDepositPercent', 'addDeposit')" 
+                required>
                 <label>Deposit (%)</label>
                 <input type="number" id="addDepositPercent"
                     oninput="calculateDepositPrice('addPrice', 'addDepositPercent', 'addDeposit')"
                     placeholder="e.g. 50">
-                <!--  Deposit will auto refill by JavaScript-->
+
                 <label>Deposit (£)</label>
                 <input type="number" step="0.01" name="deposit_price" id="addDeposit" required>
 
