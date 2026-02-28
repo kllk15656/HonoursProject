@@ -171,26 +171,26 @@ $categories = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
                         <!--  return the user to service --  -->
             <a href="Services.php" class="close-btn">&times;</a>
-            <h3>Add Service</h3>
+            <h3 style="margin-bottom: 13px; text-align: center; ">Add Service</h3>
                             
             <!--  Send news service data-->
             <form action="Add_service.php" method="POST">
                 <label>Service Name</label>
-                <input type="text" name="service_name" required>
+                <input type="text" name="service_name"  placeholder="Gel Nails" required>
 
                 <label>Duration (minutes)</label>
-                <input type="number" name="duration_minutes" required>
+                <input type="number" name="duration_minutes" placeholder="e.g 60 " required>
 
-                <label>Price (£)</label>
+                <label> Full Price (£)</label>
                 <input type="number" step="0.01" name="price" id="addPrice"
                 oninput="calculateDepositPrice('addPrice', 'addDepositPercent', 'addDeposit')" 
-                required>
-                <label>Deposit (%)</label>
+                placeholder="Enter full price amount."required>
+                <label>Deposit Percentage (%)</label>
                 <input type="number" id="addDepositPercent"
                     oninput="calculateDepositPrice('addPrice', 'addDepositPercent', 'addDeposit')"
-                    placeholder="e.g. 50">
+                    placeholder="Enter percentage of deposit. ">
 
-                <label>Deposit (£)</label>
+                <label> Automatic Deposit (£)</label>
                 <input type="number" step="0.01" name="deposit_price" id="addDeposit" required>
 
 
@@ -213,7 +213,7 @@ $categories = $stmt2->fetchAll(PDO::FETCH_ASSOC);
     <div id="editPopup" class="popup">
         <div class="popup-content">
             <span class="close-btn" onclick="closePopup('editPopup')">&times;</span>
-            <h3>Edit Service</h3>
+            <h3 style="margin-bottom: 13px; text-align: center; ">Edit Service</h3>
 
             <form action="Edit_service.php" method="POST">
                 <input type="hidden" name="service_id" id="editServiceId">
@@ -231,7 +231,7 @@ $categories = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                 <label>Deposit (%)</label>
                 <input type="number" id="editDepositPercent"
                 oninput="calculateDepositPrice('editPrice', 'editDepositPercent', 'editDeposit')"
-                placeholder="e.g. 50">
+                placeholder="Enter percentage of deposit. ">
 
 
                 <label>Deposit (£)</label>

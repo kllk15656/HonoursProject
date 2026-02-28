@@ -232,6 +232,8 @@ th {
   z-index: 9999;              /* make sure it's above everything */
 }
 
+
+
 /* Show popup when link is clicked */
 .popup:target {
   display: flex;
@@ -272,6 +274,7 @@ th {
   color: black;
   font-weight: bold;
 }
+
 
 /* Form inputs */
 .popup-content input {
