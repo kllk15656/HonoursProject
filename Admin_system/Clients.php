@@ -1,149 +1,254 @@
+<?php
+session_start();
+
+// Redirect if admin not logged in
+if (!isset($_SESSION["admin_id"])) {
+    header("Location: Login.php");
+    exit;
+}
+
+require_once "./db.php";
+
+// Logged-in admin ID
+$admin_id = $_SESSION["admin_id"];
+
+// Fetch clients for this admin
+$stmt = $pdo->prepare("
+    SELECT client_id, first_name, last_name, email, phone_number
+    FROM clients
+    WHERE admin_id = ?
+    ORDER BY client_id ASC
+");
+$stmt->execute([$admin_id]);
+$clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
-<html lang ="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel ="stylesheet" href="./css/client.css">
-
+    <link rel="stylesheet" href="./css/client.css">
 </head>
 
 <body>
-    <!-- top nav-->
-    <div class=" top-nav">
-        <h1> Admin Dashboard</h1>
-        <ul>
-            <li> <a href="Dashboard.php">Dashboard</a></li>
-            <li><a href="Setting.php">Settings</a></li>
-            <li><a href="Logout.php">Logout</a></li>
-        </ul>
-    </div>
-    <!-- side nav-->
-    <div class="side-nav">
-        <a href="Admin-Calendar.php">Calendar</a>
-        <a href="Categories.php">Categories</a>
-        <a href="Services.php">Services</a>
-        <a href="Clients.php">Clients</a>
-    </div>
-    <!-- Main content-->
-     <div class="main-content">
-        <div class="card">
-            <div class="preview">
-            <h1>Services Management</h1>
-            <p> Add, edit  or delete and manage your business services. </p>
-            <a href="#add-popup" class="add-btn">Add Client</a>
-            </div>
-            <!-- add pop up-->
-            <div id="add-popup" class="popup">
-            <div class=" popup-content">
-            <form>
-                <a href="Clients.html" class="close-btn">&times;</a>
-                <label> Client's  First Name</label>
-                <input type="text" placeholder="Enter client first name" required>
-                <label>Client's Last Name</label>
-                <input type="text" placeholder="Enter client's last name" required>
-                <label> Client's Email</label>
-                <input type="text" placeholder=" Enter clients's email " required>
-                <lablel> Client's Phone No</label>
-                <input type="number" placeholder="Enter client's phone no"required>
-              
-                <button type="submit" class="popup-btn"required>
-                Save
-              </button>
-            </form>
-          </div>
+
+<!-- Top Nav -->
+<div class="top-nav">
+    <h1>Admin Dashboard</h1>
+    <ul>
+        <li><a href="Dashboard.php">Dashboard</a></li>
+        <li><a href="Setting.php">Settings</a></li>
+        <li><a href="Logout.php">Logout</a></li>
+    </ul>
+</div>
+
+<!-- Side Nav -->
+<div class="side-nav">
+    <a href="Admin-Calendar.php">Calendar</a>
+    <a href="Categories.php">Categories</a>
+    <a href="Services.php">Services</a>
+    <a href="Clients.php">Clients</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="card">
+        <div class="preview">
+            <h1>Client Management</h1>
+            <p>Add, edit or delete clients.</p>
+            <button class="add-btn" onclick="openAddPopup()">Add Client</button>
         </div>
 
         <div class="client-table">
-            <h2> Client's</h2>
-            
+            <h2>Clients</h2>
+
             <table>
                 <tr>
-                    <th> First Name</th>
+                    <th>#</th>
+                    <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>Phone No</th>
                     <th>Consent</th>
                     <th>Edit/Delete</th>
                 </tr>
-                <tr>
-                    <td>Jane</td>
-                    <td>Doe</td>
-                    <td>Janedoe@test.com</td>
-                    <td>07543265677</td>
-                    <td><a href="#consent-popup" class="consent-btn">Consent</a></td>
-                    <td> <a href="#edit-popup" class="edit-btn">Edit</a>
-                        <a href="#delete-popup" class="delete-btn">Delete</a></td>
-                </tr>
-                <tr>
-                    <td>Alice</td>
-                    <td>Brown</td>
-                    <td>Alicebrown@test.com</td>
-                     <td>075782922445</td>
-                    <td><a href="#consent-popup" class="consent-btn">Consent</a></td>
-                    <td> <a href="#edit-popup" class="edit-btn">Edit</a>
-                        <a href="#delete-popup" class="delete-btn">Delete</a></td>
 
-                </tr>
-                <tr>
-                    <td>Michelle</td>
-                    <td>Hynd</td>
-                    <td>Michellehynd@test.com</td>
-                     <td>077153365566</td>
-                    <td><a href="#consent-popup" class="consent-btn">Consent</a></td>
-                    <td> <a href="#edit-popup" class="edit-btn">Edit</a>
-                        <a href="#delete-popup" class="delete-btn">Delete</a></td>
-                </tr>
+                <?php if (!empty($clients)): ?>
+                    <?php $i = 1; ?>
+                    <?php foreach ($clients as $cli): ?>
+                        <tr>
+                            <td><?= $i ?></td>
+                            <td><?= htmlspecialchars($cli['first_name']) ?></td>
+                            <td><?= htmlspecialchars($cli['last_name']) ?></td>
+                            <td><?= htmlspecialchars($cli['email']) ?></td>
+                            <td><?= htmlspecialchars($cli['phone_number']) ?></td>
+
+                            <!-- Consent Button -->
+                            <td>
+                                <button class="consent-btn"
+                                    onclick="openConsentPopup(
+                                        '<?= $cli['first_name'] ?>',
+                                        '<?= $cli['last_name'] ?>'
+                                    )">
+                                    View
+                                </button>
+                            </td>
+
+                            <!-- Edit + Delete Buttons -->
+                            <td>
+                                <button class="edit-btn"
+                                    onclick="openEditPopup(
+                                        <?= $cli['client_id'] ?>,
+                                        '<?= $cli['first_name'] ?>',
+                                        '<?= $cli['last_name'] ?>',
+                                        '<?= $cli['email'] ?>',
+                                        '<?= $cli['phone_number'] ?>'
+                                    )">
+                                    Edit
+                                </button>
+
+                                <button class="delete-btn"
+                                    onclick="openDeletePopup(
+                                        <?= $cli['client_id'] ?>,
+                                        '<?= $cli['first_name'] ?>',
+                                        '<?= $cli['last_name'] ?>'
+                                    )">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+
+                <?php else: ?>
+                    <tr>
+                        <td colspan="7">No clients found.</td>
+                    </tr>
+                <?php endif; ?>
             </table>
-       <!-- Edit Popup-->
-                 <div id="edit-popup" class="popup">
-                    <div class="popup-content">
-                        <a href="Clients.html" class="close-btn">&times;</a>
-                        <h2>Edit Client</h2>
-                        <form>
-                            <label>First Name</label>
-                            <input type="text" value="Jane">
-                            <label>Last Name</label>
-                            <input type="text" value="Doe">
-                            <label>Email</label>
-                            <input type="text" value="Janedoe@test.com">
-                            <label>Phone No</label>
-                            <input type="number" value="07543265677">
-                        <button type="submit" class="popup-btn">Update</button>
-                        </form>
-                    </div>
-                 </div>
-                 <!-- Delete popup-->
-                  <div id="delete-popup" class="popup">
-                    <div class="popup-content">
-                        <a href="Clients.html" class="close-btn">&times;</a>
-                        <h2>Delete Service</h2>
-                        <p> Are you sure you want to delete this client?</p>
-                        <button class="popup-btn">Yes, Delete</button>
-                    </div>
-                  </div>
-                  <div id="consent-popup" class="popup">
-                    <div class="popup-content">
-                        <a href="Clients.html" class="close-btn">&times;</a>
-                        <h2> Consent form</h2>
-                        <form>
-                         <p>
-                             <strong>Jane Doe</strong> consents to us securely storing their personal 
-                             information (including name, email, and phone number) for a period of 
-                            <strong>6 years</strong> from their last recorded appointment.
-                        </p>
-
-                         <p>
-                             After 6 years with no new appointments, this data will be 
-                             automatically deleted for privacy compliance.
-                         </p>
-                        </form>
-                    </div>
-                  </div>
-            </div>
         </div>
-     </div>
+    </div>
+</div>
+
+<!-- ADD CLIENT POPUP -->
+<div id="add-popup" class="popup">
+    <div class="popup-content">
+        <a href="#" class="close-btn" onclick="closePopup('add-popup')">&times;</a>
+        <h2>Add Client</h2>
+
+        <form action="AddClient.php" method="POST">
+            <label>First Name</label>
+            <input type="text" name="first_name" required>
+
+            <label>Last Name</label>
+            <input type="text" name="last_name" required>
+
+            <label>Email</label>
+            <input type="email" name="email" required>
+
+            <label>Phone No</label>
+            <input type="text" name="phone_number" required>
+
+            <button type="submit" class="popup-btn">Add Client</button>
+        </form>
+    </div>
+</div>
+
+<!-- CONSENT POPUP -->
+<div id="consent-popup" class="popup">
+    <div class="popup-content">
+        <a href="#" class="close-btn" onclick="closePopup('consent-popup')">&times;</a>
+        <h2>Consent Form</h2>
+
+        <p>
+            <strong id="consent-name"></strong> consents to us securely storing their personal 
+            information for <strong>6 years</strong> from their last appointment.
+        </p>
+
+        <p>
+            After 6 years with no new appointments, this data will be automatically deleted.
+        </p>
+    </div>
+</div>
+
+<!-- EDIT POPUP -->
+<div id="edit-popup" class="popup">
+    <div class="popup-content">
+        <a href="#" class="close-btn" onclick="closePopup('edit-popup')">&times;</a>
+        <h2>Edit Client</h2>
+
+        <form action="EditClient.php" method="POST">
+            <input type="hidden" id="edit-id" name="client_id">
+
+            <label>First Name</label>
+            <input type="text" id="edit-first" name="first_name">
+
+            <label>Last Name</label>
+            <input type="text" id="edit-last" name="last_name">
+
+            <label>Email</label>
+            <input type="email" id="edit-email" name="email">
+
+            <label>Phone No</label>
+            <input type="text" id="edit-phone" name="phone_number">
+
+            <button type="submit" class="popup-btn">Update</button>
+        </form>
+    </div>
+</div>
+
+<!-- DELETE POPUP -->
+<div id="delete-popup" class="popup">
+    <div class="popup-content">
+        <a href="#" class="close-btn" onclick="closePopup('delete-popup')">&times;</a>
+        <h2>Delete Client</h2>
+
+        <p>Are you sure you want to delete <strong id="delete-name"></strong>?</p>
+
+        <form action="DeleteClient.php" method="POST">
+            <input type="hidden" id="delete-id" name="client_id">
+            <button type="submit" class="popup-btn">Yes, Delete</button>
+        </form>
+    </div>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+
+    /* Opens the add client popup */
+function openAddPopup() {
+    document.getElementById("add-popup").style.display = "flex";
+}
+ /* Opens the consent  popup */
+function openConsentPopup(first, last) {
+    document.getElementById("consent-name").innerText = first + " " + last;
+    document.getElementById("consent-popup").style.display = "flex";
+}
+
+ /* Opens the edit client popup */
+function openEditPopup(id, first, last, email, phone) {
+    document.getElementById("edit-id").value = id;
+    document.getElementById("edit-first").value = first;
+    document.getElementById("edit-last").value = last;
+    document.getElementById("edit-email").value = email;
+    document.getElementById("edit-phone").value = phone;
+
+    document.getElementById("edit-popup").style.display = "flex";
+}
+ /* Opens the delete client popup */
+function openDeletePopup(id, first, last) {
+    document.getElementById("delete-id").value = id;
+    document.getElementById("delete-name").innerText = first + " " + last;
+
+    document.getElementById("delete-popup").style.display = "flex";
+}
+
+ /* Opens the close client popup */
+function closePopup(id) {
+    document.getElementById(id).style.display = "none";
+}
+</script>
+
 </body>
 </html>
-
-
-            
