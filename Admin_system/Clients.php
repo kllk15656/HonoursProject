@@ -134,7 +134,7 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!-- ADD CLIENT POPUP -->
 <div id="add-popup" class="popup">
     <div class="popup-content">
-        <a href="#" class="close-btn" onclick="closePopup('add-popup')">&times;</a>
+        <a href="Clients.php" class="close-btn" onclick="closePopup('add-popup')">&times;</a>
         <h2>Add Client</h2>
 
         <form action="AddClient.php" method="POST">
@@ -158,7 +158,7 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!-- CONSENT POPUP -->
 <div id="consent-popup" class="popup">
     <div class="popup-content">
-        <a href="#" class="close-btn" onclick="closePopup('consent-popup')">&times;</a>
+        <a href="Clients.php" class="close-btn" onclick="closePopup('consent-popup')">&times;</a>
         <h2>Consent Form</h2>
 
         <p>
@@ -175,10 +175,10 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!-- EDIT POPUP -->
 <div id="edit-popup" class="popup">
     <div class="popup-content">
-        <a href="#" class="close-btn" onclick="closePopup('edit-popup')">&times;</a>
+        <a href="Clients.php" class="close-btn" onclick="closePopup('edit-popup')">&times;</a>
         <h2>Edit Client</h2>
 
-        <form action="EditClient.php" method="POST">
+        <form action="Edit_client.php" method="POST">
             <input type="hidden" id="edit-id" name="client_id">
 
             <label>First Name</label>
@@ -201,12 +201,12 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!-- DELETE POPUP -->
 <div id="delete-popup" class="popup">
     <div class="popup-content">
-        <a href="#" class="close-btn" onclick="closePopup('delete-popup')">&times;</a>
+        <a href="Clients.php" class="close-btn" onclick="closePopup('delete-popup')">&times;</a>
         <h2>Delete Client</h2>
 
         <p>Are you sure you want to delete <strong id="delete-name"></strong>?</p>
 
-        <form action="DeleteClient.php" method="POST">
+        <form action="Delete_client.php" method="POST">
             <input type="hidden" id="delete-id" name="client_id">
             <button type="submit" class="popup-btn">Yes, Delete</button>
         </form>
