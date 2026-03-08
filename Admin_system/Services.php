@@ -90,7 +90,7 @@ $categories = $stmt2->fetchAll(PDO::FETCH_ASSOC);
     <div class="side-nav">
         <a href="Admin-Calendar.php">Calendar</a>
         <a href="Categories.php">Categories</a>
-        <a href="Services.php">Services</a>
+        <a href="Services.php" class="active">Services</a>
         <a href="Clients.php">Clients</a>
     </div>
 

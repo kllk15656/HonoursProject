@@ -83,7 +83,8 @@ box-shadow: 0px 5px 10px #4E342E;
   text-decoration: none;
 }
 
-.side-nav a:hover {
+.side-nav a:hover,
+.side-nav a.active {
   background: #C6B071;
   color: black;
 }

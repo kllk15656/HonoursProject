@@ -45,10 +45,10 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- Side Nav -->
 <div class="side-nav">
-    <a href="Admin-Calendar.php">Calendar</a>
+    <a href="Admin-Calendar.php" >Calendar</a>
     <a href="Categories.php">Categories</a>
     <a href="Services.php">Services</a>
-    <a href="Clients.php">Clients</a>
+    <a href="Clients.php" class="active">Clients</a>
 </div>
 
 <!-- Main Content -->

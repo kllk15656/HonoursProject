@@ -55,6 +55,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
+    
     <!-- top nav-->
     <div class=" top-nav">
         <h1> Admin Dashboard</h1>
@@ -66,8 +67,8 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
     <!-- side nav-->
     <div class="side-nav">
-        <a href="Calendar.php">Calendar</a>
-        <a href="Categories.php">Categories</a>
+        <a href="Admin-Calendar.php">Calendar</a>
+        <a href="Categories.php" class="active">Categories</a>
         <a href="Services.php">Services</a>
         <a href="Clients.php">Clients</a>
     </div>
