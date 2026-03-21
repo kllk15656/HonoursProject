@@ -14,7 +14,7 @@ $admin_id = $_SESSION["admin_id"];
 
 // Fetch admin business info
 $stmt = $pdo->prepare("
-    SELECT business_name, email 
+    SELECT business_name, email, description, website_url
     FROM admins 
     WHERE admin_id = ?
 ");
@@ -24,7 +24,10 @@ $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 // Default values if empty
 $business_name = $admin['business_name'] ?? "";
 $email = $admin['email'] ?? "";
+$description = $admin['description'] ?? "";
+$website_url = $admin['website_url'] ?? "";
 ?>
+
 
 <!DOCTYPE html>
 <html lang ="en">
@@ -72,6 +75,16 @@ $email = $admin['email'] ?? "";
                     <label>Email:</label>
                     <input type="email" name="email" value="<?= htmlspecialchars($email) ?>">
                 </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <textarea name="description" rows="4"><?= htmlspecialchars($description) ?></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Website URL (optional):</label>
+                    <input type="text" name="website_url" value="<?= htmlspecialchars($website_url) ?>">
+                </div>
+
 
                 <button class="btn-yellow">Save Details</button>
             </form>

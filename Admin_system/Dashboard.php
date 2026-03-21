@@ -7,8 +7,28 @@ if (!isset($_SESSION["admin_id"])) {
     exit();
 }
 
-// Connect to database
+    // Connect to database
 require "./db.php";
+
+// Logged-in admin ID
+$admin_id = $_SESSION["admin_id"];
+
+// Fetch admin business info including website_url
+$stmt = $pdo->prepare("SELECT business_name, website_url FROM admins WHERE admin_id = ?");
+$stmt->execute([$admin_id]);
+$admin = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Extract website URL
+$website_url = $admin['website_url'] ?? "";
+
+// Default booking link (your system)
+$public_link = "https://Welcome.php?admin_id=" . $admin_id;
+
+// If admin has their own website, prepend it
+if (!empty($website_url)) {
+    $website_url = rtrim($website_url, "/");
+    $public_link = $website_url . "/Welcome.php?admin_id=" . $admin_id;
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,8 +68,16 @@ require "./db.php";
             <div class="preview">
                 <h1>Welcome to your Dashboard</h1>
                 <p>This is your personal dashboard. You can view your client page from here.</p>
-                <a href="../Welcome.html" class="btn">Client Page</a>
+                <!-- Public booking link for this admin -->
+                <a href="../Welcome.php?admin_id=<?= $_SESSION['admin_id'] ?>" class="btn">
+                     Client Page
+                </a>
+                <!--always admin to easier code and paste client end on their website  -->
+                <p style="margin-top:20px;">Your public booking link:</p>
+                <input type="text" value="<?= htmlspecialchars($public_link) ?>" readonly 
+                style="width:100%; padding:8px; margin-top:20px;">
             </div>
+
 
             <!-- Recent Bookings -->
             <div class="recent-table">
