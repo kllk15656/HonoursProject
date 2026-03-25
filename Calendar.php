@@ -1,3 +1,14 @@
+<?php
+// Get admin_id from query string, e.g. Calendar.php?admin_id=1
+if (!isset($_GET['admin_id'])) {
+    die("Admin not found.");
+}
+$admin_id = (int) $_GET['admin_id'];
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,9 +76,9 @@ shopping_cart
 <!-- Calendar - buttons need updating -->
 <div class="calendar">
   <div class="calendar-header">
-    <button>&lt;</button>
-    <h2>January 2026</h2>
-    <button>&gt;</button>
+    <button id="prev-month">&lt;</button>
+    <h2></h2>
+    <button id="next-month">&gt;</button>
   </div>
 <div class="weekdays">
   <span>Mon</span>
@@ -86,6 +97,8 @@ shopping_cart
 <div class="time-panel">
   <h3>Available Times</h3>
   <p id="selected-date">Select a date</p><br>
+    <button id="clear-selection" class="clear-btn">Clear Selection</button>
+    <br>
   <div class="times" id="times"></div>
 </div>
 
@@ -109,6 +122,7 @@ shopping_cart
 <script>
 
 // Cart toggle functionality
+    const adminId = <?= $admin_id ?>;
     const cartIcon = document.getElementById('cart-icon');
     const sideCart = document.getElementById('side-cart');
     const closeCart = document.getElementById('close-cart');
@@ -135,44 +149,121 @@ shopping_cart
     })
 
 
-const availability = {
-  "2026-01-05": ["10:00", "12:00", "15:00"],
-  "2026-01-12": ["09:00", "11:00"],
-  "2026-01-18": ["13:00", "16:00"],
-  "2026-01-27": ["10:30", "14:00"]
-};
+// Availability will be loaded from the server
+let availability = {};
+
+// Fetch real availability from admin calendar
+fetch("get_client_availability.php?admin_id=" + adminId)
+  .then(res => res.json())
+  .then(data => {
+    availability = data || {};
+    buildCalendar();   // only build calendar once data is loaded
+  });
+
+  // Get today's date
+const today = new Date();
+
+// Extract month + year
+let currentMonth = today.getMonth();   // 0–11
+let currentYear = today.getFullYear();
+
+// Month names
+const monthNames = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+// Update header text
+document.querySelector(".calendar-header h2").innerText =
+  `${monthNames[currentMonth]} ${currentYear}`;
+
 
 const calendar = document.getElementById("calendar");
 const times = document.getElementById("times");
 const selectedDate = document.getElementById("selected-date");
 
-// Generate days
-for (let d = 1; d <= 31; d++) {
-  const date = `2026-01-${String(d).padStart(2, "0")}`;
-  const div = document.createElement("div");
-  div.classList.add("day");
+function buildCalendar() {
+  calendar.innerHTML = "";
 
-  if (availability[date]) {
-    div.classList.add("available");
-    div.onclick = () => showTimes(date);
-  } else {
-    div.classList.add("unavailable");
+  const today = new Date();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+
+    const div = document.createElement("div");
+    div.classList.add("day");
+
+    if (
+      d === today.getDate() &&
+      currentMonth === today.getMonth() &&
+      currentYear === today.getFullYear()
+    ) {
+      div.classList.add("today");
+    }
+
+    const thisDate = new Date(currentYear, currentMonth, d);
+    if (thisDate < today.setHours(0,0,0,0)) {
+      div.classList.add("unavailable");
+      div.classList.add("past");
+      div.innerText = d;
+      calendar.appendChild(div);
+      continue;
+    }
+
+    if (availability[date] && availability[date].length > 0) {
+      div.classList.add("available");
+      div.onclick = () => showTimes(date);
+    } else {
+      div.classList.add("unavailable");
+    }
+
+    div.innerText = d;
+    calendar.appendChild(div);
   }
-
-  div.innerText = d;
-  calendar.appendChild(div);
 }
 
+
+// Show available times for selected date
 function showTimes(date) {
   selectedDate.innerText = date;
   times.innerHTML = "";
 
-  availability[date].forEach(t => {
+  const slots = availability[date] || [];
+
+  if (slots.length === 0) {
+    times.innerHTML = "<p>No available times for this date</p>";
+    return;
+  }
+
+  slots.forEach(t => {
     const btn = document.createElement("button");
     btn.innerText = t;
+
+    btn.onclick = () => {
+        // Save selected date + time
+        sessionStorage.setItem("selected_date", date);
+        sessionStorage.setItem("selected_time", t);
+
+        // Redirect to details page
+        window.location.href = "Details.php?admin_id=" + adminId;
+    };
+
     times.appendChild(btn);
   });
 }
+document.getElementById("clear-selection").onclick = () => {
+    // Remove stored date/time
+    sessionStorage.removeItem("selected_date");
+    sessionStorage.removeItem("selected_time");
+
+    // Reset UI
+    selectedDate.innerText = "Select a date";
+    times.innerHTML = "";
+};
+
+
+
 </script>
     </div>
 

@@ -150,6 +150,11 @@ body {
 .available:hover {
   background: #2ecc71;
 }
+.today {
+  border: 2px solid #000;
+  background-color: #ffe680;
+}
+
 
 /* ===== Time Panel ===== */
 .time-panel {

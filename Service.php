@@ -270,6 +270,8 @@ foreach ($services as $service) {
         updateCart();            // refresh cart
       });
   });
+  sessionStorage.setItem("cart", JSON.stringify(cart));
+
 }
 
   // Accordion
