@@ -1,9 +1,9 @@
-/* ===== Calendar Layout ===== */
+/* ===== Global Reset ===== */
 * {
    margin: 0;
    padding: 0;
    box-sizing: border-box;
-  }
+}
 
 body {
   font-family: Arial, sans-serif;
@@ -17,23 +17,24 @@ body {
   );
 }
 
+/* ===== Layout ===== */
 .calendar-layout {
   display: flex;
-  flex-direction: column; /* stack vertically */
-  
+  flex-direction: column;
   max-width: 900px;
-  margin: 0 auto; /* center on wide screens */
+  margin: 0 auto;
 }
 
-/* Progress Bar Container */
+/* ===== Progress Bar ===== */
 .progress-container {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
   margin-left: 30px;
-  margin-bottom: 20px;      
+  margin-bottom: 20px;
 }
+
 .step.uncomplete {
   background-color: #209AE6;
   color: black;
@@ -42,6 +43,7 @@ body {
   font-size: 15px;
   border: 2px solid #209AE6;
 }
+
 .step.active {
   background-color: #C9E620;
   color: black;
@@ -50,6 +52,7 @@ body {
   font-size: 15px;
   border: 2px solid #C9E620;
 }
+
 .step.complete {
   background-color: #6AE04D;
   color: black;
@@ -57,43 +60,43 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   font-size: 15px;
   border: 2px solid #6AE04D;
-}  
-.arrow {
-  margin: 0 5px;
-  color: black;     
 }
 
-/* Header  */
+.arrow {
+  margin: 0 5px;
+  color: black;
+}
+
+/* ===== Header ===== */
 .header {
    width: 100%;
-   background: #795548; 
-   padding: 15px; 
-   margin-top: 10px;  
+   background: #795548;
+   padding: 15px;
+   margin-top: 10px;
    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
-.header h2{
+
+.header h2 {
   font-size: 25px;
   text-align: center;
-  align-items: center;
   color: #FAF7F2;
   font-weight: bold;
 }
-/* Info  - need to fix*/
 
-
-.info{
+/* ===== Info Box ===== */
+.info {
   width: 200px;
   height: 100px;
   box-shadow: 0px 5px 10px #4E342E;
-  margin-top: 20px; 
-  margin-left: 250px; 
+  margin-top: 20px;
+  margin-left: 250px;
   padding: 20px;
   text-align: center;
-  background-color: #FAF7F2; 
+  background-color: #FAF7F2;
   border-radius: 15px;
 }
 
-/* Calendar */
+/* ===== Calendar ===== */
 .calendar {
   background: #FAF7F2;
   margin-top: 20px;
@@ -101,7 +104,6 @@ body {
   border-radius: 15px;
   box-shadow: 0px 5px 10px #4E342E;
   width: 700px;
-  
 }
 
 .calendar-header {
@@ -112,12 +114,6 @@ body {
   font-size: 16px;
 }
 
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  width: 100%;
-}
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -125,6 +121,13 @@ body {
   font-weight: bold;
   margin-bottom: 8px;
   color: #333;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  width: 100%;
 }
 
 .day {
@@ -136,12 +139,14 @@ body {
   font-size: 12px;
   color: white;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
-
 }
+
+/* Availability */
 .unavailable {
   background: #d33131;
   cursor: not-allowed;
 }
+
 .available {
   background: #32c232;
   cursor: pointer;
@@ -150,16 +155,33 @@ body {
 .available:hover {
   background: #2ecc71;
 }
+
+/* Today highlight */
 .today {
-  border: 2px solid #000;
-  background-color: #ffe680;
+  background-color: #ffe680 !important;
+  border: 2px solid #000 !important;
+  color: black !important;
 }
 
+/* Selected date highlight */
+.selected-day {
+  background-color: #4da6ff !important;
+  color: #ffffff !important;
+  border: 2px solid #0059b3 !important;
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  transform: scale(1.05);
+}
+
+/* Past dates */
+.past {
+  opacity: 0.4;
+  pointer-events: none;
+}
 
 /* ===== Time Panel ===== */
 .time-panel {
   margin-top: 20px;
-  background: #FAF7F2 ;
+  background: #FAF7F2;
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0px 5px 10px #4E342E;
@@ -177,7 +199,6 @@ body {
   gap: 8px;
 }
 
-/* Time button */
 .times button {
   padding: 6px 4px;
   font-size: 13px;
@@ -186,13 +207,13 @@ body {
   color: white;
   border-radius: 6px;
   cursor: pointer;
-  text-align: center;
 }
 
 .times button:hover {
   background: #2ecc71;
 }
-/* Cart Icon Styles */
+
+/* ===== Cart Icon ===== */
 #cart-icon {
   font-size: 24px;
   cursor: pointer;
@@ -202,19 +223,16 @@ body {
   right: 0;
   z-index: 999;
   margin-top: 10px;
-  color: black
-      
+  color: black;
 }
 
-/* Side Cart Styles */
+/* ===== Side Cart Overlay ===== */
 #side-cart {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6) ;
+  background-color: rgba(0, 0, 0, 0.6);
   display: none;
   z-index: 1000;
-  display: none;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -223,41 +241,134 @@ body {
   display: flex;
 }
 
-.cart-panel{
-  position: relative; 
+/* ===== Cart Panel ===== */
+.cart-panel {
+  position: relative;
   width: 500px;
-  height: 500px;
+  max-height: 90vh;
   background: #DE8D45;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow: hidden;
 }
 
-    /* Close Button inside Cart */
 #close-cart {
-   position: absolute;
+  position: absolute;
   top: 12px;
   right: 12px;
   border: none;
   font-size: 18px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);  
+  background: none;
 }
 
+/* ===== Scrollable Services Table ===== */
+.cart-scroll {
+  flex: 1;
+  overflow-y: auto;
+  background: #FAF7F2;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart-table th,
+.cart-table td {
+  padding: 8px;
+  text-align: left;
+}
+
+.cart-table th {
+  border-bottom: 2px solid #333;
+}
+
+.remove-btn {
+  margin-left: 8px;
+  padding: 2px 6px;
+  font-size: 12px;
+  background: #d33131;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* ===== Date + Time Section ===== */
+.cart-selection-info {
+  background: #FAF7F2;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+/* ===== Total Price ===== */
+.cart-total {
+  background: #FAF7F2;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== Continue Button ===== */
 .continue-btn {
-  width: 90px;        /* exact size from image */
-  height: 20px;
-  border-radius:20px;
+  width: 140px;
+  height: 35px;
+  border-radius: 20px;
   background-color: #f4b400;
   border: none;
   font-size: 15px;
   cursor: pointer;
   display: block;
-  margin: 12px auto;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+  margin: 10px auto;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.6);
   text-decoration: none;
-  color: inherit;
-  margin-top: 80%;
-      
+  color: black;
+  font-weight: bold;
+}
+/* TIME BUTTON GRID */
+#times {
+  display: grid!important;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr))!important;
+  gap: 10px!important;
+  margin-top: 10px!important;
 }
 
+/* DEFAULT TIME BUTTON */
+#times button {
+  padding: 10px 0!important;
+  border: none!important;
+  border-radius: 6px!important;
+  background: #e6f0ff !important; /* light blue */
+  color: #003366 !important;
+  font-weight: 600!important;
+  cursor: pointer!important;
+  transition: 0.2s!important;
+}
+
+/* HOVER */
+#times button:hover {
+  background: #cfe2ff!important;
+}
+
+/* SELECTED TIME */
+#times button.selected {
+  background: #4CAF50!important; /* green */
+  color: white!important;
+}
+
+/* DISABLED / UNAVAILABLE */
+#times button.unavailable {
+  background: #ffcccc!important;
+  color: #660000!important;
+  cursor: not-allowed!important;
+}

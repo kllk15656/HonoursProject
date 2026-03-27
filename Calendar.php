@@ -1,46 +1,24 @@
 <?php
-// Get admin_id from query string, e.g. Calendar.php?admin_id=1
-if (!isset($_GET['admin_id'])) {
-    die("Admin not found.");
-}
-$admin_id = (int) $_GET['admin_id'];
+session_start();
+$admin_id = $_GET['admin_id'] ?? 0;
 ?>
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=shopping_cart" />
-
-  <link rel="stylesheet" href="./css/calendar.css"/>
-
-  <title>Calender</title>
-  <style>
-  .material-symbols-outlined {
-     font-variation-settings:
-     'FILL' 0,
-     'wght' 400,
-     'GRAD' 0,
-     'opsz' 24
-}
-</style>
-  </style>
+  <meta charset="UTF-8">
+  <title>Calendar</title>
+  <link rel="stylesheet" href="./css/calendar.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
 <body>
 
-  <!-- Cart and Hamburger Menu -->
-  <header>
-   <div id="cart-icon">
-    <span class="material-symbols-outlined">
-shopping_cart
-</span>
- 
-</div>
+<header>
+  <div id="cart-icon">
+    <span class="material-symbols-outlined">shopping_cart</span>
+  </div>
 </header>
+
+<!-- Progress Bar -->
 <div class="progress-container">
   <div class="step complete">Services</div>
   <div class="arrow">→</div>
@@ -50,222 +28,465 @@ shopping_cart
   <div class="arrow">→</div>
   <div class="step uncomplete">Payment</div>
 </div>
-<!-- go back to welcome page-->
 
-<div class="header">
-  <h2>Details</h2>
-</div>
-
-
-
+<div class="header"><h2>Calendar</h2></div>
 
 <div class="calendar-layout">
 
+  <!-- Legend -->
   <div class="info">
-  <div style="display: flex; align-items: center; gap: 8px; font-family: Arial, sans-serif; margin-bottom: 15px;">
-    <span style="font-weight: bold;">Unavailable</span>
-    <span style="font-size: 20px;">&#8594;</span>
-    <div style="width: 20px; height: 20px; background-color: #d33131; border-radius: 4px; border: 1px solid #ccc;"></div>
+    <p><strong>Unavailable:</strong> 🔴</p>
+    <p><strong>Available:</strong> 🟢</p>
   </div>
-  <div style="display: flex; align-items: center; gap: 10px; font-family: Arial, sans-serif; margin-bottom: 15px;">
-    <span style="font-weight: bold;">Available</span>
-    <span style="font-size: 20px;">&#8594;</span>
-    <div style="width: 20px; height: 20px; background-color: #32c232; border-radius: 4px; border: 1px solid #ccc;"></div>
-  </div>
-</div>
-<!-- Calendar - buttons need updating -->
-<div class="calendar">
-  <div class="calendar-header">
-    <button id="prev-month">&lt;</button>
-    <h2></h2>
-    <button id="next-month">&gt;</button>
-  </div>
-<div class="weekdays">
-  <span>Mon</span>
-  <span>Tue</span>
-  <span>Wed</span>
-  <span>Thu</span>
-  <span>Fri</span>
-  <span>Sat</span>
-  <span>Sun</span>
-</div>
 
-  <div class="calendar-grid" id="calendar"></div>
-</div>
-
-    <!-- Time Slots -->
-<div class="time-panel">
-  <h3>Available Times</h3>
-  <p id="selected-date">Select a date</p><br>
-    <button id="clear-selection" class="clear-btn">Clear Selection</button>
-    <br>
-  <div class="times" id="times"></div>
-</div>
-
-</div>
-</div>
-<!-- Cart Sidebar -->
-<div id="side-cart">
-  <div class="cart-panel"> 
-    <button id="close-cart">X</button>
-    <h3> Booking Cart</h3>
-    <!-- Cart contents go here -->
-    <p>Your cart is empty</p>
-    <div class="cart-total">
-      <strong> Total Price</strong>
-      <Strong> £ 0</Strong>
+  <!-- Calendar -->
+  <div class="calendar">
+    <div class="calendar-header">
+      <button id="prev-month">←</button>
+      <h2></h2>
+      <button id="next-month">→</button>
     </div>
-    <a href="Details.html" class="continue-btn">Continue</a>
+
+    <div class="weekdays">
+      <div>Mon</div><div>Tue</div><div>Wed</div>
+      <div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+    </div>
+
+    <div id="calendar" class="calendar-grid"></div>
   </div>
 
+  <!-- Time Panel -->
+  <div class="time-panel">
+    <h3>Available Times</h3>
+    <p id="time-message">Select a date</p>
+    <div id="times"></div>
+    <button id="clear-selection">Clear Selection</button>
+  </div>
 
+</div>
+
+<!-- CART -->
+<div id="side-cart">
+  <div class="cart-panel">
+    <button id="close-cart">X</button>
+    <h3>Booking Cart</h3>
+    <p id="cart-timer"></p>
+
+    <div class="cart-scroll">
+      <table class="cart-table">
+        <thead>
+          <tr><th>Services</th><th>Price</th></tr>
+        </thead>
+        <tbody id="cart-items"></tbody>
+      </table>
+    </div>
+
+    <div class="cart-selection-info">
+      <strong>Date:</strong> <span id="cart-date">Not selected</span><br>
+      <strong>Time:</strong> <span id="cart-time">Not selected</span>
+    </div>
+
+    <div class="cart-total">
+      <strong>Total Price</strong>
+      <strong id="total-price">£0</strong>
+    </div>
+
+    <a href="Details.php?admin_id=<?= $admin_id ?>" class="continue-btn">Continue</a>
+  </div>
+</div>
 <script>
+sessionStorage.setItem("service_duration", 60); // from your service table: duration_minutes
+sessionStorage.setItem("cleanup_time", 10);
 
-// Cart toggle functionality
-    const adminId = <?= $admin_id ?>;
-    const cartIcon = document.getElementById('cart-icon');
-    const sideCart = document.getElementById('side-cart');
-    const closeCart = document.getElementById('close-cart');
-    const cartPanel = document.querySelector('.cart-panel');
+// ADMIN ID
+const adminId = "<?= $admin_id ?>";
 
-    // Open cart
-    cartIcon.addEventListener('click', (e) => {
-      e.stopPropagation(); //Prevents document click
-      sideCart.classList.add('open');
+
+// BLock time off
+function getBlockedSlots(startTimeHHMM, totalMinutes) {
+    const blocked = [];
+
+    let [h, m] = startTimeHHMM.split(":").map(Number);
+    const steps = totalMinutes / 10;
+
+    for (let i = 0; i <= steps; i++) {
+        const hh = String(h).padStart(2, "0");
+        const mm = String(m).padStart(2, "0");
+        blocked.push(`${hh}:${mm}:00`);
+
+        m += 10;
+        if (m >= 60) {
+            m -= 60;
+            h += 1;
+        }
+    }
+
+    return blocked;
+}
+
+
+// --- Function B: Filter times by duration ---
+function filterTimesByDuration(slots, duration, cleanup) {
+    const total = duration + cleanup;
+    const neededSlots = total / 10;
+
+    const valid = [];
+
+    for (let i = 0; i < slots.length; i++) {
+        let ok = true;
+
+        for (let j = 0; j < neededSlots; j++) {
+            if (!slots[i + j]) {
+                ok = false;
+                break;
+            }
+        }
+
+        if (ok) valid.push(slots[i]);
+    }
+
+    return valid;
+}
+
+function showTimes(dateStr) {
+    const selectedDate = dateStr;
+
+    sessionStorage.setItem("selected_date", dateStr);
+    updateSelectionInfo();
+
+    document.querySelectorAll(".day").forEach(d => d.classList.remove("selected-day"));
+    const dayNum = dateStr.split("-")[2];
+    const clicked = [...document.querySelectorAll(".day")].find(d => d.innerText == dayNum);
+    if (clicked) clicked.classList.add("selected-day");
+
+    let slots = availability[dateStr] || [];
+    timesDiv.innerHTML = "";
+
+    if (slots.length === 0) {
+        timeMessage.textContent = "No available times";
+        return;
+    }
+
+    // ⭐ Get duration + cleanup
+    const duration = Number(sessionStorage.getItem("service_duration")) || 0;
+    const cleanup = Number(sessionStorage.getItem("cleanup_time")) || 0;
+
+    // ⭐ Filter times based on duration
+    if (duration > 0) {
+        slots = filterTimesByDuration(slots, duration, cleanup);
+    }
+
+    if (slots.length === 0) {
+        timeMessage.textContent = "No times available for this service duration";
+        return;
+    }
+
+    timeMessage.textContent = "Select a time";
+
+    slots.forEach(t => {
+        const cleanTime = t.substring(0, 5);
+
+        const btn = document.createElement("button");
+        btn.innerText = cleanTime;
+
+        btn.onclick = () => {
+            document.querySelectorAll("#times button").forEach(b => b.classList.remove("selected"));
+            btn.classList.add("selected");
+
+            sessionStorage.setItem("selected_time", cleanTime);
+            updateSelectionInfo();
+
+            // ⭐ Calculate all blocked slots
+            const total = duration + cleanup;
+            const blockedSlots = getBlockedSlots(cleanTime, total);
+
+            // ⭐ Send all blocked slots to backend
+            fetch("reserve_time.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    admin_id: adminId,
+                    date: selectedDate,
+                    slots: blockedSlots
+                })
+            })
+            .then(res => res.text())
+            .then(text => {
+                let result;
+                try { result = JSON.parse(text); }
+                catch { return; }
+
+                fetch("get_client_availability.php?admin_id=" + adminId)
+                    .then(res => res.json())
+                    .then(data => {
+                        availability = data;
+                        buildCalendar();
+                        showTimes(selectedDate);
+                    });
+            });
+        };
+
+        timesDiv.appendChild(btn);
     });
+}
 
-    // Close cart
-    closeCart.addEventListener('click', (e) => {
-      e.stopPropagation();
-      sideCart.classList.remove('open');
+// CART PANEL TOGGLE
+
+const cartIcon = document.getElementById('cart-icon');
+const sideCart = document.getElementById('side-cart');
+const closeCart = document.getElementById('close-cart');
+const cartPanel = document.querySelector('.cart-panel');
+
+cartIcon.addEventListener('click', e => {
+  e.stopPropagation();
+  sideCart.classList.add('open');
+});
+
+closeCart.addEventListener('click', () => sideCart.classList.remove('open'));
+sideCart.addEventListener('click', () => sideCart.classList.remove('open'));
+cartPanel.addEventListener('click', e => e.stopPropagation());
+
+
+// LOAD CART + REDIRECT IF EMPTY
+
+let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+
+// ⭐ Redirect immediately if cart is empty
+if (cart.length === 0) {
+  window.location.href = "Service.php?admin_id=" + adminId;
+}
+
+
+// UPDATE CART + REMOVE BUTTON LOGIC
+
+function updateSelectionInfo() {
+  document.getElementById("cart-date").textContent =
+    sessionStorage.getItem("selected_date") || "Not selected";
+
+  document.getElementById("cart-time").textContent =
+    sessionStorage.getItem("selected_time") || "Not selected";
+}
+
+function updateCart() {
+  const cartItems = document.getElementById("cart-items");
+  const totalPrice = document.getElementById("total-price");
+
+  if (cart.length === 0) {
+    cartItems.innerHTML = `<tr><td colspan="2" style="text-align:center;">Your cart is empty</td></tr>`;
+    totalPrice.textContent = "£0";
+    updateSelectionInfo();
+    return;
+  }
+
+  cartItems.innerHTML = cart.map((item, index) => `
+    <tr>
+      <td>${item.name}</td>
+      <td>£${item.price}
+        <button class="remove-btn" data-index="${index}">Remove</button>
+      </td>
+    </tr>
+  `).join('');
+
+  const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+  totalPrice.textContent = "£" + total;
+
+  // REMOVE BUTTON LOGIC
+  document.querySelectorAll('.remove-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      cart.splice(btn.dataset.index, 1);
+      sessionStorage.setItem("cart", JSON.stringify(cart));
+      updateCart();
+
+      // ⭐ Redirect if last service removed
+      if (cart.length === 0) {
+        window.location.href = "Service.php?admin_id=" + adminId;
+      }
     });
+  });
 
-    sideCart.addEventListener('click',() =>{
-      sideCart.classList.remove('open');
-    });
+  updateSelectionInfo();
+}
 
-    cartPanel.addEventListener('click',(e)=> {
-      e.stopPropagation();
-    })
+// CART TIMER
+
+function updateCartTimer() {
+  const timerElement = document.getElementById("cart-timer");
+  const timestamp = sessionStorage.getItem("cartTimestamp");
+
+  if (!timestamp) {
+    timerElement.textContent = "";
+    return;
+  }
+
+  const expiryMinutes = 30;
+  const now = Date.now();
+  const expiryTime = parseInt(timestamp) + expiryMinutes * 60 * 1000;
+  const diffMs = expiryTime - now;
+
+  if (diffMs <= 0) {
+    timerElement.textContent = "Cart expired";
+    sessionStorage.removeItem("cart");
+    sessionStorage.removeItem("cartTimestamp");
+    cart = [];
+    updateCart();
+    return;
+  }
+
+  const minutes = Math.floor(diffMs / 1000 / 60);
+  const seconds = Math.floor((diffMs / 1000) % 60);
+
+  timerElement.textContent = `Cart expires in ${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+setInterval(updateCartTimer, 1000);
+
+updateCart();
+updateSelectionInfo();
+updateCartTimer();
 
 
-// Availability will be loaded from the server
+// LOAD AVAILABILITY (DATE → TIMES)
+
 let availability = {};
 
-// Fetch real availability from admin calendar
 fetch("get_client_availability.php?admin_id=" + adminId)
   .then(res => res.json())
   .then(data => {
     availability = data || {};
-    buildCalendar();   // only build calendar once data is loaded
+    buildCalendar();
+    restoreSelection();
   });
 
-  // Get today's date
-const today = new Date();
 
-// Extract month + year
-let currentMonth = today.getMonth();   // 0–11
+// CALENDAR SYSTEM
+
+const today = new Date();
+let currentMonth = today.getMonth();
 let currentYear = today.getFullYear();
 
-// Month names
 const monthNames = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December"
 ];
 
-// Update header text
-document.querySelector(".calendar-header h2").innerText =
-  `${monthNames[currentMonth]} ${currentYear}`;
-
-
+const calendarHeader = document.querySelector(".calendar-header h2");
 const calendar = document.getElementById("calendar");
-const times = document.getElementById("times");
-const selectedDate = document.getElementById("selected-date");
+const timesDiv = document.getElementById("times");
+const timeMessage = document.getElementById("time-message");
+
+function updateMonthLabel() {
+  calendarHeader.innerText = `${monthNames[currentMonth]} ${currentYear}`;
+}
+
+updateMonthLabel();
 
 function buildCalendar() {
   calendar.innerHTML = "";
 
-  const today = new Date();
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-  for (let d = 1; d <= daysInMonth; d++) {
-    const date = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+  const firstDay = new Date(currentYear, currentMonth, 1);
+  const startDay = (firstDay.getDay() + 6) % 7; // Monday = 0
+
+  // Add empty boxes before the 1st
+  for (let i = 0; i < startDay; i++) {
+    const empty = document.createElement("div");
+    empty.classList.add("empty");
+    calendar.appendChild(empty);
+  }
+
+  // Create today's date at midnight
+  const todayMid = new Date();
+  todayMid.setHours(0, 0, 0, 0);
+
+  // LOOP THROUGH DAYS
+  for (let day = 1; day <= daysInMonth; day++) {
 
     const div = document.createElement("div");
     div.classList.add("day");
+    div.textContent = day;
 
-    if (
-      d === today.getDate() &&
-      currentMonth === today.getMonth() &&
-      currentYear === today.getFullYear()
-    ) {
-      div.classList.add("today");
-    }
+    // Create this date
+    const thisDate = new Date(currentYear, currentMonth, day);
+    thisDate.setHours(0, 0, 0, 0);
 
-    const thisDate = new Date(currentYear, currentMonth, d);
-    if (thisDate < today.setHours(0,0,0,0)) {
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+    // Disable past days
+    if (thisDate.getTime() < todayMid.getTime()) {
       div.classList.add("unavailable");
-      div.classList.add("past");
-      div.innerText = d;
       calendar.appendChild(div);
       continue;
     }
 
-    if (availability[date] && availability[date].length > 0) {
+    // Check availability for this date
+    const slots = availability[dateStr] || [];
+
+    if (slots.length > 0) {
+      // Day has available times
       div.classList.add("available");
-      div.onclick = () => showTimes(date);
+      div.onclick = () => showTimes(dateStr);
     } else {
+      // No times available
       div.classList.add("unavailable");
     }
 
-    div.innerText = d;
+    // Highlight selected day
+    if (sessionStorage.getItem("selected_date") === dateStr) {
+      div.classList.add("selected-day");
+    }
+
     calendar.appendChild(div);
   }
 }
 
 
-// Show available times for selected date
-function showTimes(date) {
-  selectedDate.innerText = date;
-  times.innerHTML = "";
+document.getElementById("next-month").onclick = () => {
+  currentMonth++;
+  if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+  updateMonthLabel();
+  buildCalendar();
+  restoreSelection();
+};
 
-  const slots = availability[date] || [];
-
-  if (slots.length === 0) {
-    times.innerHTML = "<p>No available times for this date</p>";
-    return;
-  }
-
-  slots.forEach(t => {
-    const btn = document.createElement("button");
-    btn.innerText = t;
-
-    btn.onclick = () => {
-        // Save selected date + time
-        sessionStorage.setItem("selected_date", date);
-        sessionStorage.setItem("selected_time", t);
-
-        // Redirect to details page
-        window.location.href = "Details.php?admin_id=" + adminId;
-    };
-
-    times.appendChild(btn);
-  });
-}
-document.getElementById("clear-selection").onclick = () => {
-    // Remove stored date/time
-    sessionStorage.removeItem("selected_date");
-    sessionStorage.removeItem("selected_time");
-
-    // Reset UI
-    selectedDate.innerText = "Select a date";
-    times.innerHTML = "";
+document.getElementById("prev-month").onclick = () => {
+  currentMonth--;
+  if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+  updateMonthLabel();
+  buildCalendar();
+  restoreSelection();
 };
 
 
 
+// RESTORE SELECTION
+
+function restoreSelection() {
+  const savedDate = sessionStorage.getItem("selected_date");
+  if (savedDate && availability[savedDate]) {
+    showTimes(savedDate);
+  } else {
+    timesDiv.innerHTML = "";
+    timeMessage.textContent = "Select a date";
+  }
+}
+
+
+// CLEAR SELECTION
+
+document.getElementById("clear-selection").addEventListener("click", () => {
+  sessionStorage.removeItem("selected_date");
+  sessionStorage.removeItem("selected_time");
+  document.querySelectorAll(".day").forEach(d => d.classList.remove("selected-day"));
+  timesDiv.innerHTML = "";
+  timeMessage.textContent = "Select a date";
+  updateSelectionInfo();
+});
+
 </script>
-    </div>
+
+
+
 
 </body>
 </html>

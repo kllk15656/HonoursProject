@@ -1,9 +1,10 @@
-/* General Reset and Body Styles */
+/* ===== Global Reset ===== */
 * {
    margin: 0;
    padding: 0;
-   box-sizing: border-box; 
+   box-sizing: border-box;
 }
+
 body {
   font-family: Arial, sans-serif;
   display: flex;
@@ -15,15 +16,17 @@ body {
     rgba(157,156,154,0.73)
   );
 }
-/* Progress Bar Container */
+
+/* ===== Progress Bar ===== */
 .progress-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
-  margin-left: 30px;
-  margin-bottom: 20px;      
+  margin: 20px auto;   /* centers horizontally */
+  width: 100%;
 }
+
+
 .step.uncomplete {
   background-color: #209AE6;
   color: black;
@@ -32,6 +35,7 @@ body {
   font-size: 15px;
   border: 2px solid #209AE6;
 }
+
 .step.active {
   background-color: #C9E620;
   color: black;
@@ -40,6 +44,7 @@ body {
   font-size: 15px;
   border: 2px solid #C9E620;
 }
+
 .step.complete {
   background-color: #6AE04D;
   color: black;
@@ -47,29 +52,30 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   font-size: 15px;
   border: 2px solid #6AE04D;
-}  
-.arrow {
-  margin: 0 5px;
-  color: black;     
 }
 
+.arrow {
+  margin: 0 5px;
+  color: black;
+}
+
+/* ===== Header ===== */
 .header {
    width: 100%;
-   background: #795548; 
-   padding: 15px;   
+   background: #795548;
+   padding: 15px;
+   margin-top: 10px;
    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
-.header h2{
+
+.header h2 {
   font-size: 25px;
   text-align: center;
-  align-items: center;
   color: #FAF7F2;
   font-weight: bold;
 }
 
-    
-
-  /* serivce header box  */
+/* serivce header box  */
 .service-header {
   width: 100%;
   height: 50px;
@@ -81,26 +87,22 @@ body {
   color: #FAF7F2;
   font-weight: bold;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  
 }
-    /* end of serivce header box  */
-
+/* end of serivce header box  */
 
 /* Title to service box and service box as a hole */
 .services-box h2 {
   margin-bottom: 15px;
   font-size: 20px;
   text-align: center;
- 
 } 
 .services-box {
  width: 100%;
-  max-width: 500px;   /* Keeps nice size on desktop */
+  max-width: 500px;
   background: #f5f5f5;
   box-shadow: 0px 5px 10px #4E342E;
   border-radius: 15px;
   padding: 25px;
-  /* Center it properly */
   margin: 20px auto;
 }
 /* REMINDER */
@@ -111,7 +113,6 @@ body {
   border-radius: 6px;
   font-size: 14px;
   margin-bottom: 10px;
-  
 }
 
 /* CATEGORY HEADER */
@@ -128,15 +129,14 @@ body {
 }
 
 /* CATEGORY CONTENT */
- .category-content {
+.category-content {
   background: #eee;
   border-radius: 6px;
   display: none;
-  
- }
+}
 
 /* TABLE */
- table {
+table {
   width: 100%;
   max-width: 100%;
   table-layout: fixed;   
@@ -144,14 +144,13 @@ body {
   font-size: 12px;
 }
 
-
- th, td {
+th, td {
   padding: 6px;
   text-align: center;
 }
-  th {
-   background: #ccc;
- }
+th {
+  background: #ccc;
+}
  
 .add-btn {
   background: #e06a5f;
@@ -161,8 +160,6 @@ body {
   border-radius: 4px;
   font-size: 12px;
 }
-/* end of serivce container box  */
-
 
 /* Sidebar Styles */
 .sidebar {
@@ -177,20 +174,18 @@ body {
   display: block;
   transition: transform 0.3s ease-in-out;
 }
-/* end of Sidebar Styles */
 
-    /* Hamburger Menu Icon */
+/* Hamburger Menu Icon */
 .hamburger-menu {
   display: none;
   font-size: 30px;
   background: none;
   border: none;
-  color: #fff;
+  color: black;
   cursor: pointer;
   position: absolute;
   top: 20px;
   left: 10px;
-  color: black;
 }
 
 /* Sidebar Menu Items */
@@ -198,14 +193,12 @@ body {
   margin-bottom: 15px;
 }
 
-/* Removes all default listing styling */
 .category-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* List of categorys*/
 .category-list li {
   padding: 10px 12px 10px 20px;
   cursor: pointer;
@@ -214,16 +207,14 @@ body {
   margin-bottom: 6px;
 }
 
-/* Hover effect */
 .category-list li:hover {
   background: rgba(255,255,255,0.15);
 }
-/* Active effect*/
+
 .category-list li.active {
   font-weight: bold;
 }
 
-/* Adds a line for the active category*/
 .category-list li.active::before {
   content: "";
   position: absolute;
@@ -235,28 +226,17 @@ body {
   border-radius: 2px;
 }
 
-    /* Cart Icon Styles */
-#cart-icon {
-  font-size: 24px;
-  cursor: pointer;
-  padding: 1rem;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-top: 10px;
-  color: black
-      
-}
+/* ============================
+   MATCH SERVICES CART TO CALENDAR CART
+   ============================ */
 
-    /* Side Cart Styles */
+/* Cart overlay */
 #side-cart {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6) ;
+  background-color: rgba(0, 0, 0, 0.6);
   display: none;
-  z-index: 1000;
-  display: none;
-  flex-direction: column;
+  z-index: 1500;
   justify-content: center;
   align-items: center;
 }
@@ -265,127 +245,184 @@ body {
   display: flex;
 }
 
-.cart-panel{
-  position: relative; 
+/* Cart panel (matches Calendar) */
+.cart-panel {
+  position: relative;
   width: 500px;
-  height: 500px;
+  max-height: 90vh;
   background: #DE8D45;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
-    }
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow: hidden;
+}
+#cart-icon {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 1rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 999;
+  margin-top: 10px;
+  color: black;
+}
 
-    /* Close Button inside Cart */
+
+/* Close button */
 #close-cart {
-   position: absolute;
+  position: absolute;
   top: 12px;
   right: 12px;
   border: none;
-  font-size: 18px;
+  font-size: 22px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);  
+  background: none;
+  padding: 0;
+  line-height: 1;
 }
 
+/* Scroll area for services */
+.cart-scroll {
+  flex-grow: 1;
+  overflow-y: auto;
+  background: #FAF7F2;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Cart table (matches Calendar) */
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart-table th {
+  text-align: left;
+  font-size: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid black;
+}
+
+.cart-table td {
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.cart-table tr {
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+/* Remove button */
+.remove-btn {
+  background: #d33131;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background: #b32020;
+}
+
+/* Total price box */
+.cart-total {
+  background: #FAF7F2;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Continue button */
 .continue-btn {
-  width: 90px;        /* exact size from image */
-  height: 20px;
-  border-radius:20px;
+  width: 140px;
+  height: 35px;
+  border-radius: 20px;
   background-color: #f4b400;
   border: none;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
-  display: block;
-  margin: 12px auto;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
   text-decoration: none;
-  color: inherit;
-  margin-top: 80%;
-      
+  color: black;
+  font-weight: bold;
+  margin: 10px auto 0 auto;
 }
 
-/*  end of Cart Icon Styles */
-
-/*  Search bar*/
+/* Search bar */
 form input[type="text"] {
-  width: 200px; /* Adjust the width of the input box */
-  padding: 10px; /* Add padding to make the input box larger */
-  font-size: 16px; /* Adjust font size for better readability */
-  border-radius: 6px; /* Optional: Add rounded corners */
- border: 1px solid #ccc; /* Optional: Border styling */
+  width: 200px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
-  @media (max-width: 480px) {
-
-.services-box {
+/* MEDIA QUERIES (unchanged) */
+@media (max-width: 480px) {
+  .services-box {
     width: 95%;
     padding: 15px;
   }
-
-table {
-  font-size: 11px;
+  table {
+    font-size: 11px;
   }
-.add-btn {
-  padding: 3px 6px;
-  font-size: 11px;
-}
-}
-@media  (min-width: 481px) and (max-width: 690px) {
-  
- /* M - Sidebar and hamburger  */
-.sidebar {
-  display: none;
+  .add-btn {
+    padding: 3px 6px;
+    font-size: 11px;
+  }
 }
 
-.hamburger-menu {
-  display: block;
-  margin-top: 2px;
-}
-
+@media (min-width: 481px) and (max-width: 690px) {
+  .sidebar {
+    display: none;
+  }
+  .hamburger-menu {
+    display: block;
+    margin-top: 2px;
+  }
   .sidebar.open {
     display: block;
     transform: translateX(0);
   }
-  
-    /* M - cart icon issue with not moving */
-#cart-icon  {
-  font-size: 24px;
-  cursor: pointer;
-  padding: 1rem;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-top: 10px;
-  margin-right: 10px;
-    }
-}
-@media  (min-width: 691px) and (max-width: 950px) {
-  
-  /* M - Sidebar and hamburger  */
-.sidebar {
-  display: none;
+  #cart-icon {
+    font-size: 24px;
+    padding: 1rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
 }
 
-.hamburger-menu {
-  display: block;
-  margin-top: 10px;
+@media (min-width: 691px) and (max-width: 950px) {
+  .sidebar {
+    display: none;
+  }
+  .hamburger-menu {
+    display: block;
+    margin-top: 10px;
+  }
+  .sidebar.open {
+    display: block;
+    transform: translateX(0);
+  }
+  #cart-icon {
+    font-size: 24px;
+    padding: 1rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 20px;
+    margin-right: 10px;
+  }
 }
-
-.sidebar.open {
-  display: block;
-  transform: translateX(0);
-}
-  
-    /* M - cart icon issue with not moving */
-#cart-icon  {
-  font-size: 24px;
-  cursor: pointer;
-  padding: 1rem;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-top: 20px;
-  margin-right: 10px;
- }
-}
-
-
