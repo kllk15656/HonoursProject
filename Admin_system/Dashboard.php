@@ -7,7 +7,7 @@ if (!isset($_SESSION["admin_id"])) {
     exit();
 }
 
-    // Connect to database
+// Connect to database
 require "./db.php";
 
 // Logged-in admin ID
@@ -45,11 +45,9 @@ if (!empty($website_url)) {
     <!-- Top Navigation -->
     <div class="top-nav">
         <h1>Admin Dashboard</h1>
-        <ul>
-            <li><a href="Dashboard.php">Dashboard</a></li>
-            <li><a href="Setting.php">Settings</a></li>
-            <li><a href="Logout.php">Logout</a></li>
-        </ul>
+         <div class="hamburger" onclick="toggleMenu()">
+        <img src="./images/menu.png" alt="Menu">
+    </div>
     </div>
 
     <!-- Side Navigation -->
@@ -58,25 +56,40 @@ if (!empty($website_url)) {
         <a href="Categories.php">Categories</a>
         <a href="Services.php">Services</a>
         <a href="Clients.php">Clients</a>
+
+        <p class="mobile-nav-label">Navigation</p>
+
+        <div class="mobile-nav-links"> 
+            <a href="dashboard.php">Dashboard</a>
+            <a href="settings.php">Settings</a>
+            <a href="logout.php">Log Out</a>
+        </div>
     </div>
+        <div class="overlay" onclick="toggleMenu()"></div>
+
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="card">
+    <div class="card">
 
-            <!-- Welcome Section -->
-            <div class="preview">
-                <h1>Welcome to your Dashboard</h1>
-                <p>This is your personal dashboard. You can view your client page from here.</p>
-                <!-- Public booking link for this admin -->
-                <a href="../Welcome.php?admin_id=<?= $_SESSION['admin_id'] ?>" class="btn">
-                     Client Page
-                </a>
-                <!--always admin to easier code and paste client end on their website  -->
-                <p style="margin-top:20px;">Your public booking link:</p>
-                <input type="text" value="<?= htmlspecialchars($public_link) ?>" readonly 
-                style="width:100%; padding:8px; margin-top:20px;">
-            </div>
+        <!-- Welcome Section -->
+        <div class="preview">
+            <h1>Welcome to your Dashboard</h1>
+            <p>This is your personal dashboard. You can view your client page from here.</p>
+
+            <a href="../Welcome.php?admin_id=<?= $_SESSION['admin_id'] ?>" class="btn">
+                Client Page
+            </a>
+
+            <p class="public-link-label">Your public booking link:</p>
+
+            <input 
+                type="text" 
+                class="public-link-input"
+                value="<?= htmlspecialchars($public_link) ?>" 
+                readonly
+            >
+        </div>
 
 
             <!-- Recent Bookings -->
@@ -85,8 +98,8 @@ if (!empty($website_url)) {
 
                 <div class="info">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
-                        <span style="font-weight: bold;">New booking will appear</span>
-                        <span style="font-size: 20px;">&#8594;</span>
+                        <span style="font-weight: bold; font-size: 14px;">New booking will appear</span>
+                        <span style="font-size: 15px;">&#8594;</span>
                         <div style="width: 20px; height: 20px; background-color: #d3bb31; border-radius: 4px; border: 1px solid #ccc;"></div>
                     </div>
                 </div>
@@ -104,23 +117,21 @@ if (!empty($website_url)) {
 
                     <tbody>
                         <?php
-                        // Fetch recent bookings 
                         $sql = "
-                            SELECT 
-                                a.appointment_id,
-                                CONCAT(c.first_name, ' ', c.last_name) AS name,
-                                a.appointment_date,
-                                DATE_FORMAT(a.appointment_time, '%h:%i %p') AS time,
-                                GROUP_CONCAT(s.service_name SEPARATOR ', ') AS services,
-                                a.is_seen
-                            FROM appointments a
-                            JOIN clients c ON a.client_id = c.client_id
-                            JOIN appointment_services aps ON aps.appointment_id = a.appointment_id
-                            JOIN services s ON s.service_id = aps.service_id
-                            WHERE a.admin_id = :admin_id
-                            GROUP BY a.appointment_id
-                            ORDER BY a.created_at DESC
-                            LIMIT 5;
+                        SELECT 
+                            a.appointment_id,
+                            CONCAT(c.first_name, ' ', c.last_name) AS name,
+                            a.date AS appointment_date,
+                            DATE_FORMAT(a.start_time, '%h:%i %p') AS time,
+                            GROUP_CONCAT(aps.service_name ORDER BY aps.order_index SEPARATOR ', ') AS services,
+                            a.is_seen
+                        FROM appointments a
+                        JOIN clients c ON a.client_id = c.client_id
+                        LEFT JOIN appointment_services aps ON a.appointment_id = aps.appointment_id
+                        WHERE a.admin_id = :admin_id
+                        GROUP BY a.appointment_id
+                        ORDER BY a.created_at DESC
+                        LIMIT 5;
                         ";
 
                         $stmt = $pdo->prepare($sql);
@@ -155,12 +166,12 @@ if (!empty($website_url)) {
 
                 <div class="info">
                     <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 15px;">
-                        <span style="font-weight: bold;">Today Appointment</span>
-                        <span style="font-size: 14px;">&#8594;</span>
+                        <span style="font-weight: bold; font-size: 14px;">Today Appointment</span>
+                        <span style="font-size: 10px;">&#8594;</span>
                         <div style="width: 20px; height: 20px; background-color: #3185d3; border-radius: 4px; border: 1px solid #ccc;"></div>
 
-                        <span style="font-weight: bold;">This Week Appointment</span>
-                        <span style="font-size: 14px;">&#8594;</span>
+                        <span style="font-weight: bold; font-size: 14px; ">This Week Appointment</span>
+                        <span style="font-size: 1px;">&#8594;</span>
                         <div style="width: 20px; height: 20px; background-color: #a031d3; border-radius: 4px; border: 1px solid #ccc;"></div>
                     </div>
                 </div>
@@ -178,17 +189,19 @@ if (!empty($website_url)) {
 
                     <tbody>
                         <?php
-                        // Fetch upcoming bookings
                         $sqlUpcoming = "
-                            SELECT 
-                                CONCAT(c.first_name, ' ', c.last_name) AS name,
-                                a.appointment_date,
-                                DATE_FORMAT(a.appointment_time, '%h:%i %p') AS time
-                            FROM appointments a
-                            JOIN clients c ON a.client_id = c.client_id
-                            WHERE a.admin_id = :admin_id
-                            AND a.appointment_date >= CURDATE()
-                            ORDER BY a.appointment_date, a.appointment_time;
+                        SELECT 
+                            CONCAT(c.first_name, ' ', c.last_name) AS name,
+                            a.date AS appointment_date,
+                            DATE_FORMAT(a.start_time, '%h:%i %p') AS time,
+                            GROUP_CONCAT(aps.service_name ORDER BY aps.order_index SEPARATOR ', ') AS services
+                        FROM appointments a
+                        JOIN clients c ON a.client_id = c.client_id
+                        LEFT JOIN appointment_services aps ON a.appointment_id = aps.appointment_id
+                        WHERE a.admin_id = :admin_id
+                        AND a.date >= CURDATE()
+                        GROUP BY a.appointment_id
+                        ORDER BY a.date, a.start_time;
                         ";
 
                         $stmt = $pdo->prepare($sqlUpcoming);
@@ -231,6 +244,34 @@ if (!empty($website_url)) {
 
         </div>
     </div>
+    <script>
+document.querySelectorAll(".recent-table tr.new-booking").forEach(row => {
+    row.addEventListener("click", function () {
+        let id = this.dataset.id;
+
+        fetch("mark_seen.php?id=" + id)
+            .then(response => response.text())
+            .then(data => {
+                this.classList.remove("new-booking");
+                this.querySelector("td:last-child").textContent = "";
+            });
+    });
+});
+
+function toggleMenu() {
+    console.log('toggleMenu fired');
+
+    const menu = document.querySelector('.side-nav');
+    const overlay = document.querySelector('.overlay');
+
+    console.log('before:', menu.className);
+    menu.classList.toggle('open');
+    overlay.classList.toggle('show');
+    console.log('after:', menu.className);
+}
+
+</script>
+
 
 </body>
 </html>
