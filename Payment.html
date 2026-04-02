@@ -67,10 +67,32 @@
 </div>
   
 <script>
-    function fakePayment(){
-        alert("This is a protype. No real payment has been taken")
-        window.location.href = "Confirmation.html";
-    }
+    //Load booking + client details from sessionStorage
+const booking = {
+    service: sessionStorage.getItem("selected_service_name"),
+    price: sessionStorage.getItem("selected_service_price"),
+    date: sessionStorage.getItem("selected_date"),
+  time: sessionStorage.getItem("selected_time"),
+  fname: sessionStorage.getItem("client_fname"),
+  lname: sessionStorage.getItem("client_lname"),
+  email: sessionStorage.getItem("client_email"),
+  phone: sessionStorage.getItem("client_phone")
+};
+
+//  Update the summary box 
+document.querySelector(".summary span:first-child").textContent = booking.service || "Service";
+document.querySelector(".summary span:last-child").textContent = "£" + (booking.price || "0");
+
+// Save everything again before going to confirmation
+function saveBeforeConfirmation() {
+  sessionStorage.setItem("booking_confirmed", "true");
+}
+
+function fakePayment(){
+    alert("This is a protype. No real payment has been taken")
+    saveBeforeConfirmation();
+    window.location.href = "Confirmation.php";
+}
 
 
 </script>

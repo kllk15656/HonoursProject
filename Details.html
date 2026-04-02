@@ -60,20 +60,59 @@
 
 <div class="terms">
   <label>
-    I agree to the terms and conditions
-    <input type="checkbox" name="terms">
+      I agree to the <a href="terms.html" target="_blank">terms and conditions</a>
+      <input type="checkbox" id="terms" name="terms">
   </label>
 </div>
+
   </form>
   
  </div>
 </div>
 
 <p> *Reminder : your deposit is non-refundable once payment is made*</p>
-<a href="payment.html" class="payment-btn">Payment</a>
+<a href="Payment.html" class="payment-btn">Payment</a>
 
 <script>
+const selectedDate = sessionStorage.getItem("selected_date");
+  const selectedTime = sessionStorage.getItem("selected_time");
 
+  if (!selectedDate || !selectedTime) {
+    // If no date/time, send them back to calendar (safety check)
+    window.location.href = "calendar.php";
+  }
+
+  // Handle Payment button click
+  const paymentBtn = document.querySelector(".payment-btn");paymentBtn.addEventListener("click", function (event) {
+    event.preventDefault(); // stop the normal link behaviour
+
+    // 3) Get values from the form
+    const fname   = document.getElementById("fname").value.trim();
+    const lname   = document.getElementById("lname").value.trim();
+    const email   = document.getElementById("email").value.trim();
+    const phone   = document.getElementById("phone").value.trim();
+    const deposit = document.getElementById("deposit").checked;
+
+    // 4) Basic validation
+    if (!fname || !lname || !email || !phone) {
+      alert("Please fill in all details before continuing to payment.");
+      return;
+    }
+
+    if (!deposit) {
+      alert("You must agree that the deposit is non-refundable.");
+      return;
+    }
+
+    // 5) Save details into sessionStorage
+    sessionStorage.setItem("client_fname", fname);
+    sessionStorage.setItem("client_lname", lname);
+    sessionStorage.setItem("client_email", email);
+    sessionStorage.setItem("client_phone", phone);
+
+    // 6) Go to payment page
+    window.location.href = "payment.html";
+  });
 
 </script>
     </div>

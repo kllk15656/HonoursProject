@@ -141,3 +141,12 @@ p{
   align-content: center;
   font-weight: bold;
 }
+.terms a {
+  color: #4CAF50;
+  text-decoration: underline;
+}
+
+.terms a:hover {
+  text-decoration: none;
+}
+
