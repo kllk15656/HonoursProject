@@ -59,11 +59,9 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- top nav-->
     <div class=" top-nav">
         <h1> Admin Dashboard</h1>
-        <ul>
-            <li> <a href="Dashboard.php">Dashboard</a></li>
-            <li><a href="Setting.php">Settings</a></li>
-            <li><a href="Logout.php">Logout</a></li>
-        </ul>
+         <div class="hamburger" onclick="toggleMenu()">
+        <img src="./images/menu.png" alt="Menu">
+    </div>
     </div>
     <!-- side nav-->
     <div class="side-nav">
@@ -71,7 +69,16 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="Categories.php" class="active">Categories</a>
         <a href="Services.php">Services</a>
         <a href="Clients.php">Clients</a>
+
+        <p class="mobile-nav-label">Navigation</p>
+
+        <div class="mobile-nav-links"> 
+            <a href="dashboard.php">Dashboard</a>
+            <a href="settings.php">Settings</a>
+            <a href="logout.php">Log Out</a>
     </div>
+            <div class="overlay" onclick="toggleMenu()"></div>
+
     <!-- Main content-->
      <div class="main-content">
         <div class="card">

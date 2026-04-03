@@ -56,11 +56,9 @@ foreach ($rows as $row) {
     <!-- TOP NAV -->
     <div class="top-nav">
         <h1>Admin Dashboard</h1>
-        <ul>
-            <li><a href="Dashboard.php">Dashboard</a></li>
-            <li><a href="Setting.php">Settings</a></li>
-            <li><a href="Logout.php">Logout</a></li>
-        </ul>
+        <div class="hamburger" onclick="toggleMenu()">
+        <img src="./images/menu.png" alt="Menu">
+    </div>
     </div>
 
     <!-- SIDE NAV -->
@@ -69,7 +67,16 @@ foreach ($rows as $row) {
         <a href="Categories.php">Categories</a>
         <a href="Services.php">Services</a>
         <a href="Clients.php">Clients</a>
+        <p class="mobile-nav-label">Navigation</p>
+
+        <div class="mobile-nav-links"> 
+            <a href="dashboard.php">Dashboard</a>
+            <a href="settings.php">Settings</a>
+            <a href="logout.php">Log Out</a>
+        </div>
     </div>
+        <div class="overlay" onclick="toggleMenu()"></div>
+
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
@@ -126,6 +133,18 @@ foreach ($rows as $row) {
     </div>
 
 <script>
+
+function toggleMenu() {
+    console.log('toggleMenu fired');
+
+    const menu = document.querySelector('.side-nav');
+    const overlay = document.querySelector('.overlay');
+
+    console.log('before:', menu.className);
+    menu.classList.toggle('open');
+    overlay.classList.toggle('show');
+    console.log('after:', menu.className);
+}
 
 // Display by current month
 

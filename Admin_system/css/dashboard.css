@@ -363,46 +363,32 @@ th {
 }
 @media (min-width: 960px) {
 
-    /* Tighten spacing between columns */
+    /* Tighten the Upcoming Booking table on mobile/tablet */
     .upcoming-table th,
     .upcoming-table td {
-        padding: 4px 6px;   /* smaller padding = more room */
-        font-size: 12px;
+        padding: 10px;
+        font-size: 10px;
     }
 
-    /* Pull Name, Date, Time, Status closer */
-    .upcoming-table th:nth-child(1),
-    .upcoming-table td:nth-child(1),
-    .upcoming-table th:nth-child(2),
-    .upcoming-table td:nth-child(2),
-    .upcoming-table th:nth-child(3),
-    .upcoming-table td:nth-child(3),
+    /* Make the Status column smaller */
     .upcoming-table th:nth-child(4),
     .upcoming-table td:nth-child(4) {
-        width: auto;       /* allow them to shrink */
-        white-space: nowrap;
-    }
-
-    /* Give Reminder more room */
-    .upcoming-table th:nth-child(5),
-    .upcoming-table td:nth-child(5) {
-        width: 120px;      /* more space for the button */
-        text-align: center;
+        width: 95px;
+        font-size: 10px;
     }
 
     /* Make the Reminder header smaller */
     .upcoming-table th:nth-child(5) {
-        font-size: 10px;
+        font-size: 9px;
         font-weight: 500;
         letter-spacing: 0.3px;
     }
 
     /* Keep the Reminder button tiny */
     .remind-btn {
-        padding: 4px 6px;
-        font-size: 11px;
+        padding: 4px 3px;
+        font-size: 10px;
         white-space: nowrap;
     }
 }
-
 

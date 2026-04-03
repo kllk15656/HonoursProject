@@ -7,11 +7,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: linear-gradient(
-    180deg,
-    rgba(189,189,189,0.73),
-    rgba(157,156,154,0.73)
-  );
+  background: linear-gradient(180deg, rgba(189,189,189,0.73), rgba(157,156,154,0.73));
 }
 
 /* ============================
@@ -22,56 +18,76 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 60px;
+  height: 55px;
   background: #4E342E;
   color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 15px;
   z-index: 1000;
   box-shadow: 0px 5px 10px #4E342E;
 }
 
 .top-nav h1 {
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .top-nav ul {
   list-style: none;
   display: flex;
-  gap: 10px;
+  gap: 5px;
 }
 
 .top-nav ul li a {
   display: block;
-  padding: 14px 16px;
+  padding: 8px 10px;
   color: white;
   text-decoration: none;
-  font-weight: bold;
+  font-size: 15px;
 }
 
 .top-nav ul li a:hover {
   background-color: #795548;
 }
 
-/* Side nav */
-.side-nav {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 220px;
-  height: calc(100vh - 60px);
-  background: #746853;
-  padding-top: 20px;
+/* Hamburger */
+.hamburger {
+  display: none;
+  cursor: pointer;
+}
+
+.hamburger img {
+  width: 26px;
+  height: 26px;
+}
+
+/* ============================
+   SIDE NAV (Desktop + Mobile)
+============================ */
+@media (min-width: 901px) {
+  .side-nav {
+    position: fixed;
+    top: 55px;
+    left: 0;
+    width: 200px;
+    height: calc(100vh - 55px);
+    background: #746853;
+    padding-top: 15px;
+  }
+
+  .main-content {
+    margin-left: 200px;
+    padding: 30px;
+  }
 }
 
 .side-nav a {
   display: block;
-  padding: 15px 20px;
+  padding: 12px 18px;
+  font-size: 16px;
   color: white;
   text-decoration: none;
-  font-size: 16px;
 }
 
 .side-nav a:hover,
@@ -80,26 +96,59 @@ body {
   color: black;
 }
 
-/* Main contents*/
-.main-content {
-  margin-top: 80px;
-  margin-left: 240px;
-  padding: 40px;
-  min-height: 100vh;
+/* Mobile nav label + links (KEEPING THESE) */
+.mobile-nav-label {
+  display: block;
+  color: #ddd;
+  font-size: 13px;
+  margin: 15px 18px 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
 }
 
-/* Card */
+.mobile-nav-links {
+  display: block;
+  margin-top: 15px;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 10px;
+}
+
+.mobile-nav-links a {
+  display: block;
+  padding: 12px 18px;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.mobile-nav-links a:hover {
+  background: #C6B071;
+  color: black;
+}
+
+/* ============================
+   MAIN CONTENT
+============================ */
+.main-content {
+  margin-top: 55px;
+  padding: 20px;
+}
+
 .card {
   background: white;
-  max-width: 900px;
+  max-width: 820px;
+  width: 100%;
   margin: auto;
-  padding: 20px;
-  border-radius: 15px;
+  padding: 18px;
+  border-radius: 12px;
   box-shadow: 0px 5px 10px #4E342E;
   overflow: hidden;
 }
 
-/* Header and calender */
+/* ============================
+   HEADER + LEGEND
+============================ */
 .header {
   width: 100%;
   background: white;
@@ -140,37 +189,29 @@ body {
   border-radius: 4px;
 }
 
-.legend-box.unavailable {
-  background: #d33131;
-}
+.legend-box.unavailable { background: #d33131; }
+.legend-box.available { background: #32c232; }
 
-.legend-box.available {
-  background: #32c232;
-}
-
-/* Calendar layout */
+/* ============================
+   CALENDAR LAYOUT
+============================ */
 .calendar-layout {
   display: flex;
   flex-direction: column;
-  max-width: 900px;
+  max-width: 820px;
   margin: 0 auto;
 }
 
-/* Calendar container */
 .calendar {
   background: #FAF7F2;
   margin-top: 20px;
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0px 5px 10px #4E342E;
-  width: 700px;
-  
-    width: 100%;
-    overflow: hidden;
-
+  width: 100%;
+  overflow: hidden;
 }
 
-/* Calendar header */
 .calendar-header {
   display: flex;
   justify-content: center;
@@ -178,7 +219,6 @@ body {
   font-size: 16px;
 }
 
-/* Weekday row */
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -188,17 +228,15 @@ body {
   color: #333;
 }
 
-/* Calendar grid */
 .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    width: 100%;
-    box-sizing: border-box;
-    gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
 }
 
-
-/* Day cell */
+/* ============================
+   DAY CELLS
+============================ */
 .day {
   padding: 15px;
   text-align: center;
@@ -209,56 +247,43 @@ body {
   cursor: pointer;
   position: relative;
   box-shadow: 0 3px 5px rgba(0,0,0,0.3);
-  aspect-ratio: 1 / 1; /* help make boxes square*/  
+  aspect-ratio: 1 / 1;
 }
 
-/* today date */
 .today {
-    border: 3px solid #472e08 !important;
-    box-shadow: 0 0 6px rgba(255, 152, 0, 0.6);
-    border-radius: 6px;
+  border: 3px solid #472e08 !important;
+  box-shadow: 0 0 6px rgba(255, 152, 0, 0.6);
+  border-radius: 6px;
 }
 
-/* moving number to left handside */
 .day-number {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    font-weight: bold;
-    font-size: 14px;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-weight: bold;
+  font-size: 14px;
 }
 
+.available-day { background: #32c232; }
+.available-day:hover { background: #2ecc71; }
+.unavailable-day { background: #d33131; }
 
-/* Available / Unavailable */
-.available-day {
-  background: #32c232;
-}
-
-.available-day:hover {
-  background: #2ecc71;
-}
-
-.unavailable-day {
-  background: #d33131;
-}
-
-/* month button */
+/* Month buttons */
 .month-btn {
-    background: #4E342E;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px; 
-    margin-left: 15px;
-    margin-right: 15px;
-    
-}
-.month-btn:hover {
-    background: #795548;
+  background: #4E342E;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
+.month-btn:hover {
+  background: #795548;
+}
 
 /* Times button */
 .times-btn {
@@ -276,7 +301,6 @@ body {
 .times-btn:hover {
   background: #ddd;
 }
-
 
 /* ============================
    TIME PANEL
@@ -319,11 +343,10 @@ body {
   color: white !important;
 }
 
-/* Save Times Button */
 .save-times-btn {
   margin-top: 15px;
   padding: 10px 15px;
-  background:  #1cca2b !important;
+  background: #1cca2b !important;
   color: white;
   border: none;
   border-radius: 8px;
@@ -333,10 +356,333 @@ body {
   margin-left: auto;
   margin-right: auto;
   box-shadow: 0 3px 5px rgba(0,0,0,0.3) !important;
-  
 }
 
 .save-times-btn:hover {
   background: #13681a !important;
-  
 }
+
+/* ============================
+   MOBILE — FINAL WORKING VERSION
+============================ */
+@media (max-width: 600px) {
+
+  /* Show hamburger */
+  .hamburger {
+    display: block;
+  }
+
+  /* Hide top nav links */
+  .top-nav ul {
+    display: none;
+  }
+
+  /* Mobile side-nav slide-in */
+  .side-nav {
+    position: fixed;
+    top: 55px;
+    right: -240px;
+    width: 240px;
+    height: calc(100% - 55px);
+    background: #4E342E;
+    padding-top: 15px;
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+  }
+
+  .side-nav.open {
+    right: 0;
+  }
+
+  /* Overlay */
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 55px);
+    background: rgba(0,0,0,0.5);
+    z-index: 900;
+  }
+
+  .overlay.show {
+    display: block;
+  }
+
+  /* Main content */
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  /* Card */
+  .card {
+    max-width: 360px;
+    width: 100%;
+    margin: 10px auto;
+    padding: 12px;
+  }
+
+  /* Calendar */
+  .calendar {
+    max-width: 340px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 12px;
+  }
+
+  /* 3-column mobile grid */
+  .calendar-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .day {
+    padding: 12px;
+    font-size: 12px;
+    aspect-ratio: 1 / 1.1;
+    border-radius: 10px;
+  }
+
+  .day-number {
+    font-size: 15px;
+    top: 6px;
+    left: 6px;
+  }
+
+  .times-btn {
+    padding: 3px 6px;
+    font-size: 10px;
+    margin-top: 8px;
+  }
+
+  .month-btn {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .header h2 {
+    font-size: 20px;
+  }
+
+  .header p {
+    font-size: 14px;
+  }
+}
+
+/* ============================
+   TABLET — CLEAN VERSION
+============================ */
+@media (min-width: 600px) and (max-width: 959px) {
+  /* Show hamburger */
+  .hamburger {
+    display: block;
+  }
+
+  /* Hide top nav links */
+  .top-nav ul {
+    display: none;
+  }
+
+  /* Mobile side-nav slide-in */
+  .side-nav {
+    position: fixed;
+    top: 55px;
+    right: -240px;
+    width: 240px;
+    height: calc(100% - 55px);
+    background: #4E342E;
+    padding-top: 15px;
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+  }
+
+  .side-nav.open {
+    right: 0;
+  }
+
+  .card {
+    max-width: 600px;
+    margin: 10px auto;
+    padding: 15px;
+  }
+
+  .calendar {
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 15px;
+  }
+
+  /* 5 columns for tablet */
+  .calendar-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .day {
+    padding: 14px;
+    font-size: 12px;
+  }
+
+  .day-number {
+    font-size: 14px;
+  }
+}
+/* ============================================
+   MOBILE — 7 DAY GRID (SMALLER CARD + DAY BOXES)
+============================================ */
+/* ============================================
+   MOBILE — FINAL 7 DAY FIT (TIGHTER + CLEANER)
+============================================ */
+/* ============================================
+   MOBILE — FIX SUNDAY SPACING (7-DAY GRID)
+============================================ */
+@media (max-width: 600px) {
+
+  /* Slightly wider calendar */
+  .calendar {
+    max-width: 310px;
+    padding: 8px;
+  }
+
+  /* Slightly wider card */
+  .card {
+    max-width: 320px;
+    padding: 8px;
+  }
+
+  /* 7 columns but with more breathing room */
+  .calendar-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 1.5px; /* smaller gap = more room for each day */
+  }
+
+  /* Slightly smaller day boxes */
+  .day {
+    padding: 4px;
+    font-size: 9px;
+    aspect-ratio: 1 / 1.08;
+  }
+
+  /* Day number adjusted */
+  .day-number {
+    font-size: 10px;
+    top: 3px;
+    left: 3px;
+  }
+
+  /* Times button */
+  .times-btn {
+    padding: 1px 3px;
+    font-size: 7px;
+    margin-top: 3px;
+  }
+   /* Time panel tighter */
+  .time-panel {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .time-panel h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  /* Grid tighter */
+  .times {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 6px;
+  }
+
+  /* Time buttons smaller */
+  .times button {
+    padding: 4px 2px;
+    font-size: 10px;
+    border-radius: 5px;
+  }
+
+  /* Selected time */
+  .available-time {
+    font-size: 10px;
+    padding: 4px 2px;
+  }
+
+  /* Save button smaller */
+  .save-times-btn {
+    padding: 8px 6px;
+    font-size: 13px;
+    width: 70px;
+  }
+}
+/* ============================================
+   SMALL TABLET — iPad Mini (601px–766px)
+   Slightly larger than phone, still 7 days
+============================================ */
+@media (min-width: 601px) and (max-width: 854px) {
+
+  /* Card wider */
+  .card {
+    max-width: 500px;
+    padding: 12px;
+    margin: 12px auto;
+  }
+
+  /* Calendar wider */
+  .calendar {
+    max-width: 480px;
+    padding: 12px;
+    margin: 0 auto;
+  }
+
+  /* 7‑day grid with more breathing room */
+  .calendar-grid {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  /* Day boxes slightly larger */
+  .day {
+    padding: 8px;
+    font-size: 11px;
+    aspect-ratio: 1 / 1.05;
+    border-radius: 6px;
+  }
+
+  .day-number {
+    font-size: 12px;
+    top: 4px;
+    left: 4px;
+  }
+
+  .times-btn {
+    padding: 2px 4px;
+    font-size: 9px;
+    margin-top: 4px;
+  }
+
+  /* Time panel */
+  .time-panel {
+    padding: 15px;
+  }
+
+  .times {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 8px;
+  }
+
+  .times button {
+    padding: 5px 3px;
+    font-size: 11px;
+  }
+
+  .save-times-btn {
+    padding: 8px 6px;
+    font-size: 13px;
+    width: 56px;
+  }
+}
+
+
+
+
