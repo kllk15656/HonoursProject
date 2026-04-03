@@ -492,7 +492,7 @@ body {
     right: -240px;
     width: 240px;
     height: calc(100% - 55px);
-    background: #4E342E;
+    background: #746853;
     padding-top: 15px;
     transition: right 0.3s ease-in-out;
     z-index: 1000;
@@ -682,6 +682,7 @@ body {
     width: 56px;
   }
 }
+
 
 
 

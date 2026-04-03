@@ -1,84 +1,79 @@
+/* ============================
+   RESET + GLOBAL
+============================ */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html, body {
+  min-height: 100vh;
+}
+
 body {
   font-family: Arial, sans-serif;
-   background: linear-gradient(
+  background: linear-gradient(
     180deg,
     rgba(189,189,189,0.73),
     rgba(157,156,154,0.73)
   );
+  background-attachment: fixed;
 }
 
-
-/* top nav */
- 
+/* ============================
+   TOP NAV
+============================ */
 .top-nav {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 60px;
+  height: 55px;
   background: #4E342E;
   color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 15px;
   z-index: 1000;
-box-shadow: 0px 5px 10px #4E342E;
-}
-.top-nav h1{
-    font-size: 25px;
+  box-shadow: 0px 5px 10px #4E342E;
 }
 
-.top-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #4E342E;;
-}
-.top-nav ul li {
-  float: left;
-}
-.top-nav ul li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+.hamburger {
+  display: none;
+  cursor: pointer;
 }
 
- .top-nav ul li a:hover {
-  background-color: #795548;
+.hamburger img {
+  width: 26px;
+  height: 26px;
 }
-/*  work on adding active class so current page higlighted*/
 
+/* ============================
+   SIDE NAV
+============================ */
+@media (min-width: 901px) {
+  .side-nav {
+    position: fixed;
+    top: 55px;
+    left: 0;
+    width: 200px;
+    height: calc(100vh - 55px);
+    background: #746853;
+    padding-top: 15px;
+  }
 
-/* side nav */
-
-.side-nav {
-
-  position: fixed;
-  top: 50px;
-  left: 0;
-  width: 220px;
-  height: calc(100vh - 50px);
-  background: #746853;
-  padding-top: 20px;
-  
+  .main-content {
+    margin-left: 200px;
+    padding: 30px;
+  }
 }
 
 .side-nav a {
-
   display: block;
-
-  padding: 15px 20px;
-
+  padding: 12px 18px;
+  font-size: 16px;
   color: white;
   text-decoration: none;
 }
@@ -88,239 +83,279 @@ box-shadow: 0px 5px 10px #4E342E;
   background: #C6B071;
   color: black;
 }
+ /* Show the mobile nav links */
+    .mobile-nav-links {
+        display: block;
+        margin-top: 15px;
+        border-top: 1px solid rgba(255,255,255,0.3);
+        padding-top: 10px;
+    }
 
-/* main content*/
+    .mobile-nav-links a {
+        display: block;
+        padding: 12px 18px;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .mobile-nav-links a:hover {
+        background: #C6B071;
+        color: black;
+    }
+    .mobile-nav-label {
+        display: block;
+        color: #ddd;
+        font-size: 13px;
+        margin: 15px 18px 5px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.8;
+    }
+
+    /* Hide top nav links on mobile */
+    .top-nav ul {
+        display: none;
+    }
+
+/* ============================
+   MAIN CONTENT
+============================ */
 .main-content {
-  margin-top: 70px;
-  margin-left: 220px;
-  padding: 40px;
-  min-height: 100vh;
-
-
+  margin-top: 55px;
+  padding: 20px;
 }
 
-/* card */
 .card {
   background: white;
   max-width: 900px;
-  margin-top: 50px;
+  width: 100%;
   margin: auto;
-  padding: 40px;
-  border-radius: 15px;
+  padding: 25px;
+  border-radius: 12px;
   box-shadow: 0px 5px 10px #4E342E;
 }
 
-.preview  {
-  align-self: center;
+.preview {
   text-align: center;
 }
 
-/* buttons */
-
-.add-btn {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 12px 20px;
-  background: #44d830;
-  color: black;
-  text-decoration: none;
-  border-radius: 15px;
-  box-shadow: 0px 5px 10px #4E342E;
-
-}
-
-.add-btn:hover {
-  opacity: 0.9;
-  background-color: #2f6621;
-  color: white;
-}
-
-.edit-btn {
-  display: inline-block;
-  margin-top: 20px;
-  margin-left: 0px;
-  padding: 10px 15px;
-  background: #309ad8;
-  color: black;
-  text-decoration: none;
-  border-radius: 15px;
-  box-shadow: 0px 5px 10px #4E342E;
-
-}
-
-.edit-btn:hover {
-  opacity: 0.9;
-  background-color: #214566;
-  color: white;
-}
+/* ============================
+   BUTTONS
+============================ */
+.add-btn,
+.edit-btn,
 .delete-btn {
   display: inline-block;
-  margin-top: 20px;
-  margin-left: 3px;
-  padding: 10px 15px;
-  background: #d83030;
-  color: black;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 12px;
   text-decoration: none;
-  border-radius: 15px;
+  color: black;
   box-shadow: 0px 5px 10px #4E342E;
-
-}
-.delete-btn:hover {
-  opacity: 0.9;
-  background-color: #662121;
-  color: white;
+  margin-top: 10px;
 }
 
-/*  Service table*/
+.add-btn { background: #44d830; }
+.add-btn:hover { background: #2f6621; color: white; }
 
-.category-header td {
-  background: #746853;
-  color: white;
-  font-weight: bold;
-  text-align: left;
-  padding: 12px;
-  font-size: 16px;
-}
+.edit-btn { background: #309ad8; }
+.edit-btn:hover { background: #214566; color: white; }
 
-.service-table{
+.delete-btn { background: #d83030; }
+.delete-btn:hover { background: #662121; color: white; }
+
+/* ============================
+   SERVICES TABLE (DESKTOP)
+============================ */
+.service-table {
   margin-top: 20px;
   padding: 20px;
   box-shadow: 0px 5px 10px black;
-  border-radius: 15px;
-  
+  border-radius: 12px;
+  overflow-x: auto;
+  display: block;
 }
-.service-table h2{
-font-size: 20px;
-align-items: center;
-text-align: center;
-margin-bottom: 10px;
 
-
+.service-table h2 {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 10px;
 }
-.service-table table {  
+
+.service-table table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  table-layout: fixed;
 }
 
-td {
-  font-size: 14px;
+.service-table th,
+.service-table td {
   border: 1px solid #ccc;
   padding: 10px;
-  text-align: center;
-
+  font-size: 14px;
+  text-align: left;
 }
 
-th {
-   padding: 10px;
-   border: 1px solid #ccc;
-  text-align: center;
+.service-table th {
   background: #C6B071;
 }
-/* Overlay */
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
 
-  display: none;              /* hidden by default */
-  justify-content: center;    /* center horizontally */
-  align-items: center;        /* center vertically */
+/* Desktop column widths */
+.service-table th:nth-child(1),
+.service-table td:nth-child(1) { width: 30%; } /* Name */
 
-  z-index: 9999;              /* make sure it's above everything */
+.service-table th:nth-child(2),
+.service-table td:nth-child(2) { width: 15%; } /* Duration */
+
+.service-table th:nth-child(3),
+.service-table td:nth-child(3) { width: 15%; } /* Price */
+
+.service-table th:nth-child(4),
+.service-table td:nth-child(4) { width: 15%; } /* Deposit */
+
+.service-table th:nth-child(5),
+.service-table td:nth-child(5) { width: 12%; } /* Edit */
+
+.service-table th:nth-child(6),
+.service-table td:nth-child(6) { width: 12%; } /* Delete */
+
+.service-table th:nth-child(7),
+.service-table td:nth-child(7) { width: 22%; } /* Mobile Extra */
+
+
+/* ============================
+   MOBILE EXTRA FIELDS
+============================ */
+.mobile-extra {
+  display: none;
+  
 }
 
-
-
-/* Show popup when link is clicked */
-.popup:target {
-  display: flex;
-}
-
-/* Popup box */
-.popup-content {
-  background: #fff;
-  padding: 25px;
-  width: 90%;
-  max-width: 400px;
-  border-radius: 12px;
-  text-align: left;
-  position: relative;
-
-  animation: popupFade 0.3s ease-in-out;
-}
-
-/* Simple animation */
-@keyframes popupFade {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Close button */
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  text-decoration: none;
-  color: black;
-  font-weight: bold;
-}
-
-
-/* Form inputs */
-.popup-content input {
-  width: 100%;
-  padding: 8px;
-  margin: 8px 0;
+.extra-btn {
+  padding: 1px 1px;
+  font-size: 8px;
+  background: #C6B071;
   border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-/* Popup button */
-.popup-btn {
-  margin-top: 10px;
-  width: 100%;
-  padding: 10px;
-  background: #FFC107;
-  color: black;
   border: none;
-  border-radius: 20px;
-  box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
-  font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
+  box-shadow: 0px 3px 6px #4E342E;
 }
 
-.popup-btn:hover {
-  background-color: #816a2b;
-  color: white;
+.extra-fields {
+  display: none;
+  margin-top: 5px;
+  background: #f7f3e8;
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 10px;
 }
 
+.extra-fields.show {
+  display: block;
+}
+
+/* ============================
+   MOBILE VIEW
+============================ */
+@media (max-width: 900px) {
+
+  .preview h1{
+  font-size: 20px;
+  margin-bottom: 14px;
+}
+.preview p{
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.preview .add-btn{
+   display: inline-block;
+  padding: 5px 7px;
+  font-size: 12px;
+  color: black;
+  text-decoration: none;
+  border-radius: 12px;
+  box-shadow: 0px 5px 10px #4E342E;
+}
+
+   .hamburger {
+    display: block;
+  }
+
+  .top-nav h1 {
+    font-size: 18px;
+  }
 
 
-
-/* ================= MOBILE ================= */
-
-@media (max-width: 768px) {
-
+  /* MOBILE SIDE NAV */
   .side-nav {
-    transform: translateX(-100%);
+    position: fixed;
+    top: 55px;
+    right: -240px;
+    width: 240px;
+    height: calc(100% - 55px);
+    background: #746853;
+    padding-top: 15px;
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
   }
 
-  .main-content {
-
-    margin-left: 0;
-    padding: 20px;
+  .side-nav.open {
+    right: 0;
   }
 
+  /* Overlay */
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 55px);
+    background: rgba(0,0,0,0.5);
+    z-index: 900;
+  }
+
+  .overlay.show {
+    display: block;
+  }
+
+
+  .service-table th,
+  .service-table td {
+    padding: 4px;
+    font-size: 10px;
+    
+  }
+  /* Add spacing between Edit/Delete and More */
+.service-table th:nth-child(7),
+.service-table td:nth-child(7) {
+    padding-left: 6px;
+    min-width: 55px;
+}
+
+
+  /* Hide heavy columns */
+  .service-table th:nth-child(2),
+  .service-table td:nth-child(2), /* Duration */
+  .service-table th:nth-child(3),
+  .service-table td:nth-child(3), /* Price */
+  .service-table th:nth-child(4),
+  .service-table td:nth-child(4)  /* Deposit */
+  {
+    display: none;
+  }
+
+  /* Show mobile extra column */
+  .mobile-extra {
+    display: table-cell;
+  }
+
+  /* Edit/Delete buttons shrink */
+  .edit-btn,
+  .delete-btn {
+    padding: 2px 3px;
+    font-size: 9px;
+    border-radius: 6px;
+  }
 }

@@ -36,6 +36,15 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel ="stylesheet" href="./css/categories.css">
     <script>
+         function toggleMenu() {
+        console.log('toggleMenu fired');
+        const menu = document.querySelector('.side-nav');
+        const overlay = document.querySelector('.overlay');
+        console.log('before:', menu.className);
+        menu.classList.toggle('open');
+        overlay.classList.toggle('show');
+        console.log('after:', menu.className);
+    }
         function openEditPopup (id,name){
             document.getElementById("editCategoryId").value = id;
             document.getElementById("editCategoryName").value =name;
@@ -57,16 +66,17 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     
     <!-- top nav-->
-    <div class=" top-nav">
-        <h1> Admin Dashboard</h1>
+    <div class="top-nav">
+        <h1>Admin Dashboard</h1>
          <div class="hamburger" onclick="toggleMenu()">
         <img src="./images/menu.png" alt="Menu">
     </div>
     </div>
-    <!-- side nav-->
+
+    <!-- Side Navigation -->
     <div class="side-nav">
         <a href="Admin-Calendar.php">Calendar</a>
-        <a href="Categories.php" class="active">Categories</a>
+        <a href="Categories.php">Categories</a>
         <a href="Services.php">Services</a>
         <a href="Clients.php">Clients</a>
 
@@ -76,8 +86,10 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <a href="dashboard.php">Dashboard</a>
             <a href="settings.php">Settings</a>
             <a href="logout.php">Log Out</a>
+        </div>
     </div>
-            <div class="overlay" onclick="toggleMenu()"></div>
+        <div class="overlay" onclick="toggleMenu()"></div>
+
 
     <!-- Main content-->
      <div class="main-content">

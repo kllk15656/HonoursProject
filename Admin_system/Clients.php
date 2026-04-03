@@ -33,23 +33,31 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
 
-<!-- Top Nav -->
-<div class="top-nav">
-    <h1>Admin Dashboard</h1>
-    <ul>
-        <li><a href="Dashboard.php">Dashboard</a></li>
-        <li><a href="Setting.php">Settings</a></li>
-        <li><a href="Logout.php">Logout</a></li>
-    </ul>
-</div>
 
-<!-- Side Nav -->
-<div class="side-nav">
-    <a href="Admin-Calendar.php" >Calendar</a>
-    <a href="Categories.php">Categories</a>
-    <a href="Services.php">Services</a>
-    <a href="Clients.php" class="active">Clients</a>
-</div>
+<!-- Top Navigation -->
+    <div class="top-nav">
+        <h1>Admin Dashboard</h1>
+         <div class="hamburger" onclick="toggleMenu()">
+        <img src="./images/menu.png" alt="Menu">
+    </div>
+    </div>
+
+    <!-- Side Navigation -->
+    <div class="side-nav">
+        <a href="Admin-Calendar.php">Calendar</a>
+        <a href="Categories.php">Categories</a>
+        <a href="Services.php">Services</a>
+        <a href="Clients.php">Clients</a>
+
+        <p class="mobile-nav-label">Navigation</p>
+
+        <div class="mobile-nav-links"> 
+            <a href="dashboard.php">Dashboard</a>
+            <a href="settings.php">Settings</a>
+            <a href="logout.php">Log Out</a>
+        </div>
+    </div>
+        <div class="overlay" onclick="toggleMenu()"></div>
 
 <!-- Main Content -->
 <div class="main-content">
@@ -72,6 +80,7 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>Phone No</th>
                     <th>Consent</th>
                     <th>Edit/Delete</th>
+                    <th class="mobile-extra">More</th>
                 </tr>
 
                 <?php if (!empty($clients)): ?>
@@ -116,6 +125,21 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     )">
                                     Delete
                                 </button>
+                            </td>
+                            <td class="mobile-extra">
+                                <button class="extra-btn" onclick="toggleExtra(this)">Additional Fields</button>
+
+                                <div class="extra-fields">
+                                    <p><strong>Email:</strong> <?= htmlspecialchars($cli['email']) ?></p>
+                                    <p><strong>Phone:</strong> <?= htmlspecialchars($cli['phone_number']) ?></p>
+                                    <p><strong>Consent:</strong></p>
+                                    <button class="consent-btn"
+                                    onclick="openConsentPopup(
+                                    '<?= $cli['first_name'] ?>',
+                                    '<?= $cli['last_name'] ?>'
+                                    )">View</button>
+
+                                </div>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -215,6 +239,22 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- JAVASCRIPT -->
 <script>
+    function toggleMenu() {
+    console.log('toggleMenu fired');
+
+    const menu = document.querySelector('.side-nav');
+    const overlay = document.querySelector('.overlay');
+
+    console.log('before:', menu.className);
+    menu.classList.toggle('open');
+    overlay.classList.toggle('show');
+    console.log('after:', menu.className);
+}
+function toggleExtra(btn) {
+    const box = btn.nextElementSibling;
+    box.classList.toggle("show");
+}
+
 
     /* Opens the add client popup */
 function openAddPopup() {
