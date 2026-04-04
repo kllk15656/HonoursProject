@@ -70,9 +70,9 @@ foreach ($rows as $row) {
         <p class="mobile-nav-label">Navigation</p>
 
         <div class="mobile-nav-links"> 
-            <a href="dashboard.php">Dashboard</a>
-            <a href="settings.php">Settings</a>
-            <a href="logout.php">Log Out</a>
+            <a href="Dashboard.php">Dashboard</a>
+            <a href="Settings.php">Settings</a>
+            <a href="Logout.php">Log Out</a>
         </div>
     </div>
         <div class="overlay" onclick="toggleMenu()"></div>

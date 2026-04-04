@@ -1,45 +1,26 @@
 <?php
 session_start();
 
-// If admins not logged in then redirect to Login.php
-if (!isset($_SESSION["admin_id"])){
+// Redirect if admin not logged in
+if (!isset($_SESSION["admin_id"])) {
     header("Location: Login.php");
     exit;
 }
 
-// Requring database connection
 require_once "./db.php";
 
-// Logged in admin id
+// Logged-in admin ID
 $admin_id = $_SESSION["admin_id"];
 
-// Fetch services for logged in admin
+// Fetch services
 $stmt = $pdo->prepare("
-SELECT 
-    s.service_id,
-    s.service_name,
-    s.duration_minutes,
-    s.price,
-    s.deposit_price,
-    c.category_id,
-    c.category_name
-FROM services s
-JOIN categories c ON s.category_id = c.category_id
-WHERE s.admin_id = ?
-ORDER BY c.category_id ASC, s.service_name ASC
+    SELECT service_id, service_name, duration_minutes, price, deposit_price
+    FROM services
+    WHERE admin_id = ?
+    ORDER BY service_name ASC
 ");
 $stmt->execute([$admin_id]);
 $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Fetch categories for dropdowns
-$stmt2 = $pdo->prepare("
-    SELECT category_id, category_name
-    FROM categories
-    WHERE admin_id = ?
-    ORDER BY category_name ASC
-");
-$stmt2->execute([$admin_id]);
-$categories = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -48,250 +29,216 @@ $categories = $stmt2->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/services.css">
-
-    <script>
-        function openEditPopup(id, name, duration, price, deposit, categoryId) {
-            document.getElementById("editServiceId").value = id;
-            document.getElementById("editServiceName").value = name;
-            document.getElementById("editDuration").value = duration;
-            document.getElementById("editPrice").value = price;
-            document.getElementById("editDeposit").value = deposit;
-            document.getElementById("editCategory").value = categoryId;
-
-            document.getElementById("editPopup").style.display = "flex";
-        }
-
-        function openDeletePopup(id, name) {
-            document.getElementById("deleteServiceId").value = id;
-            document.getElementById("deleteServiceName").innerText = name;
-
-            document.getElementById("deletePopup").style.display = "flex";
-        }
-
-        function closePopup(popupId) {
-            document.getElementById(popupId).style.display = "none";
-        }
-    </script>
 </head>
 
 <body>
 
-    <!-- top nav -->
-    <div class="top-nav">
-        <h1>Admin Dashboard</h1>
-        <ul>
-            <li><a href="Dashboard.php">Dashboard</a></li>
-            <li><a href="Setting.php">Settings</a></li>
-            <li><a href="Logout.php">Logout</a></li>
-        </ul>
+<!-- Top Navigation -->
+<div class="top-nav">
+    <h1>Admin Dashboard</h1>
+    <div class="hamburger" onclick="toggleMenu()">
+        <img src="./images/menu.png" alt="Menu">
     </div>
+</div>
 
-    <!-- side nav -->
-    <div class="side-nav">
-        <a href="Admin-Calendar.php">Calendar</a>
-        <a href="Categories.php">Categories</a>
-        <a href="Services.php" class="active">Services</a>
-        <a href="Clients.php">Clients</a>
+<!-- Side Navigation -->
+<div class="side-nav">
+    <a href="Admin-Calendar.php">Calendar</a>
+    <a href="Categories.php">Categories</a>
+    <a href="Services.php" class="active">Services</a>
+    <a href="Clients.php">Clients</a>
+
+    <p class="mobile-nav-label">Navigation</p>
+
+    <div class="mobile-nav-links"> 
+        <a href="dashboard.php">Dashboard</a>
+        <a href="settings.php">Settings</a>
+        <a href="logout.php">Log Out</a>
     </div>
+</div>
 
-    <!-- Main content -->
-    <div class="main-content">
-        <div class="card">
-            <div class="preview">
-                <h1>Services Management</h1>
-                <p>Add, edit or delete and manage your business services.</p>
-                <a href="#addPopup" class="add-btn">Add Service</a>
-            </div>
+<div class="overlay" onclick="toggleMenu()"></div>
 
-            <div class="service-table">
-                <h2>Services</h2>
+<!-- Main Content -->
+<div class="main-content">
+    <div class="card">
+        <div class="preview">
+            <h1>Services Management</h1>
+            <p>Add, edit or delete and manage your business services.</p>
+            <button class="add-btn" onclick="openAddPopup()">Add Service</button>
+        </div>
 
-                <table>
-                    <tr>
-                       
-                        <th>Service Name</th>
-                        <th>Duration Minutes</th>
-                        <th>Price</th>
-                        <th>Deposit Price</th>
-                        <th>Edit / Delete</th>
-                    </tr>
+        <div class="service-table">
+            <h2>Services</h2>
 
-                    <?php
-                    $currentCategory = null;
-                    $i = 1;
+            <table>
+                <tr>
+                    <th>Service Name</th>
+                    <th class="desktop-only">Duration</th>
+                    <th class="desktop-only">Price</th>
+                    <th class="desktop-only">Deposit</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th class="mobile-extra">More</th>
+                </tr>
+                
 
-                    foreach ($services as $ser):
-                        if ($currentCategory !== $ser['category_name']):
-                            $currentCategory = $ser['category_name'];
-                    ?>
-                        <tr class="category-header">
-                            <td colspan="6"><strong><?= $currentCategory ?></strong></td>
+                <?php if (!empty($services)): ?>
+                    <?php foreach ($services as $srv): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($srv['service_name']) ?></td>
+
+                            <!-- Desktop-only fields -->
+                            <td class="desktop-only"><?= htmlspecialchars($srv['duration_minutes']) ?> mins</td>
+                            <td class="desktop-only">£<?= number_format($srv['price'], 2) ?></td>
+                            <td class="desktop-only">£<?= number_format($srv['deposit_price'], 2) ?></td>
+
+                            <!-- Edit -->
+                            <td>
+                                <button class="edit-btn"
+                                    onclick="openEditPopup(
+                                        <?= $srv['service_id'] ?>,
+                                        '<?= $srv['service_name'] ?>',
+                                        '<?= $srv['duration_minutes'] ?>',
+                                        '<?= $srv['price'] ?>',
+                                        '<?= $srv['deposit_price'] ?>'
+                                    )">
+                                    Edit
+                                </button>
+                            </td>
+
+                            <!-- Delete -->
+                            <td>
+                                <button class="delete-btn"
+                                    onclick="openDeletePopup(
+                                        <?= $srv['service_id'] ?>,
+                                        '<?= $srv['service_name'] ?>'
+                                    )">
+                                    Delete
+                                </button>
+                            </td>
+
+                            <!-- MOBILE EXTRA FIELDS -->
+                            <td class="mobile-extra">
+                                <button class="extra-btn" onclick="toggleExtra(this)">Additional Fields</button>
+
+                                <div class="extra-fields">
+                                    <p><strong>Duration:</strong> <?= htmlspecialchars($srv['duration_minutes']) ?> mins</p>
+                                    <p><strong>Price:</strong> £<?= number_format($srv['price'], 2) ?></p>
+                                    <p><strong>Deposit:</strong> £<?= number_format($srv['deposit_price'], 2) ?></p>
+                                </div>
+                            </td>
                         </tr>
-                    <?php endif; ?>
+                    <?php endforeach; ?>
 
+                <?php else: ?>
                     <tr>
-                        
-                        <td><?= htmlspecialchars($ser['service_name']) ?></td>
-                        <td><?= htmlspecialchars($ser['duration_minutes']) ?></td>
-                        <td>£<?= htmlspecialchars($ser['price']) ?></td>
-                        <td>£<?= htmlspecialchars($ser['deposit_price']) ?></td>
-
-                        <td>
-                            <button class="edit-btn"
-                                onclick="openEditPopup(
-                                    <?= $ser['service_id'] ?>,
-                                    '<?= addslashes($ser['service_name']) ?>',
-                                    <?= $ser['duration_minutes'] ?>,
-                                    <?= $ser['price'] ?>,
-                                    <?= $ser['deposit_price'] ?>,
-                                    <?= $ser['category_id'] ?>
-                                )">
-                                Edit
-                            </button>
-
-                            <button class="delete-btn"
-                                onclick="openDeletePopup(
-                                    <?= $ser['service_id'] ?>,
-                                    '<?= addslashes($ser['service_name']) ?>'
-                                )">
-                                Delete
-                            </button>
-                        </td>
+                        <td colspan="7">No services found.</td>
                     </tr>
-
-                    <?php $i++; endforeach; ?>
-                </table>
-            </div>
+                <?php endif; ?>
+            </table>
         </div>
     </div>
+</div>
 
-    <!-- ADD POPUP -->
-    <div id="addPopup" class="popup">
-        <div class="popup-content">
+<!-- ADD SERVICE POPUP -->
+<div id="add-popup" class="popup">
+    <div class="popup-content">
+        <a href="Services.php" class="close-btn">&times;</a>
+        <h2>Add Service</h2>
 
-                        <!--  return the user to service --  -->
-            <a href="Services.php" class="close-btn">&times;</a>
-            <h3 style="margin-bottom: 13px; text-align: center; ">Add Service</h3>
-                            
-            <!--  Send news service data-->
-            <form action="Add_service.php" method="POST">
-                <label>Service Name</label>
-                <input type="text" name="service_name"  placeholder="Gel Nails" required>
+        <form action="Add_service.php" method="POST">
+            <label>Service Name</label>
+            <input type="text" name="service_name" required>
 
-                <label>Duration (minutes)</label>
-                <input type="number" name="duration_minutes" placeholder="e.g 60 " required>
+            <label>Duration (minutes)</label>
+            <input type="number" name="duration_minutes" required>
 
-                <label> Full Price (£)</label>
-                <input type="number" step="0.01" name="price" id="addPrice"
-                oninput="calculateDepositPrice('addPrice', 'addDepositPercent', 'addDeposit')" 
-                placeholder="Enter full price amount."required>
-                <label>Deposit Percentage (%)</label>
-                <input type="number" id="addDepositPercent"
-                    oninput="calculateDepositPrice('addPrice', 'addDepositPercent', 'addDeposit')"
-                    placeholder="Enter percentage of deposit. ">
+            <label>Price (£)</label>
+            <input type="number" step="0.01" name="price" required>
 
-                <label> Automatic Deposit (£)</label>
-                <input type="number" step="0.01" name="deposit_price" id="addDeposit" required>
+            <label>Deposit (£)</label>
+            <input type="number" step="0.01" name="deposit_price" required>
 
-
-                <label>Category</label>
-                <select name="category_id" required>
-                    <option value="">Select Category</option>
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?= $cat['category_id'] ?>">
-                            <?= htmlspecialchars($cat['category_name']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-
-                <button type="submit" class="popup-btn">Add Service</button>
-            </form>
-        </div>
+            <button type="submit" class="popup-btn">Add Service</button>
+        </form>
     </div>
+</div>
 
-    <!-- EDIT POPUP -->
-    <div id="editPopup" class="popup">
-        <div class="popup-content">
-            <span class="close-btn" onclick="closePopup('editPopup')">&times;</span>
-            <h3 style="margin-bottom: 13px; text-align: center; ">Edit Service</h3>
+<!-- EDIT SERVICE POPUP -->
+<div id="edit-popup" class="popup">
+    <div class="popup-content">
+        <a href="Services.php" class="close-btn">&times;</a>
+        <h2>Edit Service</h2>
 
-            <form action="Edit_service.php" method="POST">
-                <input type="hidden" name="service_id" id="editServiceId">
+        <form action="Edit_service.php" method="POST">
+            <input type="hidden" id="edit-id" name="service_id">
 
-                <label>Service Name</label>
-                <input type="text" name="service_name" id="editServiceName" required>
+            <label>Service Name</label>
+            <input type="text" id="edit-name" name="service_name">
 
-                <label>Duration (minutes)</label>
-                <input type="number" name="duration_minutes" id="editDuration" required>
+            <label>Duration (minutes)</label>
+            <input type="number" id="edit-duration" name="duration_minutes">
 
-                <label>Price (£)</label>
-                <input type="number" step="0.01" name="price" id="editPrice" required>
-                
-                
-                <label>Deposit (%)</label>
-                <input type="number" id="editDepositPercent"
-                oninput="calculateDepositPrice('editPrice', 'editDepositPercent', 'editDeposit')"
-                placeholder="Enter percentage of deposit. ">
+            <label>Price (£)</label>
+            <input type="number" step="0.01" id="edit-price" name="price">
 
+            <label>Deposit (£)</label>
+            <input type="number" step="0.01" id="edit-deposit" name="deposit_price">
 
-                <label>Deposit (£)</label>
-                <input type="number" step="0.01" name="deposit_price" id="editDeposit" required>
-
-              
-
-                <label>Category</label>
-                <select name="category_id" id="editCategory" required>
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?= $cat['category_id'] ?>">
-                            <?= htmlspecialchars($cat['category_name']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-
-                <button type="submit" class="popup-btn">Save Changes</button>
-            </form>
-        </div>
+            <button type="submit" class="popup-btn">Update</button>
+        </form>
     </div>
+</div>
 
-    <!-- DELETE POPUP -->
-    <div id="deletePopup" class="popup">
-        <div class="popup-content">
-            <span class="close-btn" onclick="closePopup('deletePopup')">&times;</span>
-            <h3>Delete Service</h3>
+<!-- DELETE SERVICE POPUP -->
+<div id="delete-popup" class="popup">
+    <div class="popup-content">
+        <a href="Services.php" class="close-btn">&times;</a>
+        <h2>Delete Service</h2>
 
-            <p>Are you sure you want to delete: <strong id="deleteServiceName"></strong>?</p>
+        <p>Are you sure you want to delete <strong id="delete-name"></strong>?</p>
 
-            <form action="Delete_service.php" method="POST">
-                <input type="hidden" name="service_id" id="deleteServiceId">
-
-                <button type="submit" class="popup-btn" style="background:#d83030;color:white;">
-                    Delete
-                </button>
-            </form>
-        </div>
+        <form action="Delete_service.php" method="POST">
+            <input type="hidden" id="delete-id" name="service_id">
+            <button type="submit" class="popup-btn">Yes, Delete</button>
+        </form>
     </div>
+</div>
 
-    <script>
-        function calculateDepositPrice(priceInputId, percentInputId, depositInputId) { 
+<!-- JAVASCRIPT -->
+<script>
+function toggleMenu() {
+    const menu = document.querySelector('.side-nav');
+    const overlay = document.querySelector('.overlay');
+    menu.classList.toggle('open');
+    overlay.classList.toggle('show');
+}
 
-            const priceField = document.getElementById(priceInputId); 
-            const percentField = document.getElementById(percentInputId);
-            const depositField = document.getElementById(depositInputId);
+function toggleExtra(btn) {
+    const box = btn.nextElementSibling;
+    box.classList.toggle("show");
+}
 
-            const price = parseFloat(document.getElementById(priceInputId).value); 
-            const percent = parseFloat(document.getElementById(percentInputId).value); 
+function openAddPopup() {
+    document.getElementById("add-popup").style.display = "flex";
+}
 
-            // if the field is empty or invaild
-            if (isNaN(price) || isNaN(percent) || percent < 0) 
-                { depositField.value = ""; return;
+function openEditPopup(id, name, duration, price, deposit) {
+    document.getElementById("edit-id").value = id;
+    document.getElementById("edit-name").value = name;
+    document.getElementById("edit-duration").value = duration;
+    document.getElementById("edit-price").value = price;
+    document.getElementById("edit-deposit").value = deposit;
+    document.getElementById("edit-popup").style.display = "flex";
+}
 
-                }
-                // Calculate deposit
-                const deposit = (price * percent) / 100;
-                //  // Update deposit field 
-                depositField.value = deposit.toFixed(2);
-            }
-    </script>
+function openDeletePopup(id, name) {
+    document.getElementById("delete-id").value = id;
+    document.getElementById("delete-name").innerText = name;
+    document.getElementById("delete-popup").style.display = "flex";
+}
+</script>
 
 </body>
 </html>

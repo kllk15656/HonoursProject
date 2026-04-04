@@ -76,16 +76,16 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Side Navigation -->
     <div class="side-nav">
         <a href="Admin-Calendar.php">Calendar</a>
-        <a href="Categories.php">Categories</a>
+        <a href="Categories.php"class="active">Categories</a>
         <a href="Services.php">Services</a>
         <a href="Clients.php">Clients</a>
 
         <p class="mobile-nav-label">Navigation</p>
 
         <div class="mobile-nav-links"> 
-            <a href="dashboard.php">Dashboard</a>
-            <a href="settings.php">Settings</a>
-            <a href="logout.php">Log Out</a>
+            <a href="Dashboard.php">Dashboard</a>
+            <a href="Settings.php">Settings</a>
+            <a href="Logout.php">Log Out</a>
         </div>
     </div>
         <div class="overlay" onclick="toggleMenu()"></div>

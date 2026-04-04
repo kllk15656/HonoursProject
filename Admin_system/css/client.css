@@ -88,10 +88,8 @@ body {
   color: black;
 }
 
-.mobile-nav-label,
-.mobile-nav-links {
-  display: none;
-}
+
+
 
 /* ============================
    MAIN CONTENT
@@ -140,6 +138,7 @@ body {
 
 .delete-btn { background: #d83030; }
 .delete-btn:hover { background: #662121; color: white; }
+
 
 .consent-btn { background: #FFC107; }
 .consent-btn:hover { background: #816a2b; color: white; }
@@ -292,10 +291,40 @@ body {
 
   .side-nav.open { right: 0; }
 
-  .mobile-nav-label,
-  .mobile-nav-links {
-    display: block;
-  }
+  /* Show the mobile nav links */
+    .mobile-nav-links {
+        display: block;
+        margin-top: 15px;
+        border-top: 1px solid rgba(255,255,255,0.3);
+        padding-top: 10px;
+    }
+
+    .mobile-nav-links a {
+        display: block;
+        padding: 12px 18px;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .mobile-nav-links a:hover {
+        background: #C6B071;
+        color: black;
+    }
+    .mobile-nav-label {
+        display: block;
+        color: #ddd;
+        font-size: 13px;
+        margin: 15px 18px 5px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.8;
+    }
+
+    /* Hide top nav links on mobile */
+    .top-nav ul {
+        display: none;
+    }
 
   .main-content {
     margin-left: 0;

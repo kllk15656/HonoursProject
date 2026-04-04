@@ -19,7 +19,7 @@ body {
 .bear-icon {
   position: absolute;
   top: 5px;
-  left: 0px;
+  left: 40%;
   width: 200px;      /* adjust to match image */
   height: auto;
   
@@ -131,5 +131,11 @@ body {
 .info-section {
     width: 100%;
 }
+.bear-icon {
+   display: none;
+   
+  }
+  
+
 
 }

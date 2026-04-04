@@ -47,14 +47,14 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="Admin-Calendar.php">Calendar</a>
         <a href="Categories.php">Categories</a>
         <a href="Services.php">Services</a>
-        <a href="Clients.php">Clients</a>
+        <a href="Clients.php"class="active">Clients</a>
 
         <p class="mobile-nav-label">Navigation</p>
 
         <div class="mobile-nav-links"> 
-            <a href="dashboard.php">Dashboard</a>
-            <a href="settings.php">Settings</a>
-            <a href="logout.php">Log Out</a>
+            <a href="Dashboard.php">Dashboard</a>
+            <a href="Settings.php">Settings</a>
+            <a href="Logout.php">Log Out</a>
         </div>
     </div>
         <div class="overlay" onclick="toggleMenu()"></div>
@@ -189,10 +189,10 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <strong id="consent-name"></strong> consents to us securely storing their personal 
             information for <strong>6 years</strong> from their last appointment.
         </p>
-
         <p>
             After 6 years with no new appointments, this data will be automatically deleted.
-        </p>
+        </p><br>
+        <p><strong id="consent-name"></strong> The client understands that deposits are non-refunable.</p>
     </div>
 </div>
 
@@ -225,14 +225,14 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!-- DELETE POPUP -->
 <div id="delete-popup" class="popup">
     <div class="popup-content">
-        <a href="Clients.php" class="close-btn" onclick="closePopup('delete-popup')">&times;</a>
+        <a href="Clients.php" class="close-btn" onclick="closePopup('delete-popup')" >&times;</a>
         <h2>Delete Client</h2>
 
         <p>Are you sure you want to delete <strong id="delete-name"></strong>?</p>
 
         <form action="Delete_client.php" method="POST">
             <input type="hidden" id="delete-id" name="client_id">
-            <button type="submit" class="popup-btn">Yes, Delete</button>
+            <button type="submit" style="background:#d83030;color:white;" class="popup-btn" >Yes, Delete</button>
         </form>
     </div>
 </div>

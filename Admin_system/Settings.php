@@ -41,21 +41,28 @@ $website_url = $admin['website_url'] ?? "";
 
 <!-- Top Nav -->
 <div class="top-nav">
-    <h1>Admin Dashboard</h1>
-    <ul>
-        <li><a href="Dashboard.php">Dashboard</a></li>
-        <li><a href="Setting.php">Settings</a></li>
-        <li><a href="Logout.php">Logout</a></li>
-    </ul>
-</div>
+        <h1>Admin Dashboard</h1>
+         <div class="hamburger" onclick="toggleMenu()">
+        <img src="./images/menu.png" alt="Menu">
+    </div>
+    </div>
 
-<!-- Side Nav -->
-<div class="side-nav">
-    <a href="Admin-Calendar.php">Calendar</a>
-    <a href="Categories.php">Categories</a>
-    <a href="Services.php">Services</a>
-    <a href="Clients.php">Clients</a>
-</div>
+    <!-- Side Navigation -->
+    <div class="side-nav">
+        <a href="Admin-Calendar.php">Calendar</a>
+        <a href="Categories.php">Categories</a>
+        <a href="Services.php">Services</a>
+        <a href="Clients.php">Clients</a>
+
+        <p class="mobile-nav-label">Navigation</p>
+
+        <div class="mobile-nav-links"> 
+            <a href="Dashboard.php">Dashboard</a>
+            <a href="Settings.php"class="active">Settings</a>
+            <a href="Logout.php">Log Out</a>
+        </div>
+    </div>
+        <div class="overlay" onclick="toggleMenu()"></div>
 
 <!-- Main Content -->
 <div class="main-content">
@@ -143,6 +150,20 @@ $website_url = $admin['website_url'] ?? "";
 
     </div>
 </div>
+
+<script>
+    function toggleMenu() {
+    console.log('toggleMenu fired');
+
+    const menu = document.querySelector('.side-nav');
+    const overlay = document.querySelector('.overlay');
+
+    console.log('before:', menu.className);
+    menu.classList.toggle('open');
+    overlay.classList.toggle('show');
+    console.log('after:', menu.className);
+}
+</script>
 
 </body>
 </html>
