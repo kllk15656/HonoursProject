@@ -170,7 +170,7 @@ function showTimes(dateStr) {
         return;
     }
 
-    // ⭐ Duration + cleanup (10 mins per service)
+    // Duration + cleanup (10 mins per service)
     const duration = Number(sessionStorage.getItem("service_duration")) || 0;
     const cleanup = cart.length * 10;  // 10 mins per service
 
@@ -205,7 +205,7 @@ function showTimes(dateStr) {
             const total = duration + cleanup;
             const blockedSlots = getBlockedSlots(cleanTime, total);
 
-            // ⭐ PROTOTYPE: remove blocked slots locally
+            // remove blocked slots locally
             availability[selectedDate] = availability[selectedDate].filter(
                 slot => !blockedSlots.includes(slot)
             );

@@ -51,7 +51,7 @@ if (!$admin_id) {
 
       <div class="phone">
         Contact Number:
-        <!-- ⭐ FIXED: phone now accepts leading zeros -->
+        <!--  FIXED: phone now accepts leading zeros -->
         <input type="tel" id="phone" name="phone" pattern="[0-9]{10,15}">
 
       </div>
