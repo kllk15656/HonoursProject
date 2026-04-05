@@ -142,7 +142,7 @@ foreach ($services as $service) {
       </table>
     </div>
 
-    <!-- ⭐ REQUIRED FOR CALENDAR TO READ CART -->
+    <!--  REQUIRED FOR CALENDAR TO READ CART -->
     <div class="cart-total">
       <strong>Total Price</strong>
       <strong id="total-price">£0</strong>
@@ -153,7 +153,6 @@ foreach ($services as $service) {
 </div>
 
 <script>
-
 // SIDEBAR TOGGLE
 const hamburgerMenu = document.getElementById('hamburger-menu');
 const sidebar = document.querySelector('.sidebar');
@@ -250,10 +249,10 @@ function updateCart() {
     `).join('');
   }
 
-  // ⭐ SAVE CART
+  // SAVE CART
   sessionStorage.setItem("cart", JSON.stringify(cart));
 
-  // ⭐ UPDATE TOTAL PRICE
+  // UPDATE TOTAL PRICE (DEPOSIT ONLY)
   const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
   document.getElementById("total-price").textContent = "£" + total;
 
@@ -269,21 +268,32 @@ function updateCart() {
   updateCartTimer();
 }
 
-// ADD TO CART
+// ADD TO CART (FINAL VERSION)
 document.querySelectorAll('.add-btn').forEach(btn => {
   btn.addEventListener('click', () => {
 
     cart.push({
       id: btn.dataset.id,
       name: btn.dataset.name,
-      price: parseFloat(btn.dataset.price),
-      deposit: parseFloat(btn.dataset.deposit)
+
+      //  Deposit is what the client pays now
+      price: parseFloat(btn.dataset.deposit),
+
+      //  Full price stored separately for admin + appointment record
+      full_price: parseFloat(btn.dataset.price),
+
+      //  Duration (needed for end time)
+      duration: parseFloat(btn.dataset.duration)
     });
 
-    // ⭐ SAVE CART IMMEDIATELY
+    // Save cart
     sessionStorage.setItem("cart", JSON.stringify(cart));
 
-    // ⭐ RESET TIMER
+    // Save service for Payment page (deposit only)
+    sessionStorage.setItem("selected_service_name", btn.dataset.name);
+    sessionStorage.setItem("selected_service_price", btn.dataset.deposit);
+
+    // Reset timer
     setCartTimestamp();
 
     updateCart();

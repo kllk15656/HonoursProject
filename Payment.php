@@ -76,43 +76,38 @@ if (!$admin_id) {
 </div>
 
 <script>
-// Load booking + client details from sessionStorage
-const booking = {
-    service: sessionStorage.getItem("selected_service_name"),
-    price: sessionStorage.getItem("selected_service_price"),
-    date: sessionStorage.getItem("selected_date"),
-    time: sessionStorage.getItem("selected_time"),
-    fname: sessionStorage.getItem("client_fname"),
-    lname: sessionStorage.getItem("client_lname"),
-    email: sessionStorage.getItem("client_email"),
-    phone: sessionStorage.getItem("client_phone")
-};
+// Load cart
+const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
 
-// Safety check: if no booking info, send back
-if (!booking.service || !booking.date || !booking.time) {
-    window.location.href = "Details.php?admin_id=<?php echo $admin_id; ?>";
+// Safety check: if cart is empty, send back
+if (cart.length === 0) {
+    window.location.href = "Services.php?admin_id=<?php echo $admin_id; ?>";
 }
 
-// Update the summary box
-document.getElementById("service-name").textContent = booking.service || "Service";
-document.getElementById("service-price").textContent = "£" + (booking.price || "0");
-document.getElementById("total-price").textContent = "£" + (booking.price || "0");
+// Calculate totals
+const depositTotal = cart.reduce((sum, s) => sum + s.price, 0);
+const fullTotal = cart.reduce((sum, s) => sum + s.full_price, 0);
 
-// Save confirmation flag
-function saveBeforeConfirmation() {
-    sessionStorage.setItem("booking_confirmed", "true");
-}
+// Display service names
+document.getElementById("service-name").textContent =
+  cart.map(s => s.name).join(", ");
 
-// Fake payment for prototype
+// Display deposit total (what client pays now)
+document.getElementById("service-price").textContent = "£" + depositTotal;
+document.getElementById("total-price").textContent = "£" + depositTotal;
+
+// Fake payment → redirect to confirmation
 function fakePayment() {
     alert("This is a prototype. No real payment has been taken.");
 
-    saveBeforeConfirmation();
+    // Mark booking as confirmed
+    sessionStorage.setItem("booking_confirmed", "true");
 
-    // Redirect to confirmation with admin_id
+    // Redirect to confirmation
     window.location.href = "Confirmation.php?admin_id=<?php echo $admin_id; ?>";
 }
 </script>
+
 
 </body>
 </html>

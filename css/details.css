@@ -149,4 +149,16 @@ p{
 .terms a:hover {
   text-decoration: none;
 }
+/* Disabled state */
+.payment-btn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Enabled state */
+.payment-btn.active-btn {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
 

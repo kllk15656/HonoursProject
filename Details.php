@@ -51,7 +51,9 @@ if (!$admin_id) {
 
       <div class="phone">
         Contact Number:
-        <input type="number" id="phone" name="phone">
+        <!-- ⭐ FIXED: phone now accepts leading zeros -->
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10,15}">
+
       </div>
     </div>
 
@@ -86,15 +88,7 @@ if (!$admin_id) {
 <button class="payment-btn" disabled>Payment</button>
 
 <script>
-// Make sure date/time exist
-const selectedDate = sessionStorage.getItem("selected_date");
-const selectedTime = sessionStorage.getItem("selected_time");
-
-if (!selectedDate || !selectedTime) {
-  window.location.href = "Calendar.php?admin_id=<?php echo $admin_id; ?>";
-}
-
-// Validate form in real time
+// Validate form
 function validateForm() {
   const fname   = document.getElementById("fname").value.trim();
   const lname   = document.getElementById("lname").value.trim();
@@ -107,38 +101,35 @@ function validateForm() {
 
   if (fname && lname && email && phone && deposit && terms) {
     paymentBtn.disabled = false;
+    paymentBtn.classList.add("active-btn");
   } else {
     paymentBtn.disabled = true;
+    paymentBtn.classList.remove("active-btn");
   }
 }
 
-// Attach validation listeners
-document.getElementById("fname").addEventListener("input", validateForm);
-document.getElementById("lname").addEventListener("input", validateForm);
-document.getElementById("email").addEventListener("input", validateForm);
-document.getElementById("phone").addEventListener("input", validateForm);
-document.getElementById("deposit").addEventListener("change", validateForm);
-document.getElementById("terms").addEventListener("change", validateForm);
+// Attach listeners
+["fname","lname","email","phone"].forEach(id => {
+  document.getElementById(id).addEventListener("input", validateForm);
+});
+["deposit","terms"].forEach(id => {
+  document.getElementById(id).addEventListener("change", validateForm);
+});
 
-// Handle Payment button click
-const paymentBtn = document.querySelector(".payment-btn");
-
-paymentBtn.addEventListener("click", function (event) {
+// Payment button click
+document.querySelector(".payment-btn").addEventListener("click", function (event) {
   event.preventDefault();
 
-  const fname = document.getElementById("fname").value.trim();
-  const lname = document.getElementById("lname").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-
-  sessionStorage.setItem("client_fname", fname);
-  sessionStorage.setItem("client_lname", lname);
-  sessionStorage.setItem("client_email", email);
-  sessionStorage.setItem("client_phone", phone);
+  sessionStorage.setItem("client_fname", document.getElementById("fname").value.trim());
+  sessionStorage.setItem("client_lname", document.getElementById("lname").value.trim());
+  sessionStorage.setItem("client_email", document.getElementById("email").value.trim());
+  sessionStorage.setItem("client_phone", document.getElementById("phone").value.trim());
 
   window.location.href = "Payment.php?admin_id=<?php echo $admin_id; ?>";
 });
 </script>
+
+
 
 </body>
 </html>

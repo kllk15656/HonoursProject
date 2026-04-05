@@ -151,14 +151,17 @@ function filterTimesByDuration(slots, duration, cleanup) {
 function showTimes(dateStr) {
     const selectedDate = dateStr;
 
+    // Save selected date
     sessionStorage.setItem("selected_date", dateStr);
     updateSelectionInfo();
 
+    // Highlight selected day
     document.querySelectorAll(".day").forEach(d => d.classList.remove("selected-day"));
     const dayNum = dateStr.split("-")[2];
     const clicked = [...document.querySelectorAll(".day")].find(d => d.innerText == dayNum);
     if (clicked) clicked.classList.add("selected-day");
 
+    // Load available slots
     let slots = availability[dateStr] || [];
     timesDiv.innerHTML = "";
 
@@ -167,11 +170,11 @@ function showTimes(dateStr) {
         return;
     }
 
-    // ⭐ Get duration + cleanup
+    // ⭐ Duration + cleanup (10 mins per service)
     const duration = Number(sessionStorage.getItem("service_duration")) || 0;
-    const cleanup = Number(sessionStorage.getItem("cleanup_time")) || 0;
+    const cleanup = cart.length * 10;  // 10 mins per service
 
-    // ⭐ Filter times based on duration
+    // Filter times based on duration + cleanup
     if (duration > 0) {
         slots = filterTimesByDuration(slots, duration, cleanup);
     }
@@ -183,53 +186,41 @@ function showTimes(dateStr) {
 
     timeMessage.textContent = "Select a time";
 
+    // Build time buttons
     slots.forEach(t => {
         const cleanTime = t.substring(0, 5);
-
         const btn = document.createElement("button");
         btn.innerText = cleanTime;
 
         btn.onclick = () => {
+            // Highlight selected time
             document.querySelectorAll("#times button").forEach(b => b.classList.remove("selected"));
             btn.classList.add("selected");
 
+            // Save selected time
             sessionStorage.setItem("selected_time", cleanTime);
             updateSelectionInfo();
 
-            // ⭐ Calculate all blocked slots
+            // Calculate blocked slots (duration + cleanup)
             const total = duration + cleanup;
             const blockedSlots = getBlockedSlots(cleanTime, total);
 
-            // ⭐ Send all blocked slots to backend
-            fetch("reserve_time.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    admin_id: adminId,
-                    date: selectedDate,
-                    slots: blockedSlots
-                })
-            })
-            .then(res => res.text())
-            .then(text => {
-                let result;
-                try { result = JSON.parse(text); }
-                catch { return; }
+            // ⭐ PROTOTYPE: remove blocked slots locally
+            availability[selectedDate] = availability[selectedDate].filter(
+                slot => !blockedSlots.includes(slot)
+            );
 
-                fetch("get_client_availability.php?admin_id=" + adminId)
-                    .then(res => res.json())
-                    .then(data => {
-                        availability = data;
-                        buildCalendar();
-                        showTimes(selectedDate);
-                    });
-            });
+            // Rebuild UI
+            buildCalendar();
+            showTimes(selectedDate);
+
+            //  NO REDIRECT HERE — user must click Continue
         };
 
         timesDiv.appendChild(btn);
     });
 }
-
+  
 // CART PANEL TOGGLE
 
 const cartIcon = document.getElementById('cart-icon');
@@ -482,6 +473,19 @@ document.getElementById("clear-selection").addEventListener("click", () => {
   timeMessage.textContent = "Select a date";
   updateSelectionInfo();
 });
+
+document.getElementById("continue-btn").onclick = () => {
+    const date = sessionStorage.getItem("selected_date");
+    const time = sessionStorage.getItem("selected_time");
+
+    if (!date || !time) {
+        alert("Please select a date and time before continuing.");
+        return;
+    }
+
+    window.location.href = "Details.php?admin_id=" + adminId;
+};
+
 
 </script>
 

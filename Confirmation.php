@@ -38,32 +38,40 @@ if (!$admin_id) {
 </div>
 
 <script>
-// Load booking details from sessionStorage
-const service = sessionStorage.getItem("selected_service_name");
+// Load cart
+const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+
+// Load date/time
 const date = sessionStorage.getItem("selected_date");
 const time = sessionStorage.getItem("selected_time");
 
-// Safety check: if missing, send back
-if (!service || !date || !time) {
-    window.location.href = "details.php?admin_id=<?php echo $admin_id; ?>";
+// Safety check
+if (cart.length === 0 || !date || !time) {
+    window.location.href = "Services.php?admin_id=<?php echo $admin_id; ?>";
 }
 
-// Insert into page
-document.getElementById("service").textContent = service;
+// Display services
+document.getElementById("service").textContent =
+    cart.map(s => s.name).join(", ");
+
 document.getElementById("date").textContent = date;
 document.getElementById("time").textContent = time;
 
-// OPTIONAL: prepare data to send to backend
+// Prepare full booking data
 const bookingData = {
     admin_id: "<?php echo $admin_id; ?>",
-    service: service,
+    services: cart,
     date: date,
     time: time,
+    deposit_total: cart.reduce((sum, s) => sum + s.price, 0),
+    total_price: cart.reduce((sum, s) => sum + s.full_price, 0),
     fname: sessionStorage.getItem("client_fname"),
     lname: sessionStorage.getItem("client_lname"),
     email: sessionStorage.getItem("client_email"),
     phone: sessionStorage.getItem("client_phone")
 };
+
+// Send to backend
 fetch("save_booking.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -73,10 +81,8 @@ fetch("save_booking.php", {
 .then(data => {
     if (data.success) {
         console.log("Booking saved:", data);
-
-        //clear sessionStorage now that booking is saved
+        // Optionally clear sessionStorage
         // sessionStorage.clear();
-
     } else {
         console.error("Booking failed:", data.error);
         alert("There was an issue saving your booking. Please try again.");
@@ -86,11 +92,8 @@ fetch("save_booking.php", {
     console.error("Fetch error:", err);
     alert("A network error occurred while saving your booking.");
 });
-
-
-
-
 </script>
+
 
 </body>
 </html>
