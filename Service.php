@@ -2,18 +2,18 @@
 session_start();
 require "./Admin_system/db.php";
 
-// getting the admin id
+// Validate admin
 if (!isset($_GET['admin_id'])) {
     die("Admin not found.");
 }
 $admin_id = $_GET['admin_id'];
 
-// fetching the categories
+// Fetch categories
 $stmt = $pdo->prepare("SELECT * FROM categories WHERE admin_id = ?");
 $stmt->execute([$admin_id]);
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// fetching the services
+// Fetch services
 $stmt = $pdo->prepare("
     SELECT s.*, c.category_name 
     FROM services s
@@ -24,7 +24,7 @@ $stmt = $pdo->prepare("
 $stmt->execute([$admin_id]);
 $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// grouping services by category
+// Group services by category
 $grouped = [];
 foreach ($services as $service) {
     $grouped[$service['category_name']][] = $service;
@@ -50,11 +50,10 @@ foreach ($services as $service) {
   <button class="hamburger-menu" id="hamburger-menu">&#9776;</button>
 </header>
 
-
 <!-- Sidebar -->
 <div class="sidebar">
-  <form action="#" method="GET">
-    <input type="text" name="search" placeholder="Search Services..." />
+  <form action="#" method="GET" onsubmit="return false;">
+    <input type="text" id="service-search" placeholder="Search Services..." />
   </form>
 
   <div class="categories">
@@ -81,6 +80,7 @@ foreach ($services as $service) {
 
 <div class="header"><h2>Services</h2></div>
 
+<!-- Services -->
 <div class="services-box">
   <h2>Our services</h2>
   <div class="reminder">• Reminder: Deposits are non-refundable</div>
@@ -112,7 +112,8 @@ foreach ($services as $service) {
                 data-id="<?= $service['service_id'] ?>"
                 data-name="<?= htmlspecialchars($service['service_name']) ?>"
                 data-price="<?= $service['price'] ?>"
-                data-deposit="<?= $service['deposit_price'] ?>">
+                data-deposit="<?= $service['deposit_price'] ?>"
+                data-duration="<?= $service['duration_minutes'] ?>">
                 Add
               </button>
             </td>
@@ -142,7 +143,6 @@ foreach ($services as $service) {
       </table>
     </div>
 
-    <!--  REQUIRED FOR CALENDAR TO READ CART -->
     <div class="cart-total">
       <strong>Total Price</strong>
       <strong id="total-price">£0</strong>
@@ -152,20 +152,60 @@ foreach ($services as $service) {
   </div>
 </div>
 
+<!-- JAVASCRIPT -->
 <script>
+// =========================
 // SIDEBAR TOGGLE
+// =========================
 const hamburgerMenu = document.getElementById('hamburger-menu');
 const sidebar = document.querySelector('.sidebar');
 
 hamburgerMenu.addEventListener('click', () => {
   sidebar.classList.toggle('open');
+  hamburgerMenu.classList.toggle('open');
 });
 
+// =========================
+// SEARCH → AUTO OPEN CATEGORY
+// =========================
+const searchInput = document.getElementById("service-search");
+
+searchInput.addEventListener("input", () => {
+  const value = searchInput.value.toLowerCase();
+
+  document.querySelectorAll(".category-content").forEach(section => {
+    section.style.display = "none";
+  });
+
+  document.querySelectorAll(".category-header .toggle").forEach(t => {
+    t.textContent = "+";
+  });
+
+  if (value.trim() === "") return;
+
+  document.querySelectorAll(".category-content").forEach(section => {
+    const rows = section.querySelectorAll("tr");
+
+    rows.forEach(row => {
+      if (row.innerText.toLowerCase().includes(value)) {
+        section.style.display = "block";
+        section.previousElementSibling.querySelector(".toggle").textContent = "–";
+
+        section.previousElementSibling.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    });
+  });
+});
+
+// =========================
 // CART OPEN / CLOSE
+// =========================
 const cartIcon = document.getElementById('cart-icon');
 const sideCart = document.getElementById('side-cart');
 const closeCart = document.getElementById('close-cart');
-const cartPanel = document.querySelector('.cart-panel');
 
 cartIcon.addEventListener('click', e => {
   e.stopPropagation();
@@ -176,7 +216,9 @@ closeCart.addEventListener('click', () => {
   sideCart.classList.remove('open');
 });
 
-// LOAD CART
+// =========================
+// CART SYSTEM
+// =========================
 let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
 
 // TIMESTAMP
@@ -249,14 +291,11 @@ function updateCart() {
     `).join('');
   }
 
-  // SAVE CART
   sessionStorage.setItem("cart", JSON.stringify(cart));
 
-  // UPDATE TOTAL PRICE (DEPOSIT ONLY)
   const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
   document.getElementById("total-price").textContent = "£" + total;
 
-  // REMOVE BUTTONS
   document.querySelectorAll('.remove-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       cart.splice(btn.dataset.index, 1);
@@ -268,34 +307,23 @@ function updateCart() {
   updateCartTimer();
 }
 
-// ADD TO CART (FINAL VERSION)
+// ADD TO CART
 document.querySelectorAll('.add-btn').forEach(btn => {
   btn.addEventListener('click', () => {
 
     cart.push({
       id: btn.dataset.id,
       name: btn.dataset.name,
-
-      //  Deposit is what the client pays now
       price: parseFloat(btn.dataset.deposit),
-
-      //  Full price stored separately for admin + appointment record
       full_price: parseFloat(btn.dataset.price),
-
-      //  Duration (needed for end time)
       duration: parseFloat(btn.dataset.duration)
     });
 
-    // Save cart
     sessionStorage.setItem("cart", JSON.stringify(cart));
-
-    // Save service for Payment page (deposit only)
     sessionStorage.setItem("selected_service_name", btn.dataset.name);
     sessionStorage.setItem("selected_service_price", btn.dataset.deposit);
 
-    // Reset timer
     setCartTimestamp();
-
     updateCart();
     sideCart.classList.add('open');
   });
@@ -304,7 +332,9 @@ document.querySelectorAll('.add-btn').forEach(btn => {
 // INITIAL LOAD
 updateCart();
 
-// ACCORDION
+// =========================
+// ACCORDION (+ / –)
+// =========================
 document.querySelectorAll('.category-header').forEach(header => {
   header.addEventListener('click', () => {
     const content = header.nextElementSibling;
@@ -321,6 +351,42 @@ document.querySelectorAll('.category-header').forEach(header => {
   });
 });
 
+// =========================
+// SIDEBAR CATEGORY CLICK
+// =========================
+document.querySelectorAll(".category-list li").forEach(li => {
+  li.addEventListener("click", () => {
+    const selected = li.textContent.trim().toLowerCase();
+
+    document.querySelectorAll(".category-content").forEach(section => {
+      section.style.display = "none";
+    });
+
+    document.querySelectorAll(".category-header .toggle").forEach(t => {
+      t.textContent = "+";
+    });
+
+    if (selected === "all services") {
+      document.querySelectorAll(".category-content").forEach(section => {
+        section.style.display = "block";
+        section.previousElementSibling.querySelector(".toggle").textContent = "–";
+      });
+      return;
+    }
+
+    document.querySelectorAll(".category-header").forEach(header => {
+      const name = header.dataset.category.toLowerCase();
+
+      if (name === selected) {
+        const content = header.nextElementSibling;
+        content.style.display = "block";
+        header.querySelector(".toggle").textContent = "–";
+
+        header.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
+});
 </script>
 
 </body>

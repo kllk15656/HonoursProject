@@ -81,11 +81,14 @@ fetch("save_booking.php", {
 .then(data => {
     if (data.success) {
         console.log("Booking saved:", data);
-        // Optionally clear sessionStorage
-        // sessionStorage.clear();
+        // sessionStorage.clear(); // optional
     } else {
-        console.error("Booking failed:", data.error);
-        alert("There was an issue saving your booking. Please try again.");
+        console.error("Booking failed:", data);
+
+        alert(
+            "Booking failed:\n" +
+            (data.details || data.error || "Unknown error")
+        );
     }
 })
 .catch(err => {
@@ -93,7 +96,6 @@ fetch("save_booking.php", {
     alert("A network error occurred while saving your booking.");
 });
 </script>
-
 
 </body>
 </html>

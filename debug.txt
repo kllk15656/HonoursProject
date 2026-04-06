@@ -1,0 +1,30 @@
+START
+RAW:
+{"admin_id":1,"services":[{"id":"56","name":"Brow Wax","price":6,"full_price":12,"duration":15}],"date":"2026-04-07","time":"09:00","deposit_total":6,"total_price":12,"fname":"julie","lname":"may","email":"may@test.co.uk","phone":"0712345667"}
+DECODED:
+Array
+(
+    [admin_id] => 1
+    [services] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 56
+                    [name] => Brow Wax
+                    [price] => 6
+                    [full_price] => 12
+                    [duration] => 15
+                )
+
+        )
+
+    [date] => 2026-04-07
+    [time] => 09:00
+    [deposit_total] => 6
+    [total_price] => 12
+    [fname] => julie
+    [lname] => may
+    [email] => may@test.co.uk
+    [phone] => 0712345667
+)
+

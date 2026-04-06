@@ -1,104 +1,121 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 header("Content-Type: application/json");
 
-$data = json_decode(file_get_contents("php://input"), true);
+require "./Admin_system/db.php";
+
+// Read JSON
+$raw = file_get_contents("php://input");
+$data = json_decode($raw, true);
 
 if (!$data) {
-    echo json_encode(["error" => "No data received"]);
+    echo json_encode(["success" => false, "error" => "Invalid JSON"]);
     exit;
 }
 
-$admin_id = $data["admin_id"];
-$fname = $data["fname"];
-$lname = $data["lname"];
-$email = $data["email"];
-$phone = $data["phone"];
-$date = $data["date"];
-$time = $data["time"];
-$services = $data["services"];
-$total_price = $data["total_price"]; // full price total
+$admin_id      = $data["admin_id"];
+$services      = $data["services"];
+$date          = $data["date"];
+$time          = $data["time"];
+$deposit_total = $data["deposit_total"];
+$total_price   = $data["total_price"];
+$fname         = $data["fname"];
+$lname         = $data["lname"];
+$email         = $data["email"];
+$phone         = $data["phone"];
 
-$conn = new mysqli("localhost", "root", "", "bookingsystem");
-
-if ($conn->connect_error) {
-    echo json_encode(["error" => "DB connection failed"]);
+// Validate
+if (!$admin_id || !$date || !$time || !$fname || !$lname || !$email) {
+    echo json_encode(["success" => false, "error" => "Missing required fields"]);
     exit;
 }
 
-/*1. CHECK IF CLIENT EXISTS*/
-$check = $conn->prepare("SELECT client_id FROM clients WHERE email = ? AND admin_id = ?");
-$check->bind_param("si", $email, $admin_id);
-$check->execute();
-$check->store_result();
+// Convert time to MySQL format
+if (strlen($time) === 5) {
+    $time .= ":00";
+}
 
-if ($check->num_rows > 0) {
-    $check->bind_result($client_id);
-    $check->fetch();
+// -----------------------------------------------------
+// 1️⃣ INSERT OR FIND CLIENT
+// -----------------------------------------------------
+$stmt = $pdo->prepare("
+    SELECT client_id FROM clients 
+    WHERE email = ? AND admin_id = ?
+");
+$stmt->execute([$email, $admin_id]);
+$existing = $stmt->fetchColumn();
+
+if ($existing) {
+    $client_id = $existing;
 } else {
-    $insertClient = $conn->prepare(
-        "INSERT INTO clients (admin_id, first_name, last_name, email, phone_number, created_at)
-         VALUES (?, ?, ?, ?, ?, NOW())"
-    );
-    $insertClient->bind_param("issss", $admin_id, $fname, $lname, $email, $phone);
-    $insertClient->execute();
-    $client_id = $insertClient->insert_id;
+    $stmt = $pdo->prepare("
+        INSERT INTO clients (admin_id, first_name, last_name, email, phone_number)
+        VALUES (?, ?, ?, ?, ?)
+    ");
+    $stmt->execute([$admin_id, $fname, $lname, $email, $phone]);
+    $client_id = $pdo->lastInsertId();
 }
 
-/* ---------------------------------------------------------
-   2. CALCULATE END TIME BASED ON TOTAL DURATION
---------------------------------------------------------- */
-$start = new DateTime($time);
-$end = clone $start;
+// -----------------------------------------------------
+// 2️⃣ INSERT APPOINTMENT
+// -----------------------------------------------------
+$stmt = $pdo->prepare("
+    INSERT INTO appointments 
+    (client_id, admin_id, date, start_time, end_time, total_price, status, is_seen)
+    VALUES (?, ?, ?, ?, ?, ?, 'pending', 0)
+");
 
-$total_duration = 0;
-foreach ($services as $s) {
-    $total_duration += intval($s["duration"]);
-}
-$end->modify("+$total_duration minutes");
-$end_time = $end->format("H:i:s");
+$end_time = $time; // You can calculate real end time later
 
-/* 3. INSERT APPOINTMENT (NOW WITH created_at)*/
-$insertAppt = $conn->prepare(
-    "INSERT INTO appointments 
-    (client_id, admin_id, date, start_time, end_time, total_price, status, is_seen, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, 'confirmed', 0, NOW())"
-);
-
-$insertAppt->bind_param("iisssd", 
-    $client_id, 
-    $admin_id, 
-    $date, 
-    $time, 
-    $end_time, 
+$success = $stmt->execute([
+    $client_id,
+    $admin_id,
+    $date,
+    $time,
+    $end_time,
     $total_price
-);
+]);
 
-$insertAppt->execute();
-$appointment_id = $insertAppt->insert_id;
-
-/*4. INSERT SERVICES INTO appointment_services */
-foreach ($services as $index => $s) {
-    $stmt = $conn->prepare(
-        "INSERT INTO appointment_services 
-        (appointment_id, service_id, service_name, duration, price, order_index)
-         VALUES (?, ?, ?, ?, ?, ?)"
-    );
-    $stmt->bind_param(
-        "iisddi",
-        $appointment_id,
-        $s["id"],
-        $s["name"],
-        $s["duration"],
-        $s["full_price"], // full price stored here
-        $index + 1
-    );
-    $stmt->execute();
+if (!$success) {
+    echo json_encode(["success" => false, "error" => $stmt->errorInfo()]);
+    exit;
 }
 
-/* 5. RETURN SUCCESS*/
+$appointment_id = $pdo->lastInsertId();
+
+// -----------------------------------------------------
+// 3️⃣ INSERT SERVICES
+// -----------------------------------------------------
+foreach ($services as $index => $service) {
+
+    $stmt2 = $pdo->prepare("
+        INSERT INTO appointment_services
+        (appointment_id, service_id, service_name, duration, price, order_index)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ");
+
+    $success2 = $stmt2->execute([
+        $appointment_id,
+        $service["id"],
+        $service["name"],
+        $service["duration"],
+        $service["full_price"],
+        $index
+    ]);
+
+    if (!$success2) {
+        echo json_encode(["success" => false, "error" => $stmt2->errorInfo()]);
+        exit;
+    }
+}
+
+// -----------------------------------------------------
+// 4️⃣ SUCCESS RESPONSE
+// -----------------------------------------------------
 echo json_encode([
     "success" => true,
-    "appointment_id" => $appointment_id,
-    "client_id" => $client_id
+    "appointment_id" => $appointment_id
 ]);
+exit;
 ?>

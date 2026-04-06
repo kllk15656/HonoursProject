@@ -92,22 +92,50 @@ const fullTotal = cart.reduce((sum, s) => sum + s.full_price, 0);
 document.getElementById("service-name").textContent =
   cart.map(s => s.name).join(", ");
 
-// Display deposit total (what client pays now)
+// Display deposit total
 document.getElementById("service-price").textContent = "£" + depositTotal;
 document.getElementById("total-price").textContent = "£" + depositTotal;
 
-// Fake payment → redirect to confirmation
+// ===============================
+// FINAL FIXED PAYMENT FUNCTION
+// ===============================
 function fakePayment() {
     alert("This is a prototype. No real payment has been taken.");
 
-    // Mark booking as confirmed
-    sessionStorage.setItem("booking_confirmed", "true");
+    const payload = {
+        admin_id: <?php echo $admin_id; ?>,
+        services: cart,
+        date: sessionStorage.getItem("selected_date"),
+        time: sessionStorage.getItem("selected_time"),
+        deposit_total: depositTotal,
+        total_price: fullTotal,
+        fname: sessionStorage.getItem("client_fname"),
+        lname: sessionStorage.getItem("client_lname"),
+        email: sessionStorage.getItem("client_email"),
+        phone: sessionStorage.getItem("client_phone")
+    };
 
-    // Redirect to confirmation
-    window.location.href = "Confirmation.php?admin_id=<?php echo $admin_id; ?>";
+    fetch("save_booking.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success) {
+            alert("Booking failed: " + data.error);
+            return;
+        }
+
+        sessionStorage.setItem("appointment_id", data.appointment_id);
+
+        window.location.href = "Confirmation.php?admin_id=<?php echo $admin_id; ?>";
+    })
+    .catch(err => {
+        alert("Network error: " + err);
+    });
 }
 </script>
-
 
 </body>
 </html>
