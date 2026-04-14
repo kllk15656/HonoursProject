@@ -191,18 +191,18 @@ if (!empty($website_url)) {
                         <?php
                         $sqlUpcoming = "
                         SELECT 
-                            CONCAT(c.first_name, ' ', c.last_name) AS name,
-                            a.date AS appointment_date,
-                            DATE_FORMAT(a.start_time, '%h:%i %p') AS time,
-                            GROUP_CONCAT(aps.service_name ORDER BY aps.order_index SEPARATOR ', ') AS services
+                        a.appointment_id,
+                        CONCAT(c.first_name, ' ', c.last_name) AS name,
+                        a.date AS appointment_date,
+                        DATE_FORMAT(a.start_time, '%h:%i %p') AS time,
+                        GROUP_CONCAT(aps.service_name ORDER BY aps.order_index SEPARATOR ', ') AS services
                         FROM appointments a
                         JOIN clients c ON a.client_id = c.client_id
                         LEFT JOIN appointment_services aps ON a.appointment_id = aps.appointment_id
                         WHERE a.admin_id = :admin_id
                         AND a.date >= CURDATE()
                         GROUP BY a.appointment_id
-                        ORDER BY a.date, a.start_time;
-                        ";
+                        ORDER BY a.date, a.start_time;";
 
                         $stmt = $pdo->prepare($sqlUpcoming);
                         $stmt->execute([":admin_id" => $_SESSION["admin_id"]]);
@@ -231,7 +231,14 @@ if (!empty($website_url)) {
                                 echo "<td>" . htmlspecialchars($row['appointment_date']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['time']) . "</td>";
                                 echo "<td>" . htmlspecialchars($label) . "</td>";
-                                echo "<td><button class='remind-btn'>Reminder</button></td>";
+                                echo "
+                                    <td>
+                                    <form method='POST' action='reminder.php'>
+                                    <input type='hidden' name='appointment_id' value='{$row['appointment_id']}'>
+                                    <button type='submit' name='sendReminder' class='remind-btn'>Reminder</button>
+                                    </form>
+                                    </td>";
+
                                 echo "</tr>";
                             }
                         } else {
