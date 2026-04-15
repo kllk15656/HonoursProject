@@ -119,20 +119,23 @@ if (!empty($website_url)) {
                         <?php
                         $sql = "
                         SELECT 
-                            a.appointment_id,
-                            CONCAT(c.first_name, ' ', c.last_name) AS name,
-                            a.date AS appointment_date,
-                            DATE_FORMAT(a.start_time, '%h:%i %p') AS time,
-                            GROUP_CONCAT(aps.service_name ORDER BY aps.order_index SEPARATOR ', ') AS services,
-                            a.is_seen
+                        a.appointment_id,
+                        CONCAT(c.first_name, ' ', c.last_name) AS name,
+                        a.date AS appointment_date,
+                        DATE_FORMAT(a.start_time, '%h:%i %p') AS time,
+                        GROUP_CONCAT(aps.service_name ORDER BY aps.order_index SEPARATOR ', ') AS services,
+                        a.is_seen
                         FROM appointments a
                         JOIN clients c ON a.client_id = c.client_id
                         LEFT JOIN appointment_services aps ON a.appointment_id = aps.appointment_id
                         WHERE a.admin_id = :admin_id
+                        AND MONTH(a.date) = MONTH(CURRENT_DATE())
+                       AND YEAR(a.date) = YEAR(CURRENT_DATE())
                         GROUP BY a.appointment_id
                         ORDER BY a.created_at DESC
                         LIMIT 5;
                         ";
+
 
                         $stmt = $pdo->prepare($sql);
                         $stmt->execute([":admin_id" => $_SESSION["admin_id"]]);

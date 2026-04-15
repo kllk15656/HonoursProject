@@ -40,6 +40,6 @@ $stmt->execute([
 ]);
 
 // Redirect back with success message
-header("Location: Setting.php?business_updated=1");
+header("Location: Settings.php?business_updated=1");
 exit;
 ?>

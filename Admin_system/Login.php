@@ -80,21 +80,19 @@ $admin =$stmt->fetch();
           <p><a href="#forgot-popup" >Forgot Password</a></p>
           <p><a href="Register.php"> Create an account</a></p>
         </div>
+        <p><a href="#forgot-popup">Forgot Password</a></p>
         <div id="forgot-popup" class="popup">
-          <div class=" popup-content">
+          <div class="popup-content">
             <a href="Login.php" class="close-btn">&times;</a>
-            <h3> Reset Password</h3>
-            <p> Please enter your email adress</p>
-            <form action="forgot-password.html" method="POST">
-              <input type="email" name="reset_email" placeholder="Enter email">
-              <button type="submit" class="popup-btn">
-                Send reset link
-              </button>
-
+            <h3>Reset Password</h3>
+            <p>Please enter your email address</p>
+            <form method="POST" action="send_reset.php">
+              <input type="email" name="email" placeholder="Enter your admin email" required>
+              <button type="submit">Send Reset Link</button>
             </form>
           </div>
-
         </div>
+
     </div>
      
     <div class="info-section">

@@ -74,7 +74,18 @@ html, body {
   width: 26px;
   height: 26px;
 }
-
+.add-btn,
+.edit-btn,
+.delete-btn {
+  display: inline-block;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: black;
+  box-shadow: 0px 5px 10px #4E342E;
+  margin-top: 10px;
+}
 /* ============================
    DESKTOP SIDE NAV
 ============================ */
@@ -169,18 +180,12 @@ html, body {
 /* ============================
    BUTTONS
 ============================ */
-.add-btn,
 .edit-btn,
 .delete-btn {
-  display: inline-block;
-  padding: 10px 16px;
-  font-size: 14px;
-  border-radius: 12px;
-  text-decoration: none;
-  color: black;
-  box-shadow: 0px 5px 10px #4E342E;
-  margin-top: 10px;
-}
+        padding: 5px 10px;
+        font-size: 12px;
+        border-radius: 6px;
+    }
 
 .add-btn { background: #44d830; }
 .add-btn:hover { background: #2f6621; color: white; }

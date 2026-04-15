@@ -12,9 +12,19 @@ require_once "./db.php";
 // Logged-in admin ID
 $admin_id = $_SESSION["admin_id"];
 
+// Fetch categories
+$catStmt = $pdo->prepare("
+    SELECT category_id, category_name 
+    FROM categories 
+    WHERE admin_id = ?
+    ORDER BY category_name ASC
+");
+$catStmt->execute([$admin_id]);
+$categories = $catStmt->fetchAll(PDO::FETCH_ASSOC);
+
 // Fetch services
 $stmt = $pdo->prepare("
-    SELECT service_id, service_name, duration_minutes, price, deposit_price
+    SELECT service_id, service_name, duration_minutes, price, deposit_price, category_id
     FROM services
     WHERE admin_id = ?
     ORDER BY service_name ASC
@@ -77,23 +87,30 @@ $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th class="desktop-only">Duration</th>
                     <th class="desktop-only">Price</th>
                     <th class="desktop-only">Deposit</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th class="desktop-only">Category</th>
+                    <th>Edit/Delete</th>
                     <th class="mobile-extra">More</th>
                 </tr>
                 
-
                 <?php if (!empty($services)): ?>
                     <?php foreach ($services as $srv): ?>
                         <tr>
                             <td><?= htmlspecialchars($srv['service_name']) ?></td>
 
-                            <!-- Desktop-only fields -->
                             <td class="desktop-only"><?= htmlspecialchars($srv['duration_minutes']) ?> mins</td>
                             <td class="desktop-only">£<?= number_format($srv['price'], 2) ?></td>
                             <td class="desktop-only">£<?= number_format($srv['deposit_price'], 2) ?></td>
 
-                            <!-- Edit -->
+                            <td class="desktop-only">
+                                <?php
+                                foreach ($categories as $cat) {
+                                    if ($cat['category_id'] == $srv['category_id']) {
+                                        echo htmlspecialchars($cat['category_name']);
+                                    }
+                                }
+                                ?>
+                            </td>
+
                             <td>
                                 <button class="edit-btn"
                                     onclick="openEditPopup(
@@ -101,14 +118,11 @@ $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         '<?= $srv['service_name'] ?>',
                                         '<?= $srv['duration_minutes'] ?>',
                                         '<?= $srv['price'] ?>',
-                                        '<?= $srv['deposit_price'] ?>'
+                                        '<?= $srv['deposit_price'] ?>',
+                                        '<?= $srv['category_id'] ?>'
                                     )">
                                     Edit
                                 </button>
-                            </td>
-
-                            <!-- Delete -->
-                            <td>
                                 <button class="delete-btn"
                                     onclick="openDeletePopup(
                                         <?= $srv['service_id'] ?>,
@@ -118,7 +132,6 @@ $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </button>
                             </td>
 
-                            <!-- MOBILE EXTRA FIELDS -->
                             <td class="mobile-extra">
                                 <button class="extra-btn" onclick="toggleExtra(this)">Additional Fields</button>
 
@@ -148,17 +161,34 @@ $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h2>Add Service</h2>
 
         <form action="Add_service.php" method="POST">
+
             <label>Service Name</label>
             <input type="text" name="service_name" required>
 
             <label>Duration (minutes)</label>
             <input type="number" name="duration_minutes" required>
 
+            <label>Category</label>
+            <select name="category_id" required>
+                <?php foreach ($categories as $cat): ?>
+                    <option value="<?= $cat['category_id'] ?>">
+                        <?= htmlspecialchars($cat['category_name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
             <label>Price (£)</label>
-            <input type="number" step="0.01" name="price" required>
+            <input type="number" step="0.01" name="price" id="addPrice"
+                   oninput="calculateDepositPrice('addPrice', 'addDepositPercent', 'addDeposit')" 
+                   required>
+
+            <label>Deposit (%)</label>
+            <input type="number" id="addDepositPercent"
+                   oninput="calculateDepositPrice('addPrice', 'addDepositPercent', 'addDeposit')"
+                   placeholder="e.g. 50">
 
             <label>Deposit (£)</label>
-            <input type="number" step="0.01" name="deposit_price" required>
+            <input type="number" step="0.01" name="deposit_price" id="addDeposit" required>
 
             <button type="submit" class="popup-btn">Add Service</button>
         </form>
@@ -180,8 +210,22 @@ $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <label>Duration (minutes)</label>
             <input type="number" id="edit-duration" name="duration_minutes">
 
+            <label>Category</label>
+            <select id="edit-category" name="category_id" required>
+                <?php foreach ($categories as $cat): ?>
+                    <option value="<?= $cat['category_id'] ?>">
+                        <?= htmlspecialchars($cat['category_name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
             <label>Price (£)</label>
-            <input type="number" step="0.01" id="edit-price" name="price">
+            <input type="number" step="0.01" id="edit-price" name="price"
+                   oninput="calculateDepositPrice('edit-price', 'editDepositPercent', 'edit-deposit')">
+
+            <label>Deposit (%)</label>
+            <input type="number" id="editDepositPercent"
+                   oninput="calculateDepositPrice('edit-price', 'editDepositPercent', 'edit-deposit')">
 
             <label>Deposit (£)</label>
             <input type="number" step="0.01" id="edit-deposit" name="deposit_price">
@@ -224,12 +268,20 @@ function openAddPopup() {
     document.getElementById("add-popup").style.display = "flex";
 }
 
-function openEditPopup(id, name, duration, price, deposit) {
+function openEditPopup(id, name, duration, price, deposit, category_id) {
     document.getElementById("edit-id").value = id;
     document.getElementById("edit-name").value = name;
     document.getElementById("edit-duration").value = duration;
     document.getElementById("edit-price").value = price;
     document.getElementById("edit-deposit").value = deposit;
+
+    // Set category
+    document.getElementById("edit-category").value = category_id;
+
+    // Auto-calc deposit %
+    const percent = price > 0 ? (deposit / price) * 100 : 0;
+    document.getElementById("editDepositPercent").value = percent.toFixed(0);
+
     document.getElementById("edit-popup").style.display = "flex";
 }
 
@@ -237,6 +289,14 @@ function openDeletePopup(id, name) {
     document.getElementById("delete-id").value = id;
     document.getElementById("delete-name").innerText = name;
     document.getElementById("delete-popup").style.display = "flex";
+}
+
+function calculateDepositPrice(priceId, percentId, depositId) {
+    const price = parseFloat(document.getElementById(priceId).value) || 0;
+    const percent = parseFloat(document.getElementById(percentId).value) || 0;
+
+    const deposit = (price * percent) / 100;
+    document.getElementById(depositId).value = deposit.toFixed(2);
 }
 </script>
 

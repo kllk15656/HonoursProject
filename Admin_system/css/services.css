@@ -49,6 +49,22 @@ body {
   width: 26px;
   height: 26px;
 }
+.add-btn,
+.edit-btn,
+.delete-btn
+{
+  display: inline-block;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: black;
+  box-shadow: 0px 5px 10px #4E342E;
+  margin-top: 10px;
+
+}
+
+
 
 /* ============================
    SIDE NAV
@@ -140,21 +156,17 @@ body {
   text-align: center;
 }
 
+
 /* ============================
    BUTTONS
 ============================ */
-.add-btn,
 .edit-btn,
-.delete-btn {
-  display: inline-block;
-  padding: 10px 16px;
-  font-size: 14px;
-  border-radius: 12px;
-  text-decoration: none;
-  color: black;
-  box-shadow: 0px 5px 10px #4E342E;
-  margin-top: 10px;
-}
+  .delete-btn {
+    padding: 2px 4px;
+    font-size: 9px;
+    border-radius: 6px;
+  }
+
 
 .add-btn { background: #44d830; }
 .add-btn:hover { background: #2f6621; color: white; }
@@ -215,12 +227,13 @@ body {
 .service-table td:nth-child(4) { width: 15%; } /* Deposit */
 
 .service-table th:nth-child(5),
-.service-table td:nth-child(5) { width: 25%; } /* Edit */
-
+.service-table td:nth-child(5) { width: 10%; } /* Edit */
+.service-table th:nth-child(6),
+.service-table td:nth-child(6) { width: 20%; } /* Edit */
 
 
 .service-table th:nth-child(7),
-.service-table td:nth-child(7) { width: 22%; } /* Mobile Extra */
+.service-table td:nth-child(7) { width: 10%; } /* Mobile Extra */
 
 /* ============================
    POPUPS
@@ -276,7 +289,6 @@ body {
   border: none;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 6px;
 }
 
 .popup-btn:hover {
@@ -413,8 +425,9 @@ body {
   /* Edit/Delete buttons shrink */
   .edit-btn,
   .delete-btn {
-    padding: 2px 3px;
+    padding: 1px 2px;
     font-size: 9px;
     border-radius: 6px;
+    white-space: nowrap;
   }
 }

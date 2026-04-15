@@ -1,0 +1,80 @@
+/* Page Layout */
+
+
+html, body {
+  min-height: 100vh;
+}body {
+    font-family: "Poppins", Arial, sans-serif;
+    background: linear-gradient(
+    180deg,
+    rgba(189,189,189,0.73),
+    rgba(157,156,154,0.73)
+  );
+    margin: 0;
+    padding: 40px 20px;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Title */
+h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #222;
+    letter-spacing: 0.5px;
+}
+
+/* Intro paragraph */
+p {
+    max-width: 700px;
+    margin: 0 auto 20px auto;
+    font-size: 1.05rem;
+    text-align: center;
+}
+
+/* Terms List */
+ul {
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+    padding: 0;
+    list-style: none;
+}
+
+ul li {
+    background: #ffffff;
+    padding: 15px 20px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Bullet icon */
+ul li::before {
+    content: "•";
+    font-size: 1.5rem;
+    color: #ffb300; /* gold accent */
+}
+
+/* Back link */
+a {
+    display: inline-block;
+    margin: 20px auto 0 auto;
+    text-align: center;
+    padding: 12px 20px;
+    background: #ffb300;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.2s ease;
+    margin-left: 40%;
+}
+
+a:hover {
+    background: #e0a000;
+}
