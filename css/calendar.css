@@ -372,3 +372,155 @@ body {
   color: #660000!important;
   cursor: not-allowed!important;
 }
+/* ============================
+   📱 MOBILE (max-width: 600px)
+   ============================ */
+@media (max-width: 600px) {
+
+  body {
+    padding: 10px;
+  }
+
+  .calendar-layout {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  /* Header */
+  .header h2 {
+    font-size: 20px;
+  }
+
+  /* Info box */
+  .info {
+    width: 100%;
+    margin: 10px 0;
+    height: auto;
+  }
+
+  /* Calendar */
+  .calendar {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .calendar-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .weekdays {
+    font-size: 12px;
+  }
+
+  .day {
+    padding: 10px;
+    font-size: 10px;
+  }
+
+  /* Time panel */
+  .time-panel {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .times {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  }
+
+  /* Cart panel */
+  .cart-panel {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .cart-scroll {
+    max-height: 300px;
+  }
+
+  .cart-total {
+    font-size: 16px;
+  }
+
+  .continue-btn {
+    width: 100%;
+  }
+}
+
+
+/* ============================
+   📱 MAKE MOBILE VIEW BIGGER
+   ============================ */
+@media (max-width: 600px) {
+
+  /* Make calendar container full width */
+  .calendar {
+    width: 100% !important;
+    padding: 20px !important;
+  }
+
+  /* Make day boxes larger */
+  .day {
+    padding: 18px !important;
+    font-size: 15px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Increase weekday label size */
+  .weekdays {
+    font-size: 14px !important;
+  }
+
+  /* Make time panel full width */
+  .time-panel {
+    width: 100% !important;
+    padding: 20px !important;
+  }
+
+  /* Make time buttons bigger */
+  #times button {
+    padding: 14px 0 !important;
+    font-size: 16px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Increase spacing between time buttons */
+  #times {
+    gap: 14px !important;
+  }
+
+  /* Make header text bigger */
+  .header h2 {
+    font-size: 26px !important;
+  }
+
+  /* Make info box full width */
+  .info {
+    width: 100% !important;
+    margin-left: 0 !important;
+    height: auto !important;
+    padding: 15px !important;
+  }
+}
+
+/* ============================
+   📲 TABLET SIZE (600–900px)
+   ============================ */
+@media (min-width: 400px) and (max-width: 900px) {
+
+  .calendar {
+    width: 100% !important;
+    padding: 20px !important;
+  }
+
+  .day {
+    padding: 16px !important;
+    font-size: 14px !important;
+  }
+
+  #times button {
+    padding: 12px 0 !important;
+    font-size: 15px !important;
+  }
+}

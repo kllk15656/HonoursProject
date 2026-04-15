@@ -50,4 +50,86 @@ body {
   text-shadow: 1px 1px 2px black, 0 0 25px #795548, 0 0 5px #4E342E;
   color: #FFC107;
 }
+/* ============================
+   📱 MOBILE (max-width: 600px)
+   ============================ */
+@media (max-width: 600px) {
+
+  body {
+    padding: 10px;
+  }
+
+  /* Make the form full width */
+  .form {
+    width: 100% !important;
+    min-height: auto !important;
+    margin: 40px 0 !important;
+    padding: 20px !important;
+  }
+
+  /* Make headings readable */
+  .confirmation h2 {
+    font-size: 22px !important;
+    margin-top: 30px !important;
+  }
+
+  .confirmation h3 {
+    font-size: 18px !important;
+  }
+
+  /* Labels stack above inputs */
+  .confirmation label {
+    display: block !important;
+    font-size: 15px !important;
+    margin-top: 15px !important;
+    margin-bottom: 10px !important;
+    text-align: left;
+  }
+
+  /* Inputs full width */
+  .form input,
+  .form textarea,
+  .form select {
+    width: 100% !important;
+    margin-top: 5px !important;
+    padding: 10px !important;
+    font-size: 15px !important;
+  }
+
+  /* Checkbox spacing */
+  .confirmation {
+    margin-bottom: 20px !important;
+  }
+
+  /* Make text readable */
+  .confirmation p {
+    font-size: 15px !important;
+    line-height: 1.4;
+  }
+}
+
+/* ============================
+   📲 TABLET (600px–900px)
+   ============================ */
+@media (min-width: 600px) and (max-width: 900px) {
+
+  .form {
+    width: 80% !important;
+    min-height: auto !important;
+    padding: 25px !important;
+  }
+
+  .form input {
+    width: 80% !important;
+    font-size: 16px !important;
+  }
+
+  .confirmation h2 {
+    font-size: 26px !important;
+  }
+
+  .confirmation h3 {
+    font-size: 20px !important;
+  }
+}
 

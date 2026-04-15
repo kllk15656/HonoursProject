@@ -161,4 +161,86 @@ p{
   pointer-events: auto;
   cursor: pointer;
 }
+/* ============================
+   📱 MOBILE (max-width: 600px)
+   ============================ */
+@media (max-width: 600px) {
 
+  body {
+    padding: 10px;
+  }
+
+  /* Make the details box full width */
+  .detail-box {
+    width: 100% !important;
+    min-height: auto !important;
+    margin: 20px 0 !important;
+    padding: 20px !important;
+  }
+
+  /* Make header text bigger and centered */
+  .header h2 {
+    font-size: 22px !important;
+  }
+
+  /* Labels stack above inputs */
+  label {
+    display: block;
+    font-size: 14px !important;
+    margin-top: 20px;
+    text-align: left;
+  }
+
+  /* Inputs full width */
+  .detail-box input {
+    width: 100% !important;
+    float: none !important;
+    margin-top: 6px;
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  /* Text blocks centered */
+  .details,
+  .confirmation p {
+    margin-right: 0 !important;
+    text-align: center !important;
+    font-size: 15px !important;
+  }
+
+  /* Checkbox spacing */
+  .confirmation {
+    margin-top: 25px !important;
+  }
+
+  /* Payment button full width */
+  .payment-btn {
+    width: 100% !important;
+    height: 50px !important;
+    font-size: 18px !important;
+    border-radius: 25px !important;
+  }
+}
+
+/* ============================
+   📲 TABLET (600px–900px)
+   ============================ */
+@media (min-width: 600px) and (max-width: 900px) {
+
+  .detail-box {
+    width: 80% !important;
+    min-height: auto !important;
+    padding: 25px !important;
+  }
+
+  .detail-box input {
+    width: 70% !important;
+    font-size: 16px;
+  }
+
+  .payment-btn {
+    width: 60% !important;
+    height: 45px !important;
+    font-size: 17px !important;
+  }
+}
