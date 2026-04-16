@@ -71,30 +71,49 @@ const bookingData = {
     phone: sessionStorage.getItem("client_phone")
 };
 
-// Send to backend
-fetch("save_booking.php", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(bookingData)
-})
-.then(res => res.json())
-.then(data => {
-    if (data.success) {
-        console.log("Booking saved:", data);
-        // sessionStorage.clear(); // optional
-    } else {
-        console.error("Booking failed:", data);
+// -----------------------------------------------------
+//  ⭐ PREVENT DUPLICATE APPOINTMENTS
+// -----------------------------------------------------
+if (sessionStorage.getItem("booking_submitted") === "1") {
+    console.log("Booking already submitted — preventing duplicate.");
+} else {
 
-        alert(
-            "Booking failed:\n" +
-            (data.details || data.error || "Unknown error")
-        );
-    }
-})
-.catch(err => {
-    console.error("Fetch error:", err);
-    alert("A network error occurred while saving your booking.");
-});
+    sessionStorage.setItem("booking_submitted", "1");
+
+    // Send to backend
+    fetch("save_booking.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bookingData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            console.log("Booking saved:", data);
+
+            sessionStorage.removeItem("cart");
+            sessionStorage.removeItem("selected_date");
+            sessionStorage.removeItem("selected_time");
+            sessionStorage.removeItem("client_fname");
+            sessionStorage.removeItem("client_lname");
+            sessionStorage.removeItem("client_email");
+            sessionStorage.removeItem("client_phone");
+
+        } else {
+            console.error("Booking failed:", data);
+
+            alert(
+                "Booking failed:\n" +
+                (data.details || data.error || "Unknown error")
+            );
+        }
+    })
+    .catch(err => {
+        console.error("Fetch error:", err);
+        alert("A network error occurred while saving your booking.");
+    });
+}
+
 </script>
 
 </body>

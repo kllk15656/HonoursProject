@@ -45,9 +45,9 @@ if (!empty($website_url)) {
     <!-- Top Navigation -->
     <div class="top-nav">
         <h1>Admin Dashboard</h1>
-         <div class="hamburger" onclick="toggleMenu()">
-        <img src="./images/menu.png" alt="Menu">
-    </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <img src="./images/menu.png" alt="Menu">
+        </div>
     </div>
 
     <!-- Side Navigation -->
@@ -65,32 +65,31 @@ if (!empty($website_url)) {
             <a href="Logout.php">Log Out</a>
         </div>
     </div>
-        <div class="overlay" onclick="toggleMenu()"></div>
 
+    <div class="overlay" onclick="toggleMenu()"></div>
 
     <!-- Main Content -->
     <div class="main-content">
-    <div class="card">
+        <div class="card">
 
-        <!-- Welcome Section -->
-        <div class="preview">
-            <h1>Welcome to your Dashboard</h1>
-            <p>This is your personal dashboard. You can view your client page from here.</p>
+            <!-- Welcome Section -->
+            <div class="preview">
+                <h1>Welcome to your Dashboard</h1>
+                <p>This is your personal dashboard. You can view your client page from here.</p>
 
-            <a href="../Welcome.php?admin_id=<?= $_SESSION['admin_id'] ?>" class="btn">
-                Client Page
-            </a>
+                <a href="../Welcome.php?admin_id=<?= $_SESSION['admin_id'] ?>" class="btn">
+                    Client Page
+                </a>
 
-            <p class="public-link-label">Your public booking link:</p>
+                <p class="public-link-label">Your public booking link:</p>
 
-            <input 
-                type="text" 
-                class="public-link-input"
-                value="<?= htmlspecialchars($public_link) ?>" 
-                readonly
-            >
-        </div>
-
+                <input 
+                    type="text" 
+                    class="public-link-input"
+                    value="<?= htmlspecialchars($public_link) ?>" 
+                    readonly
+                >
+            </div>
 
             <!-- Recent Bookings -->
             <div class="recent-table">
@@ -118,24 +117,27 @@ if (!empty($website_url)) {
                     <tbody>
                         <?php
                         $sql = "
-                        SELECT 
-                        a.appointment_id,
-                        CONCAT(c.first_name, ' ', c.last_name) AS name,
-                        a.date AS appointment_date,
-                        DATE_FORMAT(a.start_time, '%h:%i %p') AS time,
-                        GROUP_CONCAT(aps.service_name ORDER BY aps.order_index SEPARATOR ', ') AS services,
-                        a.is_seen
-                        FROM appointments a
-                        JOIN clients c ON a.client_id = c.client_id
-                        LEFT JOIN appointment_services aps ON a.appointment_id = aps.appointment_id
-                        WHERE a.admin_id = :admin_id
-                        AND MONTH(a.date) = MONTH(CURRENT_DATE())
-                       AND YEAR(a.date) = YEAR(CURRENT_DATE())
-                        GROUP BY a.appointment_id
-                        ORDER BY a.created_at DESC
+                        SELECT *
+                        FROM (
+                            SELECT 
+                                a.appointment_id,
+                                CONCAT(c.first_name, ' ', c.last_name) AS name,
+                                a.date AS appointment_date,
+                                DATE_FORMAT(a.start_time, '%h:%i %p') AS time,
+                                GROUP_CONCAT(DISTINCT aps.service_name ORDER BY aps.order_index SEPARATOR ', ') AS services,
+                                a.is_seen,
+                                a.created_at
+                            FROM appointments a
+                            JOIN clients c ON a.client_id = c.client_id
+                            LEFT JOIN appointment_services aps ON a.appointment_id = aps.appointment_id
+                            WHERE a.admin_id = :admin_id
+                              AND MONTH(a.date) = MONTH(CURRENT_DATE())
+                              AND YEAR(a.date) = YEAR(CURRENT_DATE())
+                            GROUP BY a.appointment_id
+                        ) AS grouped
+                        ORDER BY grouped.created_at DESC
                         LIMIT 5;
                         ";
-
 
                         $stmt = $pdo->prepare($sql);
                         $stmt->execute([":admin_id" => $_SESSION["admin_id"]]);
@@ -173,7 +175,7 @@ if (!empty($website_url)) {
                         <span style="font-size: 10px;">&#8594;</span>
                         <div style="width: 20px; height: 20px; background-color: #3185d3; border-radius: 4px; border: 1px solid #ccc;"></div>
 
-                        <span style="font-weight: bold; font-size: 14px; ">This Week Appointment</span>
+                        <span style="font-weight: bold; font-size: 14px;">This Week Appointment</span>
                         <span style="font-size: 1px;">&#8594;</span>
                         <div style="width: 20px; height: 20px; background-color: #a031d3; border-radius: 4px; border: 1px solid #ccc;"></div>
                     </div>
@@ -194,18 +196,29 @@ if (!empty($website_url)) {
                         <?php
                         $sqlUpcoming = "
                         SELECT 
-                        a.appointment_id,
-                        CONCAT(c.first_name, ' ', c.last_name) AS name,
-                        a.date AS appointment_date,
-                        DATE_FORMAT(a.start_time, '%h:%i %p') AS time,
-                        GROUP_CONCAT(aps.service_name ORDER BY aps.order_index SEPARATOR ', ') AS services
-                        FROM appointments a
-                        JOIN clients c ON a.client_id = c.client_id
-                        LEFT JOIN appointment_services aps ON a.appointment_id = aps.appointment_id
-                        WHERE a.admin_id = :admin_id
-                        AND a.date >= CURDATE()
-                        GROUP BY a.appointment_id
-                        ORDER BY a.date, a.start_time;";
+                            grouped.appointment_id,
+                            grouped.name,
+                            grouped.appointment_date,
+                            grouped.time,
+                            grouped.services,
+                            grouped.start_time
+                        FROM (
+                            SELECT 
+                                a.appointment_id,
+                                CONCAT(c.first_name, ' ', c.last_name) AS name,
+                                a.date AS appointment_date,
+                                DATE_FORMAT(a.start_time, '%h:%i %p') AS time,
+                                GROUP_CONCAT(DISTINCT aps.service_name ORDER BY aps.order_index SEPARATOR ', ') AS services,
+                                a.start_time
+                            FROM appointments a
+                            JOIN clients c ON a.client_id = c.client_id
+                            LEFT JOIN appointment_services aps ON a.appointment_id = aps.appointment_id
+                            WHERE a.admin_id = :admin_id
+                              AND a.date >= CURDATE()
+                            GROUP BY a.appointment_id
+                        ) AS grouped
+                        ORDER BY grouped.appointment_date, grouped.start_time;
+                        ";
 
                         $stmt = $pdo->prepare($sqlUpcoming);
                         $stmt->execute([":admin_id" => $_SESSION["admin_id"]]);
@@ -236,12 +249,11 @@ if (!empty($website_url)) {
                                 echo "<td>" . htmlspecialchars($label) . "</td>";
                                 echo "
                                     <td>
-                                    <form method='POST' action='reminder.php'>
-                                    <input type='hidden' name='appointment_id' value='{$row['appointment_id']}'>
-                                    <button type='submit' name='sendReminder' class='remind-btn'>Reminder</button>
-                                    </form>
+                                        <form method='POST' action='reminder.php'>
+                                            <input type='hidden' name='appointment_id' value='{$row['appointment_id']}'>
+                                            <button type='submit' name='sendReminder' class='remind-btn'>Reminder</button>
+                                        </form>
                                     </td>";
-
                                 echo "</tr>";
                             }
                         } else {
@@ -254,7 +266,8 @@ if (!empty($website_url)) {
 
         </div>
     </div>
-    <script>
+
+<script>
 document.querySelectorAll(".recent-table tr.new-booking").forEach(row => {
     row.addEventListener("click", function () {
         let id = this.dataset.id;
@@ -269,19 +282,13 @@ document.querySelectorAll(".recent-table tr.new-booking").forEach(row => {
 });
 
 function toggleMenu() {
-    console.log('toggleMenu fired');
-
     const menu = document.querySelector('.side-nav');
     const overlay = document.querySelector('.overlay');
 
-    console.log('before:', menu.className);
     menu.classList.toggle('open');
     overlay.classList.toggle('show');
-    console.log('after:', menu.className);
 }
-
 </script>
-
 
 </body>
 </html>

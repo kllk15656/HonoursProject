@@ -14,16 +14,16 @@ if (!$data) {
     exit;
 }
 
-$admin_id      = $data["admin_id"];
-$services      = $data["services"];
-$date          = $data["date"];
-$time          = $data["time"];
-$deposit_total = $data["deposit_total"];
-$total_price   = $data["total_price"];
-$fname         = $data["fname"];
-$lname         = $data["lname"];
-$email         = $data["email"];
-$phone         = $data["phone"];
+$admin_id      = $data["admin_id"] ?? null;
+$services      = $data["services"] ?? [];
+$date          = $data["date"] ?? null;
+$time          = $data["time"] ?? null;
+$deposit_total = $data["deposit_total"] ?? 0;
+$total_price   = $data["total_price"] ?? 0;
+$fname         = $data["fname"] ?? null;
+$lname         = $data["lname"] ?? null;
+$email         = $data["email"] ?? null;
+$phone         = $data["phone"] ?? null;
 
 // Validate
 if (!$admin_id || !$date || !$time || !$fname || !$lname || !$email) {
@@ -55,6 +55,26 @@ if ($existing) {
     ");
     $stmt->execute([$admin_id, $fname, $lname, $email, $phone]);
     $client_id = $pdo->lastInsertId();
+}
+
+// -----------------------------------------------------
+// 1.5️⃣ PREVENT DUPLICATE APPOINTMENT FOR SAME CLIENT/DATE/TIME
+// -----------------------------------------------------
+$check = $pdo->prepare("
+    SELECT appointment_id 
+    FROM appointments 
+    WHERE client_id = ? 
+      AND admin_id = ? 
+      AND date = ? 
+      AND start_time = ?
+");
+$check->execute([$client_id, $admin_id, $date, $time]);
+if ($check->fetch()) {
+    echo json_encode([
+        "success" => false,
+        "error"   => "Duplicate appointment prevented"
+    ]);
+    exit;
 }
 
 // -----------------------------------------------------

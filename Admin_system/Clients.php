@@ -161,7 +161,7 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="Clients.php" class="close-btn" onclick="closePopup('add-popup')">&times;</a>
         <h2>Add Client</h2>
 
-        <form action="AddClient.php" method="POST">
+        <form action="Add_client.php" method="POST">
             <label>First Name</label>
             <input type="text" name="first_name" required>
 
